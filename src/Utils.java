@@ -16,16 +16,23 @@ public class Utils {
     }
 
     /*
-    Class sets up actions for buttons, accepts Stage, Next Scene and Button as arguments
+    Method sets up actions for buttons, accepts Stage, Next Scene and Button as arguments
     */
     public static void setUpActions(Button button, Stage stage, Scene nextScene) {
         button.setOnAction(e -> stage.setScene(nextScene));
     }
 
     /*
-    Class sets up action for button starting the game, accepts Stage, Next Scene and Button as arguments
+    Method sets up action for button starting the game, accepts Stage, Next Scene and Button as arguments
      */
     public static void startGame(Button button, Stage stage, GameScene gameScene) {
         button.setOnAction(e -> stage.setScene(gameScene.initiateGame()));
+    }
+
+    /*
+    Method returning parsed (to integer) value from config file
+     */
+    public static Integer intFromConfig(Config cfg, String property) {
+        return Integer.parseInt(cfg.getProperty(property));
     }
 }

@@ -47,7 +47,7 @@ public class GameScene extends Scene {
 		Path path = new Path();
 		
 	//	numberOfMountains = Integer.parseInt(cfg.getProperty("mountainsCount"));
-		coinsQuantity = Integer.parseInt(cfg.getProperty("coinsQuantity"));
+		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 	/*	MoveTo moveTo = new MoveTo();
 		moveTo.setX(0.0f);
 		moveTo.setY(300.0f);
