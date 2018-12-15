@@ -37,7 +37,6 @@ public class GameScene extends Scene {
 
 	public GameScene(Region root) {
 		super(root);
-		//dodaj tutaj background image, który masz ready
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
 		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
 		cfg = new Config();

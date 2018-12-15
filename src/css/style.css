@@ -1,0 +1,26 @@
+VBox {
+    -fx-alignment: center;
+    -fx-width: 100%;
+    -fx-height: 100%;
+    -fx-padding: 20;
+}
+
+Label {
+    -fx-font-size: 34px;
+}
+
+.button {
+    -fx-font-size: 16px;
+    -fx-padding: 10;
+    -fx-width: 200px;
+    -fx-color: #000;
+    -fx-background-color: #4db8ff;
+    -fx-margin-left: auto;
+    -fx-margin-right: auto;
+}
+
+.scene {
+    -fx-background-image: url("background.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}

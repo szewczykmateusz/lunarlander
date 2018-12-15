@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ public class Frame extends Application {
 	}
 
 	/*
-	Method Initiating the Stage and Scenes
+	Method Initiating the Stage and Scenes and reading css stylesheet
 	 */
 	@Override
 	public void start(Stage stage) {
@@ -25,6 +26,8 @@ public class Frame extends Application {
 		leaderboardScene = new Scene(new Region());
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
 		mainMenu = MainMenu.getMainMenu(stage, leaderboardScene, setDifficultyScene);
+		mainMenu.getStylesheets().add("css/style.css");
+        setDifficultyScene.getStylesheets().add("css/style.css");
 		scenes.add(mainMenu);
 		scenes.add(gameScene);
 		stage.setTitle("Lunar Lander");
