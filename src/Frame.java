@@ -15,19 +15,20 @@ public class Frame extends Application {
 		scenes = new ArrayList<Scene>();
 	}
 
+	/*
+	Method Initiating the Stage and Scenes
+	 */
 	@Override
 	public void start(Stage stage) {
-		Region root = new Region();
-		gameScene = new GameScene(root);
-		mainMenu = MainMenu.getMainMenu();
+		gameScene = new GameScene(new Region());
+		setDifficultyScene = new Scene(new Region());
+		leaderboardScene = new Scene(new Region());
+		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
+		mainMenu = MainMenu.getMainMenu(stage, leaderboardScene, setDifficultyScene);
 		scenes.add(mainMenu);
 		scenes.add(gameScene);
-		Integer gameSceneIndex = Utils.getSceneIndex(scenes, gameScene);
-		Integer mainMenuIndex = Utils.getSceneIndex(scenes, mainMenu);
-		//mainMenu.setActions(stage);
 		stage.setTitle("Lunar Lander");
-		//stage.setScene(scenes.get(mainMenuIndex));
-		stage.setScene(gameScene.initiateGame());
+		stage.setScene(mainMenu);
 		stage.show();
 	}
 	/*
@@ -40,5 +41,6 @@ public class Frame extends Application {
 	private ArrayList<Scene> scenes;
 	private GameScene gameScene;
 	private Scene mainMenu;
-
+	private Scene setDifficultyScene;
+	private Scene leaderboardScene;
 }
