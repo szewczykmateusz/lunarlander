@@ -42,7 +42,7 @@ public class GameScene extends Scene {
 		cfg = new Config();
 	}
 	
-	public Scene initiateGame() {
+	public Scene initiateGame(Integer difficulty) {
 		Path path = new Path();
 		
 	//	numberOfMountains = Integer.parseInt(cfg.getProperty("mountainsCount"));
