@@ -11,12 +11,11 @@ import javafx.stage.Stage;
    Main Menu Class - creates Main Menu
 */
 public class MainMenu {
-    public MainMenu() {
-    }
+    public MainMenu() {}
     /*
         Method returns Main Menu Scene
     */
-    public static Scene getMainMenu(Stage stage, Scene leaderboardScene, Scene setDifficultyScene) {
+    public static Scene getMainMenu(Stage stage, Scene leaderboardScene, Scene pickNickScene) {
         Label label  = new Label("Lunar Lander");
         Button newGame = new Button("New Game");
         Button leaderboard = new Button("Leaderboard");
@@ -25,7 +24,7 @@ public class MainMenu {
         /*
         Actions:
          */
-        Utils.setUpActions(newGame, stage, setDifficultyScene);
+        Utils.setUpActions(newGame, stage, pickNickScene);
         Utils.setUpActions(leaderboard, stage, leaderboardScene);
         quit.setOnAction(e -> Platform.exit());
 

@@ -12,7 +12,7 @@ Label {
 .button {
     -fx-font-size: 16px;
     -fx-padding: 10;
-    -fx-width: 200px;
+    -fx-min-width: 150px;
     -fx-color: #000;
     -fx-background-color: #4db8ff;
     -fx-margin-left: auto;
@@ -23,4 +23,8 @@ Label {
     -fx-background-image: url("background.png");
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
+}
+
+TextField {
+    -fx-max-width: 300px;
 }
