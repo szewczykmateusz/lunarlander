@@ -42,9 +42,14 @@ public class GameScene extends Scene {
 		cfg = new Config();
 	}
 	
-	public Scene initiateGame(Integer difficulty) {
+	public Scene initiateGame(int difficulty) {
 		Path path = new Path();
-		
+
+		/*
+		Depending on difficulty argument we set fallVelocity
+		 */
+		int fallVelocity = getFallVelcity(difficulty);
+
 	//	numberOfMountains = Integer.parseInt(cfg.getProperty("mountainsCount"));
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 	/*	MoveTo moveTo = new MoveTo();
@@ -170,9 +175,9 @@ public class GameScene extends Scene {
 
 		rocketAnimation = new Timeline(
 				new KeyFrame(new Duration(10.0), t ->  {
-					checkForColision();
-					int fallingVelocity = 1;             // predkosc z jaka rakieta opada
-					centerY.setValue(centerY.getValue() + fallingVelocity);
+					checkForColision()
+					// predkosc z jaka rakieta opada
+					centerY.setValue(centerY.getValue() + fallVelocity);
 					root.setOnKeyPressed(k -> {
 						if(k.getCode() == KeyCode.UP)
 							centerY.setValue(centerY.getValue() - 10);
@@ -328,6 +333,27 @@ public class GameScene extends Scene {
 
 	}
 
+	/*
+	Method returning fall velocity of the Rocket (Integer) gets difficulty (Integer) as argument
+	 */
+	private int getFallVelcity(int difficulty) {
+		int fallVelocity;
+		switch(difficulty){
+			case 1:
+				fallVelocity = 1;
+			break;
+
+			case 2:
+				fallVelocity = 2;
+			break;
+
+			case 3:
+				fallVelocity = 3;
+			break;
+
+		}
+		return fallVelocity;
+	}
 
 	private float DEFAULT_WIDTH;
 	private float DEFAULT_HEIGHT;
@@ -346,5 +372,4 @@ public class GameScene extends Scene {
 	private CubicCurve firstMountain;
 	private CubicCurve[] mountains;
 	private Group root;
-
 }
