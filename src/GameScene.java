@@ -175,7 +175,7 @@ public class GameScene extends Scene {
 
 		rocketAnimation = new Timeline(
 				new KeyFrame(new Duration(10.0), t ->  {
-					checkForColision()
+					checkForColision();
 					// predkosc z jaka rakieta opada
 					centerY.setValue(centerY.getValue() + fallVelocity);
 					root.setOnKeyPressed(k -> {
@@ -337,7 +337,7 @@ public class GameScene extends Scene {
 	Method returning fall velocity of the Rocket (Integer) gets difficulty (Integer) as argument
 	 */
 	private int getFallVelcity(int difficulty) {
-		int fallVelocity;
+		int fallVelocity = 0;
 		switch(difficulty){
 			case 1:
 				fallVelocity = 1;

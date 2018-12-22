@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sun.security.ssl.Debug;
 
 public class PickNick {
     public PickNick() {}
@@ -16,7 +17,6 @@ public class PickNick {
 
         //Adding TextField
         TextField inputNick = new TextField ();
-        inputNick.setText("Nick");
         inputNick.clear();
 
 
@@ -24,7 +24,7 @@ public class PickNick {
         Button nextButton = new Button("Next");
 
         //Button action
-        Utils.setUpActions(nextButton, stage, setDifficultyScene);
+        configureButtonAction(nextButton, stage, setDifficultyScene, inputNick);
 
         //Layout:
         VBox layout = new VBox(20);
@@ -32,4 +32,16 @@ public class PickNick {
 
         return new Scene(layout, 600, 400);
     }
+
+    /*
+    Method configuring the next button action, gets input value
+     */
+    private static void configureButtonAction(Button button, Stage stage, Scene nextScene, TextField input) {
+        button.setOnAction(e -> {
+            nick = input.getText();
+            stage.setScene(nextScene);
+        });
+    }
+
+    public static String nick;
 }
