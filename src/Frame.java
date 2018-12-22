@@ -24,15 +24,25 @@ public class Frame extends Application {
 		gameScene = new GameScene(new Region());
 		setDifficultyScene = new Scene(new Region());
 		leaderboardScene = new Scene(new Region());
+		pickNickScene = new Scene(new Region());
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
-		mainMenu = MainMenu.getMainMenu(stage, leaderboardScene, setDifficultyScene);
-		mainMenu.getStylesheets().add("css/style.css");
-        setDifficultyScene.getStylesheets().add("css/style.css");
+		pickNickScene = PickNick.getPickNickScene(stage, setDifficultyScene);
+		mainMenu = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+
+		//stylesheets setup
+		linkStylesheets();
+
 		scenes.add(mainMenu);
 		scenes.add(gameScene);
 		stage.setTitle("Lunar Lander");
 		stage.setScene(mainMenu);
 		stage.show();
+	}
+
+	private void linkStylesheets() {
+		mainMenu.getStylesheets().add("css/style.css");
+		setDifficultyScene.getStylesheets().add("css/style.css");
+		pickNickScene.getStylesheets().add("css/style.css");
 	}
 	/*
 	 * Sluzy do wywolania okna w mainie
@@ -46,4 +56,5 @@ public class Frame extends Application {
 	private Scene mainMenu;
 	private Scene setDifficultyScene;
 	private Scene leaderboardScene;
+	private Scene pickNickScene;
 }
