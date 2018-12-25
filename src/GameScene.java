@@ -1,7 +1,10 @@
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.text.Font;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Timer;
+
 import javafx.scene.shape.Rectangle;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -32,6 +35,10 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.CubicCurve;
 
+import javax.swing.Timer;
+/*
+Class responsbile for making scene wherein the game takes place
+ */
 
 public class GameScene extends Scene {
 
@@ -43,184 +50,66 @@ public class GameScene extends Scene {
 	}
 	
 	public Scene initiateGame(int difficulty) {
-		Path path = new Path();
-
 		/*
 		Depending on difficulty argument we set fallVelocity
 		 */
 		int fallVelocity = getFallVelcity(difficulty);
 
-	//	numberOfMountains = Integer.parseInt(cfg.getProperty("mountainsCount"));
+		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
-	/*	MoveTo moveTo = new MoveTo();
-		moveTo.setX(0.0f);
-		moveTo.setY(300.0f);
-		mountains = new CubicCurveTo[numberOfMountains]; */
-		
-	/*	for(Integer i = 1; i <= numberOfMountains - 1; i++) {// -1 w forze bo narazie recznie narysujemy trzecia gorke
-			mountains[i-1] = new CubicCurveTo();
-			mountains[i-1].setControlX1(Float.parseFloat(cfg.getProperty("mountain"+i+"ControlX")));
-			mountains[i-1].setControlY1(Float.parseFloat(cfg.getProperty("mountain"+i+"ControlY")));
-			mountains[i-1].setX(Float.parseFloat(cfg.getProperty("mountain"+i+"X")));
-			mountains[i-1].setY(Float.parseFloat(cfg.getProperty("mountain"+i+"Y")));
-		}
-
-		mountains[numberOfMountains - 1] = new CubicCurveTo();
-
-		LineTo landingZone = new LineTo(Integer.parseInt(cfg.getProperty("landingZoneStart")), Integer.parseInt(cfg.getProperty("landingZoneEnd"))); 
-		mountains[numberOfMountains - 1].setControlX1(300.0f);
-		mountains[numberOfMountains - 1].setControlY1(200.0f);
-		mountains[numberOfMountains - 1].setControlX2(500.0f);
-		mountains[numberOfMountains - 1].setControlY2(200.0f);
-		mountains[numberOfMountains - 1].setX(600.0f);
-		mountains[numberOfMountains - 1].setY(300.0f);
-		*/
 		rocket = new Rocket();
 		coins = new Coin[coinsQuantity];
-
-
 		for(Integer i = 1; i <= coinsQuantity; i++) {
-			coins[i-1] = new Coin(Integer.parseInt(cfg.getProperty("coin"+i+"X")), Integer.parseInt(cfg.getProperty("coin"+i+"Y")));
+			coins[i - 1] = new Coin(Integer.parseInt(cfg.getProperty("coin" + i + "X")), Integer.parseInt(cfg.getProperty("coin" + i + "Y")));
 		}
-		// Coin firstCoin = new Coin(140, 200);
-		// Coin secondCoin = new Coin(500, 180);
-		//Fuel fuel = new Fuel(540, 220);
 		Fuel fuel = new Fuel(Integer.parseInt(cfg.getProperty("fuelX")), Integer.parseInt(cfg.getProperty("fuelY")));
 		FuelBar fuelBar = new FuelBar(530, 20);
-		
 		Text levelNumber = setLevelNumber();
 		Text velXText = setVelXText();
 		Text velYText = setVelYText();
+		//timeText initialization, setting starting value and text properties
 		LevelTimer timer = new LevelTimer();
 		timeText = setTimeText(timer);
 		
-		//path.getElements().addAll(moveTo, mountains[0], mountains[1],landingZone, mountains[2]);
+		line = new Line();
+		line = setLineProperties();
+		mountains = new CubicCurve[numberOfMountains];
+		for(int i = 0; i < numberOfMountains; i++) {
+			mountains[i] = new CubicCurve();
+			mountains[i] = setMountainProperties(i+1);
+		}
 
-//		mountains = new Rectangle(0, 50, 600, 20);
-        mountains = new CubicCurve[3];
-        mountains[0] = new CubicCurve();
-        mountains[1] = new CubicCurve();
-        mountains[2] = new CubicCurve();
-        line = new Line();
-        line.setStartX(300);
-        line.setStartY(295);
-        line.setEndX(400);
-        line.setEndY(295);
-        line.setStrokeWidth(10);
-        mountains[0].setStartX(0);
-        mountains[0].setStartY(300);
-        mountains[0].setEndX(150);
-        mountains[0].setEndY(300);
-        mountains[0].setControlX1(120);
-        mountains[0].setControlY1(100);
-        mountains[1].setStartX(150);
-        mountains[1].setStartY(300);
-        mountains[1].setEndX(300);
-        mountains[1].setEndY(300);
-        mountains[1].setControlX1(280);
-        mountains[1].setControlY1(200);
-        mountains[2].setStartX(400);
-        mountains[2].setStartY(300);
-        mountains[2].setEndX(600);
-        mountains[2].setEndY(300);
-        mountains[2].setControlX1(300);
-        mountains[2].setControlY1(200);
-        mountains[2].setControlX2(500);
-        mountains[2].setControlY2(200);
-
-
-
-//		mountains.getTransforms().add(new Rotate(-45,0,0));
-		DoubleProperty mountainsProp = new SimpleDoubleProperty();
-
-
-
-
-		
-//		Pane root = new Pane(path);
-
-/*		rocketAnimation = new Timeline(
-				new KeyFrame(new Duration(10.0), t ->  {
-					checkForColision();
-					int fallingVelocity = 1;             // predkosc z jaka rakieta opada
-					rocket.setCenterY(rocket.getCenterY().getValue() + fallingVelocity);
-					root.setOnKeyPressed(k -> {
-						if(k.getCode() == KeyCode.UP)
-							rocket.setCenterY(rocket.getCenterY().getValue() - 10);
-						else if(k.getCode() == KeyCode.DOWN)
-							rocket.setCenterY(rocket.getCenterY().getValue() + 6);
-						else if(k.getCode() == KeyCode.LEFT)
-							rocket.setCenterX(rocket.getCenterX().getValue() - 6);
-						else if(k.getCode() == KeyCode.RIGHT)
-							rocket.setCenterX(rocket.getCenterX().getValue() + 6);
-
-					});
-				})
-		); */
-//		rect = new Rectangle(200,50,20,20);
+ //       DoubleProperty mountainsProp = new SimpleDoubleProperty();
 		DoubleProperty centerX = new SimpleDoubleProperty();
 		DoubleProperty centerY = new SimpleDoubleProperty();
 
-//		rect = rocket.paint();
 		circle = new Circle(0, 0, 5);
 		circle = rocket.paint();
 
 		root = new Group( circle, line);
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
-/*		root.getChildren().addAll(levelNumber,
+		root.getChildren().addAll(levelNumber,
 				fuel.paint(), fuelBar.paint(), fuelBar.fillFuel(rocket.getFuel()),
-				velXText, velYText, timeText); */
+				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
-		rocketAnimation = new Timeline(
-				new KeyFrame(new Duration(10.0), t ->  {
-					checkForColision();
-					// predkosc z jaka rakieta opada
-					centerY.setValue(centerY.getValue() + fallVelocity);
-					root.setOnKeyPressed(k -> {
-						if(k.getCode() == KeyCode.UP)
-							centerY.setValue(centerY.getValue() - 10);
-						else if(k.getCode() == KeyCode.DOWN)
-							centerY.setValue(centerY.getValue() + 6);
-						else if(k.getCode() == KeyCode.LEFT)
-							centerX.setValue(centerX.getValue() - 6);
-						else if(k.getCode() == KeyCode.RIGHT)
-							centerX.setValue(centerX.getValue() + 6);
-					});
-				})
-		);
-
-		
-				//adding all the coins to root
+		//adding all the coins to root
 		for(Integer i = 0; i < coinsQuantity; i++) {
 			root.getChildren().addAll(coins[i].paint());
 		}
-
+		animate(timer, centerX, centerY);
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
-//		rocket.translateXProperty().bind(rocket.getCenterX());
-//		rocket.translateYProperty().bind(rocket.getCenterY());
-
-//		rect.translateXProperty().bind(centerX);
-//		rect.translateYProperty().bind(centerY);
-//		rect.translateXProperty().bind(centerX);
-//		rect.translateYProperty().bind(centerY);
-//		mountains.translateXProperty().bind(mountainsProp);
-//		mountains.translateYProperty().bind(mountainsProp);
 		circle.centerXProperty().bind(centerX);
 		circle.centerYProperty().bind(centerY);
-		rocketAnimation.playFromStart();
-//		rocket.setCenterY(centerY);
-//		rocket.setCenterX(centerX);
 		centerX.setValue(300);
 		centerY.setValue(100);
-		mountainsProp.setValue(250);
+//		mountainsProp.setValue(250);
 		root.requestFocus();
 		return scene;
 	}
 	/*
-	 * Ustawia wartosc pola tekstowego wypisujacego poziom w lewym dolnym rogu
+	 * Method returning number of actual level (Text)
 	 */
 	private Text setLevelNumber() {
 		Text levelNumber = new Text();
@@ -267,7 +156,7 @@ public class GameScene extends Scene {
 		return velY;
 				
 	}
-	
+
 	private Text setTimeText(LevelTimer timer) {
 		Text timeText = new Text();
 		StringBuilder builder = new StringBuilder();
@@ -281,37 +170,13 @@ public class GameScene extends Scene {
 		timeText.setY(10);
 		Font font = new Font(14);
 		timeText.setFont(font);
-		
+
 		return timeText;
 	}
 	/*
-	Sprawdza czy rakieta miala kolizje, w tym wypadku zatrzymuje animacje
+	Method checks if rocket has a collision, if so animation stops
 	 */
 	public void checkForColision() {
-	/*	if(rocket.paint().intersects(mountains.getBoundsInParent())) {
-			rocketAnimation.stop();
-			rocket.setVisible(false);
-		} */
-/*		if(rect.getBoundsInLocal().intersects(mountains.getBoundsInParent())) {
-			System.out.println("Kolizja");
-			rocketAnimation.stop();
-	//		rect.setVisible(false);
-		}*/
-	/*	if(mountains.contains(rect.getX(), rect.getY())) {
-			System.out.println("Kolizja");
-			rocketAnimation.stop();
-			rect.setVisible(false);
-		} */
-	/*	if(circle.intersects(mountains.getBoundsInParent())) {
-			System.out.println("Kolizja");
-			rocketAnimation.stop();
-			circle.setVisible(false);
-		} */
-	/*    if(circle.intersects(line.getBoundsInLocal())) {
-            System.out.println("Kolizja");
-            rocketAnimation.stop();
-            circle.setVisible(false);
-        } */
 	    for(int i = 0; i < mountains.length; i++)
             if (mountains[i].contains(circle.getCenterX(), circle.getCenterY())) {
                 System.out.println("Kolizja");
@@ -323,14 +188,6 @@ public class GameScene extends Scene {
 	        rocketAnimation.stop();
 	        circle.setVisible(false);
 	    }
-
-
- /*       if(circle.intersects(mountain.getBoundsInLocal())) {
-            System.out.println("Kolizja");
-            rocketAnimation.stop();
-            circle.setVisible(false);
-        } */
-
 	}
 
 	/*
@@ -354,22 +211,86 @@ public class GameScene extends Scene {
 		}
 		return fallVelocity;
 	}
+	/*
+	Method sets parameters of line
+	 */
+	private Line setLineProperties() {
+		Line line = new Line();
+		line.setStartX(Utils.intFromConfig(cfg, "landingZoneStartX"));
+		line.setStartY(Utils.intFromConfig(cfg, "landingZoneY"));
+		line.setEndX(Utils.intFromConfig(cfg, "landingZoneEndX"));
+		line.setEndY(Utils.intFromConfig(cfg, "landingZoneY"));
+		line.setStrokeWidth(Utils.intFromConfig(cfg, "landingZoneWidth"));
+		return line;
+	}
+	/*
+	Method sets parameters of mountain, get index of current mountain (Int)
+	 */
+	private CubicCurve setMountainProperties(int index) {
+		CubicCurve mountain = new CubicCurve();
+		StringBuilder builder = new StringBuilder();
+		builder.append("mountain");
+		builder.append(index);
+		String template = builder.toString();
+		mountain.setStartX(Utils.floatFromConfig(cfg, template + "StartX"));
+		mountain.setStartY(Utils.floatFromConfig(cfg, template + "StartY"));
+		mountain.setEndX(Utils.floatFromConfig(cfg, template + "EndX"));
+		mountain.setEndY(Utils.floatFromConfig(cfg, template + "EndY"));
+		mountain.setControlX1(Utils.floatFromConfig(cfg, template + "ControlX1")) ;
+		mountain.setControlX2(Utils.floatFromConfig(cfg, template + "ControlX2"));
+		mountain.setControlY1(Utils.floatFromConfig(cfg, template + "ControlY1"));
+		mountain.setControlY2(Utils.floatFromConfig(cfg, template + "ControlY2"));
+		return mountain;
+
+	}
+	/*
+	Method actualizes timeText value every second
+	 */
+	private void setTimer(LevelTimer timer) {
+		DateFormat timeFormat = new SimpleDateFormat("mm:ss");
+		timeText.setText(timeFormat.format(timer.getDate()));
+	}
+	/*
+	Method makes animation of game
+	 */
+	private void animate(LevelTimer timer, DoubleProperty centerX, DoubleProperty centerY) {
+		rocketAnimation = new Timeline(
+				new KeyFrame(new Duration(10.0), t ->  {
+					//every second timeText is actualized
+					setTimer(timer);
+					checkForColision();
+					// velocity with which rocket falls down
+					//commented for tests
+//					centerY.setValue(centerY.getValue() + fallVelocity);
+					root.setOnKeyPressed(k -> {
+						if(k.getCode() == KeyCode.UP)
+							centerY.setValue(centerY.getValue() - 10);
+						else if(k.getCode() == KeyCode.DOWN)
+							centerY.setValue(centerY.getValue() + 6);
+						else if(k.getCode() == KeyCode.LEFT)
+							centerX.setValue(centerX.getValue() - 6);
+						else if(k.getCode() == KeyCode.RIGHT)
+							centerX.setValue(centerX.getValue() + 6);
+					});
+				})
+		);
+		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
+		rocketAnimation.playFromStart();
+
+	}
 
 	private float DEFAULT_WIDTH;
 	private float DEFAULT_HEIGHT;
-//	private CubicCurveTo[] mountains;
 	private Coin[] coins;
 	private int numberOfMountains;
 	private int coinsQuantity;
 	private Rocket rocket;
 	private Text timeText; 
 	private Config cfg;
-//	private Rectangle mountains;
 	private Timeline rocketAnimation;
 	private Rectangle rect;
 	private Circle circle;
 	private Line line;
-	private CubicCurve firstMountain;
 	private CubicCurve[] mountains;
 	private Group root;
 }

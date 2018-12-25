@@ -35,4 +35,10 @@ public class Utils {
     public static Integer intFromConfig(Config cfg, String property) {
         return Integer.parseInt(cfg.getProperty(property));
     }
+    /*
+    Method returning parsed (to float) value from config file
+     */
+    public static float floatFromConfig(Config cfg, String property) {
+        return Float.parseFloat(cfg.getProperty(property));
+    }
 }
