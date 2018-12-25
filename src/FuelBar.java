@@ -1,12 +1,19 @@
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 
-public class FuelBar extends AbstractShape {
+public class FuelBar extends Shape {
 	
 	public FuelBar(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
+
+	@Override
+	public com.sun.javafx.geom.Shape impl_configShape() {
+		return null;
+	}
+
 	/*
 	 * Rysuje obramowanie paska paliw
 	 */
@@ -21,7 +28,6 @@ public class FuelBar extends AbstractShape {
 		fuelBar.setFill(Color.TRANSPARENT);
 		fuelBar.setStroke(Color.BLACK);
 		return fuelBar;
-		
 	}
 
 	/*
@@ -29,21 +35,28 @@ public class FuelBar extends AbstractShape {
 	 */
 	public Rectangle fillFuel(double rocketFuel) {
 		Rectangle fuel = new Rectangle();
+		double fuelWidth = width * rocketFuel;
 		fuel.setX(x);
 		fuel.setY(y);
 		fuel.setHeight(height);
-		double fuelWidth = width * rocketFuel;
 		fuel.setWidth(fuelWidth);
 		fuel.setArcHeight(arcSize);
 		fuel.setArcWidth(arcSize);
 		fuel.setFill(Color.GRAY);
 		return fuel;
 	}
-	
-	
-	
-	
 
+	/*
+	Method changing the fuel level
+	 */
+	public void updateFuelLevel() {
+		width -= 0.0002*50;
+		this.paint();
+	}
+	
+	
+	private double x;
+	private double y;
 	private double width = 50;
 	private double height = 20;
 	private double arcSize = 10;

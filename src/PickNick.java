@@ -1,13 +1,11 @@
 import javafx.scene.control.Button;
 import java.util.*;
 import javafx.scene.control.Button;
-import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sun.security.ssl.Debug;
 
 public class PickNick {
     public PickNick() {}

@@ -53,17 +53,17 @@ public class GameScene extends Scene {
 		/*
 		Depending on difficulty argument we set fallVelocity
 		 */
-		int fallVelocity = getFallVelcity(difficulty);
+		fallVelocity = getFallVelocity(difficulty);
 
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 		rocket = new Rocket();
 		coins = new Coin[coinsQuantity];
 		for(Integer i = 1; i <= coinsQuantity; i++) {
-			coins[i - 1] = new Coin(Integer.parseInt(cfg.getProperty("coin" + i + "X")), Integer.parseInt(cfg.getProperty("coin" + i + "Y")));
+			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
 		}
-		Fuel fuel = new Fuel(Integer.parseInt(cfg.getProperty("fuelX")), Integer.parseInt(cfg.getProperty("fuelY")));
-		FuelBar fuelBar = new FuelBar(530, 20);
+		Fuel fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"));
+		fuelBar = new FuelBar(530, 20);
 		Text levelNumber = setLevelNumber();
 		Text velXText = setVelXText();
 		Text velYText = setVelYText();
@@ -86,7 +86,7 @@ public class GameScene extends Scene {
 		circle = new Circle(0, 0, 5);
 		circle = rocket.paint();
 
-		root = new Group( circle, line);
+		root = new Group(circle, line);
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
 		root.getChildren().addAll(levelNumber,
@@ -114,7 +114,6 @@ public class GameScene extends Scene {
 	private Text setLevelNumber() {
 		Text levelNumber = new Text();
 
-		//CONFIG TEST
 		levelNumber.setText(cfg.getProperty("levelText"));
 		//levelNumber.setText("LEVEL 1");
 		levelNumber.setX(10);
@@ -176,7 +175,7 @@ public class GameScene extends Scene {
 	/*
 	Method checks if rocket has a collision, if so animation stops
 	 */
-	public void checkForColision() {
+	public void checkForCollision() {
 	    for(int i = 0; i < mountains.length; i++)
             if (mountains[i].contains(circle.getCenterX(), circle.getCenterY())) {
                 System.out.println("Kolizja");
@@ -193,7 +192,7 @@ public class GameScene extends Scene {
 	/*
 	Method returning fall velocity of the Rocket (Integer) gets difficulty (Integer) as argument
 	 */
-	private int getFallVelcity(int difficulty) {
+	private int getFallVelocity(int difficulty) {
 		int fallVelocity = 0;
 		switch(difficulty){
 			case 1:
@@ -258,10 +257,15 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer(timer);
-					checkForColision();
-					// velocity with which rocket falls down
-					//commented for tests
-//					centerY.setValue(centerY.getValue() + fallVelocity);
+					//checks for collision
+					checkForCollision();
+					// set velocity with which rocket falls down
+					centerY.setValue(centerY.getValue() + fallVelocity);
+					//make rocket burn some amount of it's fuel per frame
+					rocket.burnFuel();
+					//update fuel bar width
+					fuelBar.updateFuelLevel();
+					//controls
 					root.setOnKeyPressed(k -> {
 						if(k.getCode() == KeyCode.UP)
 							centerY.setValue(centerY.getValue() - 10);
@@ -284,6 +288,7 @@ public class GameScene extends Scene {
 	private Coin[] coins;
 	private int numberOfMountains;
 	private int coinsQuantity;
+	private FuelBar fuelBar;
 	private Rocket rocket;
 	private Text timeText; 
 	private Config cfg;
@@ -293,4 +298,5 @@ public class GameScene extends Scene {
 	private Line line;
 	private CubicCurve[] mountains;
 	private Group root;
+	private int fallVelocity;
 }

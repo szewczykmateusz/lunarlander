@@ -10,7 +10,7 @@ Utils Class containing common public methods used throughout the project
 public class Utils {
 
     //Returns the index of scene from the scenes list. Arguments
-    //Arguments: List of AbstractScene instances, String a name of the scene
+    //Arguments: List of Scene instances, String a name of the scene
     public static int getSceneIndex(ArrayList<Scene> scenes, Scene sceneName) {
         return scenes.indexOf(sceneName);
     }

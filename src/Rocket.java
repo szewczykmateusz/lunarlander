@@ -45,7 +45,15 @@ public class Rocket extends Shape  {
 		return rocket;
 		
 	}
-	
+
+	/*
+	Method assuring that the rocket is going to burn 0.1 of it's fuel per 6 seconds
+	 */
+	public void burnFuel() {
+		fuel -= 0.0002;
+		//System.out.println(fuel);
+	}
+
 	public double getFuel() {return fuel;}
 	public double getVelX() {return velocityX;}
 	public double getVelY() {return velocityY;}
@@ -60,7 +68,7 @@ public class Rocket extends Shape  {
 	private double velocityY;
 	private int height; //wymiary rakiety
 	private int width;
-	private double fuel; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
+	private double fuel = 1; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
 	private Config cfg;
 //	private DoubleProperty centerX = new SimpleDoubleProperty(); //centralny punkty pilki
 //	private DoubleProperty centerY = new SimpleDoubleProperty();
