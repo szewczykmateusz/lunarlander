@@ -30,6 +30,7 @@ public class Rocket extends Shape  {
 		width = Integer.parseInt(cfg.getProperty("rocketWidth"));
 		fuel = Double.parseDouble(cfg.getProperty("fuel"));
 		burningVelocity = Double.parseDouble(cfg.getProperty("burningVelocity"));
+		extendFuelValue = Double.parseDouble(cfg.getProperty("fuelTankValue"));
 	}
 
 	@Override
@@ -53,6 +54,15 @@ public class Rocket extends Shape  {
 	public void burnFuel() {
 		fuel -= burningVelocity;
 		//System.out.println(fuel);
+	}
+	/*
+	Method increases fuel when rocket catch extend fuel tank during game
+	 */
+	public void addFuel() {
+		if((fuel += extendFuelValue) > 1)
+			fuel = 1;
+		else
+			fuel += extendFuelValue;
 	}
 
 	public double getFuel() {return fuel;}
@@ -78,4 +88,5 @@ public class Rocket extends Shape  {
 	private double y;
 	private double radius = 5;
 	private double burningVelocity;
+	private double extendFuelValue;
 }

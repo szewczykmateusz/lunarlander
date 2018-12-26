@@ -62,7 +62,8 @@ public class GameScene extends Scene {
 		for(Integer i = 1; i <= coinsQuantity; i++) {
 			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
 		}
-		Fuel fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"));
+		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"));
+		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(530, 20);
 		Text levelNumber = setLevelNumber();
 		Text velXText = setVelXText();
@@ -91,7 +92,7 @@ public class GameScene extends Scene {
 	    	root.getChildren().add(mountains[i]);
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber,
-				fuel.paint(), fuelBar.paint(), fuelBarRectangle,
+				fuelRectangle, fuelBar.paint(), fuelBarRectangle,
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
@@ -174,9 +175,9 @@ public class GameScene extends Scene {
 		return timeText;
 	}
 	/*
-	Method checks if rocket has a collision, if so animation stops
+	Method checks if rocket has a collision with mountain, if so animation stops
 	 */
-	public void checkForCollision() {
+	public void checkForMountainCollision() {
 	    for(int i = 0; i < mountains.length; i++)
             if (mountains[i].contains(circle.getCenterX(), circle.getCenterY())) {
                 System.out.println("Kolizja");
@@ -188,6 +189,19 @@ public class GameScene extends Scene {
 	        rocketAnimation.stop();
 	        circle.setVisible(false);
 	    }
+	}
+	/*
+	Method checks if rocket has a collision with fuel tank,
+	if so fuel tank dissapears and rocket fuel increases
+	 */
+
+	public void checkForFuelCollision() {
+		if(fuelRectangle.contains(circle.getCenterX(), circle.getCenterY())) {
+			System.out.println("Paliwo");
+//			fuelRectangle.setVisible(false);
+			root.getChildren().remove(fuelRectangle);
+			rocket.addFuel();
+		}
 	}
 
 	/*
@@ -258,8 +272,9 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer(timer);
-					//checks for collision
-					checkForCollision();
+					//checks for collisions
+					checkForMountainCollision();
+					checkForFuelCollision();
 					// set velocity with which rocket falls down
 					centerY.setValue(centerY.getValue() + fallVelocity);
 					//make rocket burn some amount of it's fuel per frame
@@ -312,4 +327,6 @@ public class GameScene extends Scene {
 	private CubicCurve[] mountains;
 	private Group root;
 	private int fallVelocity;
+	private Fuel fuel;
+	private Rectangle fuelRectangle = new Rectangle();
 }
