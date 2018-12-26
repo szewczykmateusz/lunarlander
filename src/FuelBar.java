@@ -49,9 +49,11 @@ public class FuelBar extends Shape {
 	/*
 	Method changing the fuel level
 	 */
-	public void updateFuelLevel() {
-		width -= 0.0002*50;
-		this.paint();
+	public Rectangle updateFuelLevel(Rocket rocket) {
+		Double burnVel = rocket.getBurnVel();
+		if(width >= burnVel)
+			width -= burnVel;
+		return fillFuel(rocket.getFuel());
 	}
 	
 	

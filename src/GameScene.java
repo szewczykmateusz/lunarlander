@@ -89,8 +89,9 @@ public class GameScene extends Scene {
 		root = new Group(circle, line);
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
+		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber,
-				fuel.paint(), fuelBar.paint(), fuelBar.fillFuel(rocket.getFuel()),
+				fuel.paint(), fuelBar.paint(), fuelBarRectangle,
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
@@ -264,7 +265,7 @@ public class GameScene extends Scene {
 					//make rocket burn some amount of it's fuel per frame
 					rocket.burnFuel();
 					//update fuel bar width
-					fuelBar.updateFuelLevel();
+					actualizeFuelBar(root, fuelBar, rocket);
 					//controls
 					root.setOnKeyPressed(k -> {
 						if(k.getCode() == KeyCode.UP)
@@ -282,6 +283,15 @@ public class GameScene extends Scene {
 		rocketAnimation.playFromStart();
 
 	}
+	/*
+	Method actualizes filling of FuelBar
+	We must to remove old fill to paint new one
+	 */
+	private void actualizeFuelBar(Group root, FuelBar fuelBar, Rocket rocket) {
+		root.getChildren().remove(fuelBarRectangle);
+		fuelBarRectangle = fuelBar.updateFuelLevel(rocket);
+		root.getChildren().add(fuelBarRectangle);
+	}
 
 	private float DEFAULT_WIDTH;
 	private float DEFAULT_HEIGHT;
@@ -289,6 +299,7 @@ public class GameScene extends Scene {
 	private int numberOfMountains;
 	private int coinsQuantity;
 	private FuelBar fuelBar;
+	private Rectangle fuelBarRectangle  = new Rectangle();
 	private Rocket rocket;
 	private Text timeText; 
 	private Config cfg;

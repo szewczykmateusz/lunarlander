@@ -29,6 +29,7 @@ public class Rocket extends Shape  {
 		height = Integer.parseInt(cfg.getProperty("rocketHeight"));
 		width = Integer.parseInt(cfg.getProperty("rocketWidth"));
 		fuel = Double.parseDouble(cfg.getProperty("fuel"));
+		burningVelocity = Double.parseDouble(cfg.getProperty("burningVelocity"));
 	}
 
 	@Override
@@ -50,13 +51,14 @@ public class Rocket extends Shape  {
 	Method assuring that the rocket is going to burn 0.1 of it's fuel per 6 seconds
 	 */
 	public void burnFuel() {
-		fuel -= 0.0002;
+		fuel -= burningVelocity;
 		//System.out.println(fuel);
 	}
 
 	public double getFuel() {return fuel;}
 	public double getVelX() {return velocityX;}
 	public double getVelY() {return velocityY;}
+	public double getBurnVel() {return burningVelocity;}
 //	public DoubleProperty getCenterX() {return centerX;}
 //	public DoubleProperty getCenterY() {return centerY;}
 //	public void setCenterX(double x) {centerX.setValue(x);}
@@ -75,4 +77,5 @@ public class Rocket extends Shape  {
 	private double x;
 	private double y;
 	private double radius = 5;
+	private double burningVelocity;
 }
