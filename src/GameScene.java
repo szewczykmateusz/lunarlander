@@ -268,14 +268,16 @@ public class GameScene extends Scene {
 					actualizeFuelBar(root, fuelBar, rocket);
 					//controls
 					root.setOnKeyPressed(k -> {
-						if(k.getCode() == KeyCode.UP)
-							centerY.setValue(centerY.getValue() - 10);
-						else if(k.getCode() == KeyCode.DOWN)
-							centerY.setValue(centerY.getValue() + 6);
-						else if(k.getCode() == KeyCode.LEFT)
-							centerX.setValue(centerX.getValue() - 6);
-						else if(k.getCode() == KeyCode.RIGHT)
-							centerX.setValue(centerX.getValue() + 6);
+						if(rocket.getFuel() > 0) {
+							if (k.getCode() == KeyCode.UP)
+								centerY.setValue(centerY.getValue() - 10);
+							else if (k.getCode() == KeyCode.DOWN)
+								centerY.setValue(centerY.getValue() + 6);
+							else if (k.getCode() == KeyCode.LEFT)
+								centerX.setValue(centerX.getValue() - 6);
+							else if (k.getCode() == KeyCode.RIGHT)
+								centerX.setValue(centerX.getValue() + 6);
+						}
 					});
 				})
 		);
