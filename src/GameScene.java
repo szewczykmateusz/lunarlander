@@ -68,8 +68,8 @@ public class GameScene extends Scene {
 		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(530, 20);
 		Text levelNumber = setLevelNumber();
-		Text velXText = setVelXText();
-		Text velYText = setVelYText();
+		velXText = setStartVelXText();
+		velYText = setStartVelYText();
 		//timeText initialization, setting starting value and text properties
 		LevelTimer timer = new LevelTimer();
 		timeText = setTimeText(timer);
@@ -129,11 +129,11 @@ public class GameScene extends Scene {
 		return levelNumber;
 	}
 	
-	private Text setVelXText() {
+	private Text setStartVelXText() {
 		Text velX = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscX:");
-		builder.append(Double.toString(rocket.getVelX()));
+		builder.append(Double.toString(insRightVelocity + insLeftVelocity));
 		velX.setText(builder.toString());
 		velX.setX(3);
 		velX.setY(10);
@@ -145,11 +145,11 @@ public class GameScene extends Scene {
 			
 	}
 
-	private Text setVelYText() {
+	private Text setStartVelYText() {
 		Text velY = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
-		builder.append(Double.toString(rocket.getVelY()));
+		builder.append(Double.toString(fallVelocity));
 		velY.setText(builder.toString());
 		velY.setX(3);
 		velY.setY(25);
@@ -275,6 +275,7 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer(timer);
+
 					//checks for collisions
 					checkForMountainCollision();
 					checkForFuelCollision();
@@ -286,6 +287,7 @@ public class GameScene extends Scene {
 					actualizeFuelBar(root, fuelBar, rocket);
 					//controls
 					root.setOnKeyPressed(k -> {
+						actualizeVelTexts(k.getCode());
 						if(rocket.getFuel() > 0) {
 							if (k.getCode() == KeyCode.UP) {
 								insUpVelocity -= 0.5;
@@ -352,6 +354,42 @@ public class GameScene extends Scene {
 		}
 
 	} */
+	private void setVelX() {
+		velXText = new Text();
+		StringBuilder builder = new StringBuilder();
+		builder.append("PredkoscX:");
+		builder.append(Float.toString(insRightVelocity + insLeftVelocity));
+		velXText.setText(builder.toString());
+		velXText.setX(3);
+		velXText.setY(10);
+		velXText.setFill(Color.GREEN);
+		Font font = new Font(14);
+		velXText.setFont(font);
+	}
+	private void setVelY(KeyCode k) {
+		velYText = new Text();
+		StringBuilder builder = new StringBuilder();
+		builder.append("PredkoscY:");
+		if(k == KeyCode.UP)
+			builder.append(Double.toString((fallVelocity + insUpVelocity)));
+		else
+			builder.append(Double.toString(fallVelocity));
+		velYText.setText(builder.toString());
+		velYText.setX(3);
+		velYText.setY(25);
+		velYText.setFill(Color.GREEN);
+		Font font = new Font(14);
+		velYText.setFont(font);
+	}
+	/*
+	Method actualizes velocity Texts, removes old texts, to add new ones
+	 */
+	private void actualizeVelTexts(KeyCode k) {
+		root.getChildren().removeAll(velXText, velYText);
+		setVelX();
+		setVelY(k);
+		root.getChildren().addAll(velXText, velYText);
+	}
 
 
 
@@ -384,4 +422,6 @@ public class GameScene extends Scene {
 	private float insUpVelocity = upVelocity;
 	private float insLeftVelocity = leftVelocity;
 	private float insRightVelocity = rightVelocity;
+	private Text velXText;
+	private Text velYText;
 }
