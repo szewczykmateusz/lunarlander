@@ -37,6 +37,7 @@ public class LevelTimer {
 		
 	}
 	public Date getDate() {return date;}
+	public int getSeconds() {return counter;}
 	
 	private Timer timer;
 	private int counter;

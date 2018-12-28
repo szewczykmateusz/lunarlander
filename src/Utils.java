@@ -41,4 +41,10 @@ public class Utils {
     public static float floatFromConfig(Config cfg, String property) {
         return Float.parseFloat(cfg.getProperty(property));
     }
+    /*
+    Method returning parsed (to double) value from config file
+     */
+    public static Double doubleFromConfig(Config cfg, String property) {
+        return Double.parseDouble(cfg.getProperty(property));
+    }
 }

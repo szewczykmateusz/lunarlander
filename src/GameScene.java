@@ -1,9 +1,11 @@
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javafx.event.EventHandler;
 
 import javafx.scene.shape.Rectangle;
 import javafx.application.Application;
@@ -46,7 +48,7 @@ public class GameScene extends Scene {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
 		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
-		cfg = new Config();
+//		cfg = new Config();
 	}
 	
 	public Scene initiateGame(int difficulty) {
@@ -100,6 +102,7 @@ public class GameScene extends Scene {
 		for(Integer i = 0; i < coinsQuantity; i++) {
 			root.getChildren().addAll(coins[i].paint());
 		}
+//		startGame();
 		animate(timer, centerX, centerY);
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		circle.centerXProperty().bind(centerX);
@@ -284,16 +287,35 @@ public class GameScene extends Scene {
 					//controls
 					root.setOnKeyPressed(k -> {
 						if(rocket.getFuel() > 0) {
-							if (k.getCode() == KeyCode.UP)
-								centerY.setValue(centerY.getValue() - 10);
+							if (k.getCode() == KeyCode.UP) {
+								insUpVelocity -= 0.5;
+								centerY.setValue(centerY.getValue() + insUpVelocity);
+							}
 							else if (k.getCode() == KeyCode.DOWN)
 								centerY.setValue(centerY.getValue() + 6);
-							else if (k.getCode() == KeyCode.LEFT)
-								centerX.setValue(centerX.getValue() - 6);
-							else if (k.getCode() == KeyCode.RIGHT)
-								centerX.setValue(centerX.getValue() + 6);
-						}
+							else if (k.getCode() == KeyCode.LEFT) {
+								insLeftVelocity -= 0.5;
+								centerX.setValue(centerX.getValue() + insLeftVelocity);
+							}
+							else if (k.getCode() == KeyCode.RIGHT) {
+								insRightVelocity += 0.5;
+								centerX.setValue(centerX.getValue() + insRightVelocity);
+							}
+							}
 					});
+					/*
+					When user realease key, velocity returns to starting value
+					 */
+					root.setOnKeyReleased(k -> {
+						if(k.getCode() == KeyCode.UP)
+							insUpVelocity = upVelocity;
+						else if(k.getCode() == KeyCode.LEFT)
+							insLeftVelocity = leftVelocity;
+						else if(k.getCode() == KeyCode.RIGHT)
+							insRightVelocity = rightVelocity;
+					});
+					System.out.println("Vel X " + (insRightVelocity + insLeftVelocity));
+//					System.out.println("Vel Y " + (insUpVelocity - fallVelocity));
 				})
 		);
 		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -309,6 +331,31 @@ public class GameScene extends Scene {
 		fuelBarRectangle = fuelBar.updateFuelLevel(rocket);
 		root.getChildren().add(fuelBarRectangle);
 	}
+	/*
+	Method starts game when user press SPACE and show information about it
+	 */
+/*	private void startGame() {
+		Text information = new Text("Press SPACE to start");
+		information.setX(200);
+		information.setY(200);
+		information.setFill(Color.RED);
+		Font font = new Font(30);
+		information.setFont(font);
+		root.getChildren().add(information);
+		while(true) {
+			root.setOnKeyPressed(k -> {
+				if (k.getCode() == KeyCode.SPACE) {
+					root.getChildren().remove(information);
+					return;
+				}
+			});
+		}
+
+	} */
+
+
+
+
 
 	private float DEFAULT_WIDTH;
 	private float DEFAULT_HEIGHT;
@@ -319,7 +366,7 @@ public class GameScene extends Scene {
 	private Rectangle fuelBarRectangle  = new Rectangle();
 	private Rocket rocket;
 	private Text timeText; 
-	private Config cfg;
+	private Config cfg = new Config();
 	private Timeline rocketAnimation;
 	private Rectangle rect;
 	private Circle circle;
@@ -329,4 +376,12 @@ public class GameScene extends Scene {
 	private int fallVelocity;
 	private Fuel fuel;
 	private Rectangle fuelRectangle = new Rectangle();
+	//starting values of velocities
+	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
+	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
+	private final float rightVelocity = -leftVelocity;
+	//instant values of velocities
+	private float insUpVelocity = upVelocity;
+	private float insLeftVelocity = leftVelocity;
+	private float insRightVelocity = rightVelocity;
 }
