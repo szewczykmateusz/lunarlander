@@ -61,6 +61,9 @@ public class Rocket extends Shape  {
 		else
 			fuel += extendFuelValue;
 	}
+	public float increaseInsFallVelocity() {insFallVelocity += fallAcceleration;
+											return  insFallVelocity;}
+	public void restartInsFallVelocity() {insFallVelocity = fallVelocity;}
 
 	public double getFuel() {return fuel;}
 	public double getBurnVel() {return burningVelocity;}
@@ -70,10 +73,14 @@ public class Rocket extends Shape  {
 	public float getInsUpVelocity(){return insUpVelocity;}
 	public float getInsLeftVelocity(){return insLeftVelocity;}
 	public float getInsRightVelocity(){return insRightVelocity;}
+	public float getInsFallVelocity() {return insFallVelocity;}
+	public float getFallVelocity() {return fallVelocity;}
 
 	public void setInsUpVelocity(float insUpVelocity) {this.insUpVelocity = insUpVelocity;}
 	public void setInsLeftVelocity(float insLeftVelocity) {this.insLeftVelocity = insLeftVelocity;}
 	public void setInsRightVelocity(float insRightVelocity) {this.insRightVelocity = insRightVelocity;}
+	public void setFallVelocity(float fallVelocity) {this.fallVelocity = fallVelocity;
+													this.insFallVelocity = fallVelocity;}
 //	public DoubleProperty getCenterX() {return centerX;}
 //	public DoubleProperty getCenterY() {return centerY;}
 //	public void setCenterX(double x) {centerX.setValue(x);}
@@ -108,4 +115,8 @@ public class Rocket extends Shape  {
 	private double radius = 5;
 	private double burningVelocity;
 	private double extendFuelValue;
+	// instant velocity with which rocket is falling down, when any key isn`s pressed
+	private float fallVelocity; //starting fall velocity
+	private float insFallVelocity; //instant fall velocity
+	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
 }

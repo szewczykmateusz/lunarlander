@@ -2,6 +2,7 @@ import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.*;
+import java.lang.Math;
 
 /*
 Utils Class containing common public methods used throughout the project
@@ -47,4 +48,15 @@ public class Utils {
     public static Double doubleFromConfig(Config cfg, String property) {
         return Double.parseDouble(cfg.getProperty(property));
     }
+    /*
+    Method round number with specified precision
+     */
+    public static float round(float number) {
+        double x = Math.pow(10, precision);
+        number *= (float)x;
+        number /= (float)x;
+        return number;
+    }
+
+    private final static int precision = 2;
 }

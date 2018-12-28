@@ -55,11 +55,11 @@ public class GameScene extends Scene {
 		/*
 		Depending on difficulty argument we set fallVelocity
 		 */
-		fallVelocity = getFallVelocity(difficulty);
+		rocket = new Rocket();
+		rocket.setFallVelocity(getFallVelocity(difficulty));
 
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
-		rocket = new Rocket();
 		coins = new Coin[coinsQuantity];
 		for(Integer i = 1; i <= coinsQuantity; i++) {
 			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
@@ -149,7 +149,7 @@ public class GameScene extends Scene {
 		Text velY = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
-		builder.append(Double.toString(fallVelocity));
+		builder.append(Double.toString(rocket.getFallVelocity()));
 		velY.setText(builder.toString());
 		velY.setX(3);
 		velY.setY(25);
@@ -210,19 +210,19 @@ public class GameScene extends Scene {
 	/*
 	Method returning fall velocity of the Rocket (Integer) gets difficulty (Integer) as argument
 	 */
-	private int getFallVelocity(int difficulty) {
-		int fallVelocity = 0;
+	private float getFallVelocity(int difficulty) {
+		float fallVelocity = 0;
 		switch(difficulty){
 			case 1:
-				fallVelocity = 1;
+				fallVelocity = 0.5f;
 			break;
 
 			case 2:
-				fallVelocity = 2;
+				fallVelocity = 1f;
 			break;
 
 			case 3:
-				fallVelocity = 3;
+				fallVelocity = 1.5f;
 			break;
 
 		}
@@ -279,7 +279,9 @@ public class GameScene extends Scene {
 					checkForMountainCollision();
 					checkForFuelCollision();
 					// set velocity with which rocket falls down
-					centerY.setValue(centerY.getValue() + fallVelocity);
+					rocket.increaseInsFallVelocity();
+					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
+					setVelY();
 					//make rocket burn some amount of it's fuel per frame
 					rocket.burnFuel();
 					//update fuel bar width
@@ -291,16 +293,19 @@ public class GameScene extends Scene {
 							if (k.getCode() == KeyCode.UP) {
 								rocket.accUpVelocity();
 								centerY.setValue(centerY.getValue() + rocket.getInsUpVelocity());
+								rocket.restartInsFallVelocity();
 							}
 							else if (k.getCode() == KeyCode.DOWN)
 								centerY.setValue(centerY.getValue() + 6);
 							else if (k.getCode() == KeyCode.LEFT) {
 								rocket.accLeftVelocity();
 								centerX.setValue(centerX.getValue() + rocket.getInsLeftVelocity());
+								rocket.restartInsFallVelocity();
 							}
 							else if (k.getCode() == KeyCode.RIGHT) {
 								rocket.accRightVelocity();
 								centerX.setValue(centerX.getValue() + rocket.getInsRightVelocity());
+								rocket.restartInsFallVelocity();
 							}
 							}
 					});
@@ -310,14 +315,14 @@ public class GameScene extends Scene {
 					root.setOnKeyReleased(k -> {
 						if(k.getCode() == KeyCode.UP) {
 							rocket.resetUpVelocity();
-							resetVelY();
 						}
 						else if(k.getCode() == KeyCode.LEFT)
 							rocket.resetLeftVelocity();
 						else if(k.getCode() == KeyCode.RIGHT)
 							rocket.resetRightVelocity();
 					});
-					System.out.println("Vel X " + (rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
+//					System.out.println("Vel X " + (rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
+					System.out.println(rocket.getInsFallVelocity());
 				})
 		);
 		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -366,14 +371,17 @@ public class GameScene extends Scene {
 		Font font = new Font(14);
 		velXText.setFont(font);
 	}
+	/*
+	Method actualizes velYText when any button is pressed
+	 */
 	private void setVelY(KeyCode k) {
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
 		if(k == KeyCode.UP)
-			builder.append(Double.toString((fallVelocity + rocket.getInsUpVelocity())));
+			builder.append(Double.toString((Utils.round(rocket.getInsFallVelocity() + rocket.getInsUpVelocity()))));
 		else
-			builder.append(Double.toString(fallVelocity));
+			builder.append(Double.toString(rocket.getInsFallVelocity()));
 		velYText.setText(builder.toString());
 		velYText.setX(3);
 		velYText.setY(25);
@@ -382,14 +390,14 @@ public class GameScene extends Scene {
 		velYText.setFont(font);
 	}
 	/*
-	After releasing up button velocity Y returns to fallVelocity`s value
+	Method actualizes velYText when any button isn`t pressed
 	 */
-	private void resetVelY() {
+	private void setVelY() {
 		root.getChildren().remove(velYText);
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
-		builder.append(Double.toString(fallVelocity));
+		builder.append(Double.toString(Utils.round(rocket.getInsFallVelocity())));
 		velYText.setText(builder.toString());
 		velYText.setX(3);
 		velYText.setY(25);
@@ -428,7 +436,6 @@ public class GameScene extends Scene {
 	private Line line;
 	private CubicCurve[] mountains;
 	private Group root;
-	private int fallVelocity;
 	private Fuel fuel;
 	private Rectangle fuelRectangle = new Rectangle();
 	private Text velXText;
