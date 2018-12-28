@@ -21,11 +21,8 @@ public class Rocket extends Shape  {
 //		centerX.setValue(x);
 //		centerY.setValue(y);
 		// READING ALL ATTRIBUTES FROM THE CONFIG FILE
-		cfg = new Config();
 		x = Double.parseDouble(cfg.getProperty("startX"));
 		y = Double.parseDouble(cfg.getProperty("startY"));
-		velocityX = Double.parseDouble(cfg.getProperty("velocityX"));
-		velocityY = Double.parseDouble(cfg.getProperty("velocityY"));
 		height = Integer.parseInt(cfg.getProperty("rocketHeight"));
 		width = Integer.parseInt(cfg.getProperty("rocketWidth"));
 		fuel = Double.parseDouble(cfg.getProperty("fuel"));
@@ -66,22 +63,44 @@ public class Rocket extends Shape  {
 	}
 
 	public double getFuel() {return fuel;}
-	public double getVelX() {return velocityX;}
-	public double getVelY() {return velocityY;}
 	public double getBurnVel() {return burningVelocity;}
+	public float getUpVelocity(){return upVelocity;}
+	public float getLeftVelocity(){return leftVelocity;}
+	public float getRightVelocity(){return rightVelocity;}
+	public float getInsUpVelocity(){return insUpVelocity;}
+	public float getInsLeftVelocity(){return insLeftVelocity;}
+	public float getInsRightVelocity(){return insRightVelocity;}
+
+	public void setInsUpVelocity(float insUpVelocity) {this.insUpVelocity = insUpVelocity;}
+	public void setInsLeftVelocity(float insLeftVelocity) {this.insLeftVelocity = insLeftVelocity;}
+	public void setInsRightVelocity(float insRightVelocity) {this.insRightVelocity = insRightVelocity;}
 //	public DoubleProperty getCenterX() {return centerX;}
 //	public DoubleProperty getCenterY() {return centerY;}
 //	public void setCenterX(double x) {centerX.setValue(x);}
 //	public void setCenterY(double y) {centerY.setValue(y);}
 //	public void setCenterX(DoubleProperty x) {centerX = x;}
 //	public void setCenterY(DoubleProperty y) {centerY = y;}
+	public void accUpVelocity() {insUpVelocity -= acceleration;}
+	public void accLeftVelocity() {insLeftVelocity -= acceleration;}
+	public void accRightVelocity() {insRightVelocity += acceleration;}
 
-	private double velocityX;
-	private double velocityY;
+	public void resetUpVelocity() {insUpVelocity = upVelocity;}
+	public void resetLeftVelocity() {insLeftVelocity = leftVelocity;}
+	public void resetRightVelocity() {insRightVelocity = rightVelocity;}
+
+	private Config cfg = new Config();
+	//starting values of velocities
+	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
+	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
+	private final float rightVelocity = -leftVelocity;
+	//instant values of velocities
+	private float insUpVelocity = upVelocity;
+	private float insLeftVelocity = leftVelocity;
+	private float insRightVelocity = rightVelocity;
+	private float acceleration = Utils.floatFromConfig(cfg, "acceleration");
 	private int height; //wymiary rakiety
 	private int width;
 	private double fuel = 1; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
-	private Config cfg;
 //	private DoubleProperty centerX = new SimpleDoubleProperty(); //centralny punkty pilki
 //	private DoubleProperty centerY = new SimpleDoubleProperty();
 	private double x;

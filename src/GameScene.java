@@ -133,7 +133,7 @@ public class GameScene extends Scene {
 		Text velX = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscX:");
-		builder.append(Double.toString(insRightVelocity + insLeftVelocity));
+		builder.append(Double.toString(rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
 		velX.setText(builder.toString());
 		velX.setX(3);
 		velX.setY(10);
@@ -290,18 +290,18 @@ public class GameScene extends Scene {
 						actualizeVelTexts(k.getCode());
 						if(rocket.getFuel() > 0) {
 							if (k.getCode() == KeyCode.UP) {
-								insUpVelocity -= 0.5;
-								centerY.setValue(centerY.getValue() + insUpVelocity);
+								rocket.accUpVelocity();
+								centerY.setValue(centerY.getValue() + rocket.getInsUpVelocity());
 							}
 							else if (k.getCode() == KeyCode.DOWN)
 								centerY.setValue(centerY.getValue() + 6);
 							else if (k.getCode() == KeyCode.LEFT) {
-								insLeftVelocity -= 0.5;
-								centerX.setValue(centerX.getValue() + insLeftVelocity);
+								rocket.accLeftVelocity();
+								centerX.setValue(centerX.getValue() + rocket.getInsLeftVelocity());
 							}
 							else if (k.getCode() == KeyCode.RIGHT) {
-								insRightVelocity += 0.5;
-								centerX.setValue(centerX.getValue() + insRightVelocity);
+								rocket.accRightVelocity();
+								centerX.setValue(centerX.getValue() + rocket.getInsRightVelocity());
 							}
 							}
 					});
@@ -310,14 +310,13 @@ public class GameScene extends Scene {
 					 */
 					root.setOnKeyReleased(k -> {
 						if(k.getCode() == KeyCode.UP)
-							insUpVelocity = upVelocity;
+							rocket.resetUpVelocity();
 						else if(k.getCode() == KeyCode.LEFT)
-							insLeftVelocity = leftVelocity;
+							rocket.resetLeftVelocity();
 						else if(k.getCode() == KeyCode.RIGHT)
-							insRightVelocity = rightVelocity;
+							rocket.resetRightVelocity();
 					});
-					System.out.println("Vel X " + (insRightVelocity + insLeftVelocity));
-//					System.out.println("Vel Y " + (insUpVelocity - fallVelocity));
+					System.out.println("Vel X " + (rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
 				})
 		);
 		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -358,7 +357,7 @@ public class GameScene extends Scene {
 		velXText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscX:");
-		builder.append(Float.toString(insRightVelocity + insLeftVelocity));
+		builder.append(Float.toString(rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
 		velXText.setText(builder.toString());
 		velXText.setX(3);
 		velXText.setY(10);
@@ -371,7 +370,7 @@ public class GameScene extends Scene {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
 		if(k == KeyCode.UP)
-			builder.append(Double.toString((fallVelocity + insUpVelocity)));
+			builder.append(Double.toString((fallVelocity + rocket.getInsUpVelocity())));
 		else
 			builder.append(Double.toString(fallVelocity));
 		velYText.setText(builder.toString());
@@ -414,14 +413,6 @@ public class GameScene extends Scene {
 	private int fallVelocity;
 	private Fuel fuel;
 	private Rectangle fuelRectangle = new Rectangle();
-	//starting values of velocities
-	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
-	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
-	private final float rightVelocity = -leftVelocity;
-	//instant values of velocities
-	private float insUpVelocity = upVelocity;
-	private float insLeftVelocity = leftVelocity;
-	private float insRightVelocity = rightVelocity;
 	private Text velXText;
 	private Text velYText;
 }
