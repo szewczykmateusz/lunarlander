@@ -275,7 +275,6 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer(timer);
-
 					//checks for collisions
 					checkForMountainCollision();
 					checkForFuelCollision();
@@ -309,8 +308,10 @@ public class GameScene extends Scene {
 					When user realease key, velocity returns to starting value
 					 */
 					root.setOnKeyReleased(k -> {
-						if(k.getCode() == KeyCode.UP)
+						if(k.getCode() == KeyCode.UP) {
 							rocket.resetUpVelocity();
+							resetVelY();
+						}
 						else if(k.getCode() == KeyCode.LEFT)
 							rocket.resetLeftVelocity();
 						else if(k.getCode() == KeyCode.RIGHT)
@@ -379,6 +380,23 @@ public class GameScene extends Scene {
 		velYText.setFill(Color.GREEN);
 		Font font = new Font(14);
 		velYText.setFont(font);
+	}
+	/*
+	After releasing up button velocity Y returns to fallVelocity`s value
+	 */
+	private void resetVelY() {
+		root.getChildren().remove(velYText);
+		velYText = new Text();
+		StringBuilder builder = new StringBuilder();
+		builder.append("PredkoscY:");
+		builder.append(Double.toString(fallVelocity));
+		velYText.setText(builder.toString());
+		velYText.setX(3);
+		velYText.setY(25);
+		velYText.setFill(Color.GREEN);
+		Font font = new Font(14);
+		velYText.setFont(font);
+		root.getChildren().add(velYText);
 	}
 	/*
 	Method actualizes velocity Texts, removes old texts, to add new ones
