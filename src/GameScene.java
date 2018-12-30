@@ -208,8 +208,8 @@ public class GameScene extends Scene {
 	 */
 	public void checkForLandingZoneCollision() {
 		if (line.contains(circle.getCenterX(), circle.getCenterY())) {
-			if((rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()) < Utils.floatFromConfig(cfg, "maxVelX")
-			&& (rocket.getInsFallVelocity() < Utils.floatFromConfig(cfg, "maxVelY"))) {
+			if((rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()) < maxVelX
+			&& (rocket.getInsFallVelocity() < maxVelY)) {
 				System.out.println("Ladowanie");
 				circle.setVisible(true);
 			}
@@ -381,49 +381,74 @@ public class GameScene extends Scene {
 		}
 
 	} */
+	/*
+	Method sets display of velocity by x axis
+	if rocket can land display is green, else is red
+	 */
 	private void setVelX() {
+		// instant value of rocket by x axis
+		float xValue = rocket.getInsRightVelocity() + rocket.getInsLeftVelocity();
 		velXText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscX:");
-		builder.append(Float.toString(rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
+		builder.append(Float.toString(xValue));
 		velXText.setText(builder.toString());
 		velXText.setX(3);
 		velXText.setY(10);
-		velXText.setFill(Color.GREEN);
+		if(xValue < maxVelX)
+			velXText.setFill(Color.GREEN);
+		else
+			velXText.setFill(Color.RED);
 		Font font = new Font(14);
 		velXText.setFont(font);
 	}
 	/*
-	Method actualizes velYText when any button is pressed
+	Method actualizes velYText when any button is pressed,
+	if rocket can land display is green, else is red
 	 */
 	private void setVelY(KeyCode k) {
+		// instant value of rocket by y axis
+		float yValue = 0;
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
-		if(k == KeyCode.UP)
-			builder.append(Double.toString((Utils.round(rocket.getInsFallVelocity() + rocket.getInsUpVelocity()))));
-		else
-			builder.append(Double.toString(rocket.getInsFallVelocity()));
+		if(k == KeyCode.UP) {
+			yValue = rocket.getInsFallVelocity() + rocket.getInsUpVelocity();
+			builder.append(Double.toString(yValue));
+		}
+		else {
+			yValue = rocket.getInsFallVelocity();
+			builder.append(Double.toString(yValue));
+		}
 		velYText.setText(builder.toString());
 		velYText.setX(3);
 		velYText.setY(25);
-		velYText.setFill(Color.GREEN);
+		if(yValue < maxVelY)
+			velYText.setFill(Color.GREEN);
+		else
+			velYText.setFill(Color.RED);
 		Font font = new Font(14);
 		velYText.setFont(font);
 	}
 	/*
-	Method actualizes velYText when any button isn`t pressed
+	Method actualizes velYText when any button isn`t pressed,
+	if rocket can land display is green, else is red
 	 */
 	private void setVelY() {
+		// instant value of rocket by y axis
+		float yValue = rocket.getInsFallVelocity();
 		root.getChildren().remove(velYText);
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
 		builder.append("PredkoscY:");
-		builder.append(Double.toString(Utils.round(rocket.getInsFallVelocity())));
+		builder.append(Double.toString(Utils.round(yValue)));
 		velYText.setText(builder.toString());
 		velYText.setX(3);
 		velYText.setY(25);
-		velYText.setFill(Color.GREEN);
+		if(yValue < maxVelY)
+			velYText.setFill(Color.GREEN);
+		else
+			velYText.setFill(Color.RED);
 		Font font = new Font(14);
 		velYText.setFont(font);
 		root.getChildren().add(velYText);
@@ -462,4 +487,7 @@ public class GameScene extends Scene {
 	private Rectangle fuelRectangle = new Rectangle();
 	private Text velXText;
 	private Text velYText;
+	// maximum values of velocity by which rocket can successfully land
+	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
+	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
 }
