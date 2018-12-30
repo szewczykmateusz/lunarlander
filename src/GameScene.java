@@ -395,7 +395,7 @@ public class GameScene extends Scene {
 		velXText.setText(builder.toString());
 		velXText.setX(3);
 		velXText.setY(10);
-		if(xValue < maxVelX)
+		if(Math.abs(xValue) < maxVelX)
 			velXText.setFill(Color.GREEN);
 		else
 			velXText.setFill(Color.RED);
