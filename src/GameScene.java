@@ -187,11 +187,6 @@ public class GameScene extends Scene {
                 rocketAnimation.stop();
                 circle.setVisible(false);
             }
-	    if (line.contains(circle.getCenterX(), circle.getCenterY())) {
-	        System.out.println("Kolizja");
-	        rocketAnimation.stop();
-	        circle.setVisible(false);
-	    }
 	}
 	/*
 	Method checks if rocket has a collision with fuel tank,
@@ -205,6 +200,34 @@ public class GameScene extends Scene {
 			root.getChildren().remove(fuelRectangle);
 			rocket.addFuel();
 		}
+	}
+	/*
+	Method checks if rocket has a collision with landingZone,
+	if velocities of rocket weren`t to fast rocket successfully lands,
+	else rocket crashes
+	 */
+	public void checkForLandingZoneCollision() {
+		if (line.contains(circle.getCenterX(), circle.getCenterY())) {
+			if((rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()) < Utils.floatFromConfig(cfg, "maxVelX")
+			&& (rocket.getInsFallVelocity() < Utils.floatFromConfig(cfg, "maxVelY"))) {
+				System.out.println("Ladowanie");
+				circle.setVisible(true);
+			}
+			else {
+				System.out.println("Kolizja");
+				circle.setVisible(false);
+			}
+			rocketAnimation.stop();
+		}
+
+	}
+	/*
+	Method calls methods responsible for checking for collisions
+	 */
+	private void checkForCollisions() {
+		checkForLandingZoneCollision();
+		checkForMountainCollision();
+		checkForFuelCollision();
 	}
 
 	/*
@@ -275,9 +298,8 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer(timer);
-					//checks for collisions
-					checkForMountainCollision();
-					checkForFuelCollision();
+					//if collision happen animation stops
+					checkForCollisions();
 					// set velocity with which rocket falls down
 					rocket.increaseInsFallVelocity();
 					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
