@@ -44,10 +44,12 @@ Class responsbile for making scene wherein the game takes place
 
 public class GameScene extends Scene {
 
-	public GameScene(Region root) {
+	public GameScene(Region root, Stage stage, Scene nextScene) {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
 		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
+		this.stage = stage;
+		this.nextScene = nextScene;
 //		cfg = new Config();
 	}
 	
@@ -186,6 +188,7 @@ public class GameScene extends Scene {
                 System.out.println("Kolizja");
                 rocketAnimation.stop();
                 circle.setVisible(false);
+				stage.setScene(nextScene);
             }
 	}
 	/*
@@ -212,12 +215,14 @@ public class GameScene extends Scene {
 			&& (rocket.getInsFallVelocity() < maxVelY)) {
 				System.out.println("Ladowanie");
 				circle.setVisible(true);
+				rocketAnimation.stop();
 			}
 			else {
 				System.out.println("Kolizja");
 				circle.setVisible(false);
+				rocketAnimation.stop();
 			}
-			rocketAnimation.stop();
+			stage.setScene(nextScene);
 		}
 
 	}
@@ -303,6 +308,9 @@ public class GameScene extends Scene {
 					// set velocity with which rocket falls down
 					rocket.increaseInsFallVelocity();
 					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
+					root.getChildren().remove(velXText);
+					setVelX();
+					root.getChildren().add(velXText);
 					setVelY();
 					//make rocket burn some amount of it's fuel per frame
 					rocket.burnFuel();
@@ -336,12 +344,17 @@ public class GameScene extends Scene {
 					 */
 					root.setOnKeyReleased(k -> {
 						if(k.getCode() == KeyCode.UP) {
+							actualizeVelTexts(k.getCode());
 							rocket.resetUpVelocity();
 						}
-						else if(k.getCode() == KeyCode.LEFT)
+						else if(k.getCode() == KeyCode.LEFT) {
+							actualizeVelTexts(k.getCode());
 							rocket.resetLeftVelocity();
-						else if(k.getCode() == KeyCode.RIGHT)
+						}
+						else if(k.getCode() == KeyCode.RIGHT) {
+							actualizeVelTexts(k.getCode());
 							rocket.resetRightVelocity();
+						}
 					});
 //					System.out.println("Vel X " + (rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
 					System.out.println(rocket.getInsFallVelocity());
@@ -403,7 +416,29 @@ public class GameScene extends Scene {
 		velXText.setFont(font);
 	}
 	/*
-	Method actualizes velYText when any button is pressed,
+	Method actualizes velYText when any button is pressed, or released,
+	if rocket can land display is green, else is red
+	 */
+	private void setVelX(KeyCode k) {
+		// instant value of rocket by x axis
+		float xValue = rocket.getInsRightVelocity() + rocket.getInsLeftVelocity();
+		velXText = new Text();
+		StringBuilder builder = new StringBuilder();
+		builder.append("PredkoscX:");
+		builder.append(Float.toString(xValue));
+		velXText.setText(builder.toString());
+		velXText.setX(3);
+		velXText.setY(10);
+		if(Math.abs(xValue) < maxVelX)
+			velXText.setFill(Color.GREEN);
+		else
+			velXText.setFill(Color.RED);
+		Font font = new Font(14);
+		velXText.setFont(font);
+	}
+
+	/*
+	Method actualizes velYText when any button is pressed, or released
 	if rocket can land display is green, else is red
 	 */
 	private void setVelY(KeyCode k) {
@@ -460,6 +495,7 @@ public class GameScene extends Scene {
 		root.getChildren().removeAll(velXText, velYText);
 		setVelX();
 		setVelY(k);
+		setVelY(k);
 		root.getChildren().addAll(velXText, velYText);
 	}
 
@@ -490,4 +526,6 @@ public class GameScene extends Scene {
 	// maximum values of velocity by which rocket can successfully land
 	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
 	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+	private Stage stage;
+	private Scene nextScene;
 }

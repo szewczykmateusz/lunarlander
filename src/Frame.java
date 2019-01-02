@@ -21,28 +21,31 @@ public class Frame extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
-		gameScene = new GameScene(new Region());
 		setDifficultyScene = new Scene(new Region());
 		leaderboardScene = new Scene(new Region());
 		pickNickScene = new Scene(new Region());
+		scoreScene = ScoreScene.getScoreScene(stage, this);
+		gameScene = new GameScene(new Region(), stage, scoreScene);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
 		pickNickScene = PickNick.getPickNickScene(stage, setDifficultyScene);
-		mainMenu = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+
 
 		//stylesheets setup
 		linkStylesheets();
 
-		scenes.add(mainMenu);
+		scenes.add(mainMenuScene);
 		scenes.add(gameScene);
 		stage.setTitle("Lunar Lander");
-		stage.setScene(mainMenu);
+		stage.setScene(mainMenuScene);
 		stage.show();
 	}
 
 	private void linkStylesheets() {
-		mainMenu.getStylesheets().add("css/style.css");
+		mainMenuScene.getStylesheets().add("css/style.css");
 		setDifficultyScene.getStylesheets().add("css/style.css");
 		pickNickScene.getStylesheets().add("css/style.css");
+		scoreScene.getStylesheets().add("css/style.css");
 	}
 	/*
 	 * Sluzy do wywolania okna w mainie
@@ -50,11 +53,18 @@ public class Frame extends Application {
 	public void launchFrame(String[] args) {
 		launch(args);
 	}
+	public Scene getMainMenuScene(Stage stage) {
+		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+		mainMenuScene.getStylesheets().add("css/style.css");
+		return mainMenuScene;
+
+	}
 	
 	private ArrayList<Scene> scenes;
 	private GameScene gameScene;
-	private Scene mainMenu;
+	private Scene mainMenuScene;
 	private Scene setDifficultyScene;
 	private Scene leaderboardScene;
 	private Scene pickNickScene;
+	private Scene scoreScene;
 }

@@ -5,6 +5,13 @@ VBox {
     -fx-padding: 20;
 }
 
+HBox {
+    -fx-alignment: center;
+    -fx-width: 100%;
+    -fx-height: 100%;
+    -fx-padding: 20;
+}
+
 Label {
     -fx-font-size: 34px;
 }
