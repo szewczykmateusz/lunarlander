@@ -1,3 +1,4 @@
+import javafx.animation.Animation;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
@@ -336,6 +337,12 @@ public class GameScene extends Scene {
 								rocket.accRightVelocity();
 								centerX.setValue(centerX.getValue() + rocket.getInsRightVelocity());
 								rocket.restartInsFallVelocity();
+							}
+							else if(k.getCode() == KeyCode.SPACE) {
+								if(rocketAnimation.getStatus() == Animation.Status.STOPPED)
+									rocketAnimation.playFromStart();
+								else
+									rocketAnimation.stop();
 							}
 							}
 					});
