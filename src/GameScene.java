@@ -228,12 +228,24 @@ public class GameScene extends Scene {
 
 	}
 	/*
+	Method checks if rocket had move out of bounds
+	 */
+	public void checkOutOfBoundsCollision() {
+		if((circle.getCenterX() < 0) || (circle.getCenterX() > Constants.DEFAULT_WIDTH)
+		|| (circle.getCenterY() < 0) || (circle.getCenterY() > Constants.DEFAULT_HEIGHT)) {
+			rocketAnimation.stop();
+			stage.setScene(nextScene);
+		}
+
+	}
+	/*
 	Method calls methods responsible for checking for collisions
 	 */
 	private void checkForCollisions() {
 		checkForLandingZoneCollision();
 		checkForMountainCollision();
 		checkForFuelCollision();
+		checkOutOfBoundsCollision();
 	}
 
 	/*
