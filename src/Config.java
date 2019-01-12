@@ -6,10 +6,15 @@ import java.util.Properties;
 public class Config {
    Properties configFile;
    
-	public Config() {
+	public Config(int levelNumber) {
 	 configFile = new java.util.Properties();
 	 try {
-	 		configFile.load(this.getClass().getClassLoader().getResourceAsStream("config/config.cfg"));
+	 	StringBuilder builder = new StringBuilder();
+	 	builder.append("config/level");
+	 	builder.append(levelNumber);
+	 	builder.append(".cfg");
+//	 		configFile.load(this.getClass().getClassLoader().getResourceAsStream("config/config.cfg"));
+		 configFile.load(this.getClass().getClassLoader().getResourceAsStream(builder.toString()));
 	 	} catch(Exception e) {
 	     	e.printStackTrace();
 	 	}

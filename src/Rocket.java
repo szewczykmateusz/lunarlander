@@ -95,7 +95,7 @@ public class Rocket extends Shape  {
 	public void resetLeftVelocity() {insLeftVelocity = leftVelocity;}
 	public void resetRightVelocity() {insRightVelocity = rightVelocity;}
 
-	private Config cfg = new Config();
+	private Config cfg = new Config(Player.getActualLevel());
 	//starting values of velocities
 	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
 	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");

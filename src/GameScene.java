@@ -531,7 +531,7 @@ public class GameScene extends Scene {
 	private Rectangle fuelBarRectangle  = new Rectangle();
 	private Rocket rocket;
 	private Text timeText; 
-	private Config cfg = new Config();
+	private Config cfg = new Config(Player.getActualLevel());
 	private Timeline rocketAnimation;
 	private Rectangle rect;
 	private Circle circle;
