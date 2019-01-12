@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
  * Klasa rysujaca rakiete oraz animujaca jej przemieszczenie
  */
 public class Rocket extends Shape  {
-	public Rocket() {
+	public Rocket(Enum difficulty) {
 		// x = 300;
 		// y = 50;
 		// velocityX = 0;
@@ -28,6 +28,7 @@ public class Rocket extends Shape  {
 		fuel = Double.parseDouble(cfg.getProperty("fuel"));
 		burningVelocity = Double.parseDouble(cfg.getProperty("burningVelocity"));
 		extendFuelValue = Double.parseDouble(cfg.getProperty("fuelTankValue"));
+		fallAcceleration = Utils.floatFromConfig(cfg, (difficulty + "weightAcceleration"));
 	}
 
 	@Override
@@ -116,7 +117,8 @@ public class Rocket extends Shape  {
 	private double burningVelocity;
 	private double extendFuelValue;
 	// instant velocity with which rocket is falling down, when any key isn`s pressed
-	private float fallVelocity; //starting fall velocity
-	private float insFallVelocity; //instant fall velocity
-	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
+	private float fallVelocity = Utils.floatFromConfig(cfg, "startingFallVelocity");//starting fall velocity
+	private float insFallVelocity = fallVelocity; //instant fall velocity
+//	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
+	private float fallAcceleration;
 }

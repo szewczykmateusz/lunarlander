@@ -26,7 +26,7 @@ public class Utils {
     /*
     Method sets up action for button starting the game, accepts Stage, Next Scene, Button and difficulty level as arguments
      */
-    public static void startGame(Button button, Stage stage, GameScene gameScene, Integer difficulty) {
+    public static void startGame(Button button, Stage stage, GameScene gameScene, Enum difficulty) {
         button.setOnAction(e -> stage.setScene(gameScene.initiateGame(difficulty)));
     }
 

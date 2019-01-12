@@ -54,12 +54,12 @@ public class GameScene extends Scene {
 //		cfg = new Config();
 	}
 	
-	public Scene initiateGame(int difficulty) {
+	public Scene initiateGame(Enum difficulty) {
 		/*
 		Depending on difficulty argument we set fallVelocity
 		 */
-		rocket = new Rocket();
-		rocket.setFallVelocity(getFallVelocity(difficulty));
+		rocket = new Rocket(difficulty);
+	//	rocket.setFallVelocity(getFallVelocity(difficulty));
 
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");

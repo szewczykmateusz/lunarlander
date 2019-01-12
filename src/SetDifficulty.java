@@ -23,9 +23,9 @@ public class SetDifficulty {
         /*
         Actions:
          */
-        Utils.startGame(easy, stage, gameScene, 1);
-        Utils.startGame(medium , stage, gameScene, 2);
-        Utils.startGame(hard, stage, gameScene, 3);
+        Utils.startGame(easy, stage, gameScene, Difficulty.EASY);
+        Utils.startGame(medium , stage, gameScene, Difficulty.MEDIUM);
+        Utils.startGame(hard, stage, gameScene, Difficulty.HARD);
 
         /*
         Layout:
