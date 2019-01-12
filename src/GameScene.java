@@ -259,11 +259,11 @@ public class GameScene extends Scene {
 			break;
 
 			case 2:
-				fallVelocity = 1f;
+				fallVelocity = 0.55f;
 			break;
 
 			case 3:
-				fallVelocity = 1.5f;
+				fallVelocity = 0.6f;
 			break;
 
 		}
