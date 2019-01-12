@@ -40,16 +40,15 @@ public class PickNick {
      */
     private static void configureButtonAction(Button button, Stage stage, Scene nextScene, TextField input, VBox layout) {
         button.setOnAction(e -> {
-            nick = input.getText();
+            Player.setName(input.getText());
             stage.setScene(nextScene);
         });
         layout.setOnKeyPressed(k -> {
             if (k.getCode() == KeyCode.ENTER) {
-                nick = input.getText();
+                Player.setName(input.getText());
                 stage.setScene(nextScene);
             }
         });
     }
 
-    public static String nick;
 }
