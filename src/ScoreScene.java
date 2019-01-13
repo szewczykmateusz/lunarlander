@@ -15,16 +15,16 @@ public class ScoreScene extends Scene {
         Label label = new Label("Score: ");
         Button advanceButton = new Button("Advance");
         Button quitButton = new Button("Quit");
-        configureQuitButtonAction(quitButton, stage, frame.getMainMenuScene(stage));
+        configureQuitButtonAction(quitButton, stage, frame.getMainMenuScene(stage), frame);
         HBox layout = new HBox(200);
         layout.getChildren().addAll(advanceButton, quitButton);
 
         return new Scene(layout, Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
     }
 
-    private static void configureQuitButtonAction(Button button, Stage stage, Scene nextScene) {
+    private static void configureQuitButtonAction(Button button, Stage stage, Scene nextScene, Frame frame) {
         button.setOnAction(e -> {
-            stage.setScene(nextScene);
+            frame.setMainMenuScene();
         });
     }
 }

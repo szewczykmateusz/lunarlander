@@ -21,6 +21,7 @@ public class Frame extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
+		this.stage = stage;
 		setDifficultyScene = new Scene(new Region());
 		leaderboardScene = new Scene(new Region());
 		pickNickScene = new Scene(new Region());
@@ -59,6 +60,7 @@ public class Frame extends Application {
 		return mainMenuScene;
 
 	}
+	public void setMainMenuScene() {stage.setScene(mainMenuScene);}
 	
 	private ArrayList<Scene> scenes;
 	private GameScene gameScene;
@@ -67,4 +69,5 @@ public class Frame extends Application {
 	private Scene leaderboardScene;
 	private Scene pickNickScene;
 	private Scene scoreScene;
+	private Stage stage;
 }
