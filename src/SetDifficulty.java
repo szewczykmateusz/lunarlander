@@ -1,6 +1,7 @@
 import java.util.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -8,13 +9,12 @@ import javafx.stage.Stage;
 /*
    Main Menu Class - creates Main Menu
 */
-public class SetDifficulty {
-    public SetDifficulty() {
-    }
+public class SetDifficulty extends Scene{
+    public SetDifficulty(Region root) {super(root);}
     /*
         Method returns Set Difficulty Scene
     */
-    public static Scene getSetDifficultyScene(Stage stage, GameScene gameScene) {
+    public static Scene getSetDifficultyScene(Frame frame) {
         Label label  = new Label("Set Game Difficulty");
         Button easy = new Button("Easy");
         Button medium = new Button("Medium");
@@ -23,9 +23,9 @@ public class SetDifficulty {
         /*
         Actions:
          */
-        Utils.startGame(easy, stage, gameScene, Difficulty.EASY);
-        Utils.startGame(medium , stage, gameScene, Difficulty.MEDIUM);
-        Utils.startGame(hard, stage, gameScene, Difficulty.HARD);
+        Utils.startGame(easy, frame, Difficulty.EASY);
+        Utils.startGame(medium , frame, Difficulty.MEDIUM);
+        Utils.startGame(hard, frame, Difficulty.HARD);
 
         /*
         Layout:

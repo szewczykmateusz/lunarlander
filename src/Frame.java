@@ -12,9 +12,7 @@ import java.util.*;
  */
 
 public class Frame extends Application {
-	public Frame() {
-		scenes = new ArrayList<Scene>();
-	}
+	public Frame() {}
 
 	/*
 	Method Initiating the Stage and Scenes and reading css stylesheet
@@ -22,21 +20,17 @@ public class Frame extends Application {
 	@Override
 	public void start(Stage stage) {
 		this.stage = stage;
-		setDifficultyScene = new Scene(new Region());
 		leaderboardScene = new Scene(new Region());
-		pickNickScene = new Scene(new Region());
-		scoreScene = ScoreScene.getScoreScene(stage, this);
+		scoreScene = ScoreScene.getScoreScene(this);
 		gameScene = new GameScene(new Region(), stage, scoreScene);
-		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
-		pickNickScene = PickNick.getPickNickScene(stage, setDifficultyScene);
-		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
+		pickNickScene = PickNick.getPickNickScene(this);
+		mainMenuScene = MainMenu.getMainMenu(this);
 
 
 		//stylesheets setup
 		linkStylesheets();
 
-		scenes.add(mainMenuScene);
-		scenes.add(gameScene);
 		stage.setTitle("Lunar Lander");
 		stage.setScene(mainMenuScene);
 		stage.show();
@@ -54,15 +48,14 @@ public class Frame extends Application {
 	public void launchFrame(String[] args) {
 		launch(args);
 	}
-	public Scene getMainMenuScene(Stage stage) {
-		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
-		mainMenuScene.getStylesheets().add("css/style.css");
-		return mainMenuScene;
 
-	}
 	public void setMainMenuScene() {stage.setScene(mainMenuScene);}
-	
-	private ArrayList<Scene> scenes;
+	public void setPickNickScene() {stage.setScene(pickNickScene);}
+	public void setScoreScene() {stage.setScene(scoreScene);}
+	public void setGameScene(Enum difficulty) {stage.setScene(gameScene.initiateGame(difficulty));}
+	public void setSetDifficultyScene() {stage.setScene(setDifficultyScene);}
+	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
+
 	private GameScene gameScene;
 	private Scene mainMenuScene;
 	private Scene setDifficultyScene;

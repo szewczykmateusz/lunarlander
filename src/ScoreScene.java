@@ -9,20 +9,20 @@ import javafx.stage.Stage;
 Class creates scene which shows users result after every level
  */
 public class ScoreScene extends Scene {
-    public ScoreScene(Region root, Stage stage) {super(root);}
+    public ScoreScene(Region root) {super(root);}
 
-    public static Scene getScoreScene(Stage stage, Frame frame) {
+    public static Scene getScoreScene(Frame frame) {
         Label label = new Label("Score: ");
         Button advanceButton = new Button("Advance");
         Button quitButton = new Button("Quit");
-        configureQuitButtonAction(quitButton, stage, frame.getMainMenuScene(stage), frame);
+        configureQuitButtonAction(quitButton, frame);
         HBox layout = new HBox(200);
         layout.getChildren().addAll(advanceButton, quitButton);
 
         return new Scene(layout, Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
     }
 
-    private static void configureQuitButtonAction(Button button, Stage stage, Scene nextScene, Frame frame) {
+    private static void configureQuitButtonAction(Button button, Frame frame) {
         button.setOnAction(e -> {
             frame.setMainMenuScene();
         });
