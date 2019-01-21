@@ -11,6 +11,33 @@ import javafx.scene.shape.Ellipse;
  * Klasa rysujaca rakiete oraz animujaca jej przemieszczenie
  */
 public class Rocket extends Shape  {
+
+	private Config cfg = new Config(Player.getActualLevel());
+	//starting values of velocities
+	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
+	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
+	private final float rightVelocity = -leftVelocity;
+	//instant values of velocities
+	private float insUpVelocity = upVelocity;
+	private float insLeftVelocity = leftVelocity;
+	private float insRightVelocity = rightVelocity;
+	private float acceleration = Utils.floatFromConfig(cfg, "acceleration");
+	private int height; //wymiary rakiety
+	private int width;
+	private double fuel = 1; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
+	//	private DoubleProperty centerX = new SimpleDoubleProperty(); //centralny punkty pilki
+//	private DoubleProperty centerY = new SimpleDoubleProperty();
+	private double x;
+	private double y;
+	private double radius = 5;
+	private double burningVelocity;
+	private double extendFuelValue;
+	// instant velocity with which rocket is falling down, when any key isn`s pressed
+	private float fallVelocity = Utils.floatFromConfig(cfg, "startingFallVelocity");//starting fall velocity
+	private float insFallVelocity = fallVelocity; //instant fall velocity
+	//	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
+	private float fallAcceleration;
+
 	public Rocket(Enum difficulty) {
 		// x = 300;
 		// y = 50;
@@ -53,7 +80,6 @@ public class Rocket extends Shape  {
 	 */
 	public void burnFuel() {
 		fuel -= burningVelocity;
-		//System.out.println(fuel);
 	}
 	/*
 	Method increases fuel when rocket catch extend fuel tank during game
@@ -98,29 +124,4 @@ public class Rocket extends Shape  {
 	public void resetLeftVelocity() {insLeftVelocity = leftVelocity;}
 	public void resetRightVelocity() {insRightVelocity = rightVelocity;}
 
-	private Config cfg = new Config(Player.getActualLevel());
-	//starting values of velocities
-	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
-	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
-	private final float rightVelocity = -leftVelocity;
-	//instant values of velocities
-	private float insUpVelocity = upVelocity;
-	private float insLeftVelocity = leftVelocity;
-	private float insRightVelocity = rightVelocity;
-	private float acceleration = Utils.floatFromConfig(cfg, "acceleration");
-	private int height; //wymiary rakiety
-	private int width;
-	private double fuel = 1; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
-//	private DoubleProperty centerX = new SimpleDoubleProperty(); //centralny punkty pilki
-//	private DoubleProperty centerY = new SimpleDoubleProperty();
-	private double x;
-	private double y;
-	private double radius = 5;
-	private double burningVelocity;
-	private double extendFuelValue;
-	// instant velocity with which rocket is falling down, when any key isn`s pressed
-	private float fallVelocity = Utils.floatFromConfig(cfg, "startingFallVelocity");//starting fall velocity
-	private float insFallVelocity = fallVelocity; //instant fall velocity
-//	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
-	private float fallAcceleration;
 }

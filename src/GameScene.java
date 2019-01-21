@@ -38,6 +38,35 @@ Class responsbile for making scene wherein the game takes place
 
 public class GameScene extends Scene {
 
+	private float DEFAULT_WIDTH;
+	private float DEFAULT_HEIGHT;
+	private Coin[] coins;
+	private int numberOfMountains;
+	private int coinsQuantity;
+	private FuelBar fuelBar;
+	private Rectangle fuelBarRectangle  = new Rectangle();
+	private Rocket rocket;
+	private Text timeText;
+	private Config cfg = new Config(Player.getActualLevel());
+	private Timeline rocketAnimation;
+	private Rectangle rect;
+	private Ellipse circle;
+	private Line line;
+	private CubicCurve[] mountains;
+	private Group root;
+	private Fuel fuel;
+	private Rectangle fuelRectangle = new Rectangle();
+	private Text velXText;
+	private Text velYText;
+	// maximum values of velocity by which rocket can successfully land
+	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
+	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+	private Stage stage;
+	private Scene nextScene;
+	private DoubleProperty centerX;
+	private DoubleProperty centerY;
+	private float score = Constants.START_SCORE;
+
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
@@ -206,6 +235,18 @@ public class GameScene extends Scene {
 			rocket.addFuel();
 		}
 	}
+
+	/*
+	*	Method checks for collision between rocket and a coin
+	* @ no arguments
+	 */
+	public void checkForCoinCollision() {
+
+			System.out.println("You've got a coin!");
+			score += 100;
+	}
+
+
 	/*
 	Method checks if rocket has a collision with landingZone,
 	if velocities of rocket weren`t to fast rocket successfully lands,
@@ -563,37 +604,16 @@ public class GameScene extends Scene {
 			root.getChildren().add(circle);
 		}
 	}
+	/*
+	*	Method counting the final score of the level
+	* @ int endTime
+	 */
+	private void countFinalScore(int endTime, Rocket rocket) {
+		int resultTime = Constants.GAME_TIME - endTime;
+		score -= resultTime * 10 + rocket.getFuel() * 100;
+	}
 
+	private void eatCoin() {
 
-
-
-
-
-	private float DEFAULT_WIDTH;
-	private float DEFAULT_HEIGHT;
-	private Coin[] coins;
-	private int numberOfMountains;
-	private int coinsQuantity;
-	private FuelBar fuelBar;
-	private Rectangle fuelBarRectangle  = new Rectangle();
-	private Rocket rocket;
-	private Text timeText; 
-	private Config cfg = new Config(Player.getActualLevel());
-	private Timeline rocketAnimation;
-	private Rectangle rect;
-	private Ellipse circle;
-	private Line line;
-	private CubicCurve[] mountains;
-	private Group root;
-	private Fuel fuel;
-	private Rectangle fuelRectangle = new Rectangle();
-	private Text velXText;
-	private Text velYText;
-	// maximum values of velocity by which rocket can successfully land
-	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
-	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
-	private Stage stage;
-	private Scene nextScene;
-	private DoubleProperty centerX;
-	private DoubleProperty centerY;
+	}
 }
