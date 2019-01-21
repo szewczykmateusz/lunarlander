@@ -78,8 +78,8 @@ public class GameScene extends Scene {
 		LevelTimer timer = new LevelTimer();
 		timeText = setTimeText(timer);
 		
-		line = new Line();
-		line = setLineProperties();
+//		line = new Line();
+//		line = setLineProperties();
 		mountains = new CubicCurve[numberOfMountains];
 		for(int i = 0; i < numberOfMountains; i++) {
 			mountains[i] = new CubicCurve();
@@ -525,34 +525,22 @@ public class GameScene extends Scene {
 	Method paints all elements on screen every change of stage width
 	 */
 	private void paintElementsAfterWidthChange(float oldValue, float newValue) {
-		float difference = newValue - oldValue;
 		if(root == null) return;
-		if(mountains[0] != null) {
-			float startX = (float)stage.getMinWidth();
-			float endX = (float) mountains[0].getEndX() + difference;
-			float controlX1 = (float) mountains[0].getControlX1() + difference;
-			float controlX2 = (float) mountains[0].getControlX2() + difference;
-			float startY = (float) mountains[0].getStartY();
-			float endY = (float) mountains[0].getEndY();
-			float controlY1 = (float) mountains[0].getControlY1();
-			float controlY2 = (float) mountains[0].getControlY2();
-			root.getChildren().remove(mountains[0]);
-			CubicCurve mountain = new CubicCurve();
-			mountain.setStartX(startX);
-			mountain.setStartY(startY);
-			mountain.setEndX(endX);
-			mountain.setEndY(endY);
-			mountain.setControlX1(controlX1);
-			mountain.setControlX2(controlX2);
-			mountain.setControlY1(controlY1);
-			mountain.setControlY2(controlY2);
-			mountains[0] = mountain;
-			root.getChildren().add(mountains[0]);
-		}
+		float difference = newValue - oldValue;
+		float factor = newValue/oldValue;
+			if(mountains != null)
+				for(int i = 0; i < mountains.length; i++)
+					repaintMountainWidth(i, factor);
+			repaintRocketWidth(factor);
+			repaintLandingZoneWidth(factor);
+
+
+	}
+	private void repaintRocketWidth(float factor) {
 		if(circle != null) {
-			double x = circle.getCenterX();
+			double x = circle.getCenterX() * factor;
 			double y = circle.getCenterY();
-			double radiusX = circle.getRadiusX() + difference/10;
+			double radiusX = circle.getRadiusX() * factor;
 			double radiusY = circle.getRadiusY();
 			root.getChildren().remove(circle);
 			circle = new Ellipse(x, y, radiusX, radiusY);
@@ -562,6 +550,53 @@ public class GameScene extends Scene {
 			circle.centerYProperty().bind(centerY);
 			root.getChildren().add(circle);
 		}
+	}
+	private void repaintMountainWidth(int mountainNumber, float factor) {
+		if (mountains[mountainNumber] != null) {
+			float startX, endX;
+			if(mountainNumber == 0)
+				startX = (float) stage.getMinWidth();
+			else
+				startX = (float) mountains[mountainNumber].getStartX() * factor;
+			if(mountainNumber == mountains.length)
+				endX = (float) stage.getMaxWidth();
+			else
+				endX = (float) mountains[mountainNumber].getEndX() * factor;
+			float controlX1 = (float) mountains[mountainNumber].getControlX1() * factor;
+			float controlX2 = (float) mountains[mountainNumber].getControlX2() * factor;
+			float startY = (float) mountains[mountainNumber].getStartY();
+			float endY = (float) mountains[mountainNumber].getEndY();
+			float controlY1 = (float) mountains[mountainNumber].getControlY1();
+			float controlY2 = (float) mountains[mountainNumber].getControlY2();
+			root.getChildren().remove(mountains[mountainNumber]);
+			CubicCurve mountain = new CubicCurve();
+			mountain.setStartX(startX);
+			mountain.setStartY(startY);
+			mountain.setEndX(endX);
+			mountain.setEndY(endY);
+			mountain.setControlX1(controlX1);
+			mountain.setControlX2(controlX2);
+			mountain.setControlY1(controlY1);
+			mountain.setControlY2(controlY2);
+			mountains[mountainNumber] = mountain;
+			root.getChildren().add(mountains[mountainNumber]);
+		}
+	}
+
+	private void repaintLandingZoneWidth(float factor) {
+		if(line != null) {
+			root.getChildren().remove(line);
+			line.setStartX((float) line.getStartX() * factor);
+			line.setEndX((float) line.getEndX() * factor);
+			line.setStartY((float) line.getStartY());
+			line.setEndY((float) line.getEndY());
+			line.setStrokeWidth((float) line.getStrokeWidth());
+			root.getChildren().add(line);
+		}
+	}
+
+	private void repaintFuelRectangle() {
+
 	}
 
 
@@ -582,7 +617,7 @@ public class GameScene extends Scene {
 	private Timeline rocketAnimation;
 	private Rectangle rect;
 	private Ellipse circle;
-	private Line line;
+	private Line line = setLineProperties();
 	private CubicCurve[] mountains;
 	private Group root;
 	private Fuel fuel;
