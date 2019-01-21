@@ -68,7 +68,7 @@ public class GameScene extends Scene {
 		for(Integer i = 1; i <= coinsQuantity; i++) {
 			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
 		}
-		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"));
+		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"), Utils.intFromConfig(cfg,"fuelSize"));
 		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(530, 20);
 		Text levelNumber = setLevelNumber();
@@ -526,13 +526,13 @@ public class GameScene extends Scene {
 	 */
 	private void paintElementsAfterWidthChange(float oldValue, float newValue) {
 		if(root == null) return;
-		float difference = newValue - oldValue;
 		float factor = newValue/oldValue;
 			if(mountains != null)
 				for(int i = 0; i < mountains.length; i++)
 					repaintMountainWidth(i, factor);
 			repaintRocketWidth(factor);
 			repaintLandingZoneWidth(factor);
+			repaintFuelRectangleWidth(factor);
 
 
 	}
@@ -562,23 +562,11 @@ public class GameScene extends Scene {
 				endX = (float) stage.getMaxWidth();
 			else
 				endX = (float) mountains[mountainNumber].getEndX() * factor;
-			float controlX1 = (float) mountains[mountainNumber].getControlX1() * factor;
-			float controlX2 = (float) mountains[mountainNumber].getControlX2() * factor;
-			float startY = (float) mountains[mountainNumber].getStartY();
-			float endY = (float) mountains[mountainNumber].getEndY();
-			float controlY1 = (float) mountains[mountainNumber].getControlY1();
-			float controlY2 = (float) mountains[mountainNumber].getControlY2();
 			root.getChildren().remove(mountains[mountainNumber]);
-			CubicCurve mountain = new CubicCurve();
-			mountain.setStartX(startX);
-			mountain.setStartY(startY);
-			mountain.setEndX(endX);
-			mountain.setEndY(endY);
-			mountain.setControlX1(controlX1);
-			mountain.setControlX2(controlX2);
-			mountain.setControlY1(controlY1);
-			mountain.setControlY2(controlY2);
-			mountains[mountainNumber] = mountain;
+			mountains[mountainNumber].setStartX(startX);
+			mountains[mountainNumber].setEndX(endX);
+			mountains[mountainNumber].setControlX1((float) mountains[mountainNumber].getControlX1() * factor);
+			mountains[mountainNumber].setControlX2((float) mountains[mountainNumber].getControlX2() * factor);
 			root.getChildren().add(mountains[mountainNumber]);
 		}
 	}
@@ -588,15 +576,18 @@ public class GameScene extends Scene {
 			root.getChildren().remove(line);
 			line.setStartX((float) line.getStartX() * factor);
 			line.setEndX((float) line.getEndX() * factor);
-			line.setStartY((float) line.getStartY());
-			line.setEndY((float) line.getEndY());
-			line.setStrokeWidth((float) line.getStrokeWidth());
 			root.getChildren().add(line);
 		}
 	}
 
-	private void repaintFuelRectangle() {
-
+	private void repaintFuelRectangleWidth(float factor) {
+		if(fuelRectangle != null) {
+			root.getChildren().remove(fuelRectangle);
+			fuel.setX((float)fuelRectangle.getX() * factor);
+			fuel.setWidth((float)fuelRectangle.getWidth() * factor);
+			fuelRectangle = fuel.paint();
+			root.getChildren().add(fuelRectangle);
+		}
 	}
 
 
