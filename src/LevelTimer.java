@@ -22,24 +22,30 @@ public class LevelTimer {
 
 
 	class TimeCounter implements ActionListener {
-		public void actionPerformed(ActionEvent event)
-		{
-			counter++;
-			if(counter == 60) {
-				date.setMinutes(date.getMinutes() + 1);
-				counter = 0;
-				date.setSeconds(counter);
-			}
-			else
-				date.setSeconds(counter);
+		public void actionPerformed(ActionEvent event) {
+			if (!ifPaused) {
+				counter++;
+				if (counter == 60) {
+					date.setMinutes(date.getMinutes() + 1);
+					counter = 0;
+					date.setSeconds(counter);
+				} else
+					date.setSeconds(counter);
 //			System.out.println(date.getMinutes() + ":" + date.getSeconds());
+			}
 		}
 		
 	}
 	public Date getDate() {return date;}
 	public int getSeconds() {return counter;}
+	/*
+	These 2 methods stops timer when user pause the game and runs when pause ends
+	 */
+	public void pauseTimer() {ifPaused = true;}
+	public void runTimer() {ifPaused = false;}
 	
 	private Timer timer;
 	private int counter;
 	private Date date;
+	private boolean ifPaused = false; //if the game is paused timer is stopped
 }

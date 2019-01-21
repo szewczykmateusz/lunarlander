@@ -351,10 +351,14 @@ public class GameScene extends Scene {
 								rocket.restartInsFallVelocity();
 							}
 							else if(k.getCode() == KeyCode.SPACE) {
-								if(rocketAnimation.getStatus() == Animation.Status.STOPPED)
+								if(rocketAnimation.getStatus() == Animation.Status.STOPPED) {
 									rocketAnimation.playFromStart();
-								else
+									timer.runTimer();
+								}
+								else {
 									rocketAnimation.stop();
+									timer.pauseTimer();
+								}
 							}
 							}
 					});
