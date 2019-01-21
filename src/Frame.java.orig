@@ -23,13 +23,22 @@ public class Frame extends Application {
 	public void start(Stage stage) {
 		this.stage = stage;
 		leaderboardScene = new Scene(new Region());
+<<<<<<< HEAD
 		scoreScene = ScoreScene.getScoreScene(this);
-		gameScene = new GameScene(new Region(), stage, scoreScene, this);
+		gameScene = new GameScene(new Region(), stage, scoreScene);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		pickNickScene = PickNick.getPickNickScene(this);
 		mainMenuScene = MainMenu.getMainMenu(this);
 
 
+=======
+		pickNickScene = new Scene(new Region());
+		scoreScene = ScoreScene.getScoreScene(stage, this);
+		gameScene = new GameScene(new Region(), stage, scoreScene, this);
+		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
+		pickNickScene = PickNick.getPickNickScene(stage, setDifficultyScene);
+		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
+>>>>>>> mydev2
 		//stylesheets setup
 		linkStylesheets();
 

@@ -22,7 +22,7 @@ public class Fuel extends Shape {
 		fuel.setFill(Color.DARKRED);
 		return fuel;
 	}
-	
+
 	
 	
 	

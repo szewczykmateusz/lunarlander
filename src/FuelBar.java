@@ -55,6 +55,8 @@ public class FuelBar extends Shape {
 			width -= burnVel;
 		return fillFuel(rocket.getFuel());
 	}
+	public double getX() {return x;}
+	public double getY() {return y;}
 	
 	
 	private double x;
