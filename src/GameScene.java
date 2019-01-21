@@ -1,6 +1,7 @@
 import javafx.animation.Animation;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
 import java.text.DateFormat;
@@ -8,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javafx.event.EventHandler;
 
-import javafx.scene.shape.Rectangle;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,10 +16,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
@@ -33,10 +29,7 @@ import javafx.scene.Node;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.w3c.dom.css.Rect;
-import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.CubicCurve;
 
 import javax.swing.Timer;
 /*
@@ -45,11 +38,19 @@ Class responsbile for making scene wherein the game takes place
 
 public class GameScene extends Scene {
 
-	public GameScene(Region root, Stage stage, Scene nextScene) {
+	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
 		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
 		this.stage = stage;
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			paintElementsAfterWidthChange(DEFAULT_WIDTH, (float)stage.getWidth());
+			DEFAULT_WIDTH = (float)stage.getWidth();
+
+		});
+	/*	stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+//			paintElements((float)oldVal, (float)newVal);
+		}); */
 		this.nextScene = nextScene;
 //		cfg = new Config();
 	}
@@ -86,10 +87,10 @@ public class GameScene extends Scene {
 		}
 
  //       DoubleProperty mountainsProp = new SimpleDoubleProperty();
-		DoubleProperty centerX = new SimpleDoubleProperty();
-		DoubleProperty centerY = new SimpleDoubleProperty();
+		centerX = new SimpleDoubleProperty();
+		centerY = new SimpleDoubleProperty();
 
-		circle = new Circle(0, 0, 5);
+		circle = new Ellipse(0, 0, 5, 5);
 		circle = rocket.paint();
 
 		root = new Group(circle, line);
@@ -236,7 +237,6 @@ public class GameScene extends Scene {
 			rocketAnimation.stop();
 			stage.setScene(nextScene);
 		}
-
 	}
 	/*
 	Method calls methods responsible for checking for collisions
@@ -517,6 +517,49 @@ public class GameScene extends Scene {
 		setVelY(k);
 		root.getChildren().addAll(velXText, velYText);
 	}
+	/*
+	Method paints all elements on screen every change of stage width
+	 */
+	private void paintElementsAfterWidthChange(float oldValue, float newValue) {
+		float difference = newValue - oldValue;
+		if(root == null) return;
+		if(mountains[0] != null) {
+			float startX = (float)stage.getMinWidth();
+			float endX = (float) mountains[0].getEndX() + difference;
+			float controlX1 = (float) mountains[0].getControlX1() + difference;
+			float controlX2 = (float) mountains[0].getControlX2() + difference;
+			float startY = (float) mountains[0].getStartY();
+			float endY = (float) mountains[0].getEndY();
+			float controlY1 = (float) mountains[0].getControlY1();
+			float controlY2 = (float) mountains[0].getControlY2();
+			root.getChildren().remove(mountains[0]);
+			CubicCurve mountain = new CubicCurve();
+			mountain.setStartX(startX);
+			mountain.setStartY(startY);
+			mountain.setEndX(endX);
+			mountain.setEndY(endY);
+			mountain.setControlX1(controlX1);
+			mountain.setControlX2(controlX2);
+			mountain.setControlY1(controlY1);
+			mountain.setControlY2(controlY2);
+			mountains[0] = mountain;
+			root.getChildren().add(mountains[0]);
+		}
+		if(circle != null) {
+			double x = circle.getCenterX();
+			double y = circle.getCenterY();
+			double radiusX = circle.getRadiusX() + difference/10;
+			double radiusY = circle.getRadiusY();
+			root.getChildren().remove(circle);
+			circle = new Ellipse(x, y, radiusX, radiusY);
+			centerX.setValue(x);
+			centerY.setValue(y);
+			circle.centerXProperty().bind(centerX);
+			circle.centerYProperty().bind(centerY);
+			root.getChildren().add(circle);
+		}
+	}
+
 
 
 
@@ -534,7 +577,7 @@ public class GameScene extends Scene {
 	private Config cfg = new Config(Player.getActualLevel());
 	private Timeline rocketAnimation;
 	private Rectangle rect;
-	private Circle circle;
+	private Ellipse circle;
 	private Line line;
 	private CubicCurve[] mountains;
 	private Group root;
@@ -547,4 +590,6 @@ public class GameScene extends Scene {
 	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
 	private Stage stage;
 	private Scene nextScene;
+	private DoubleProperty centerX;
+	private DoubleProperty centerY;
 }

@@ -5,6 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 
 /*
  * Klasa rysujaca rakiete oraz animujaca jej przemieszczenie
@@ -36,11 +37,12 @@ public class Rocket extends Shape  {
 		return null;
 	}
 
-	public Circle paint() {
-		Circle rocket = new Circle();
+	public Ellipse paint() {
+		Ellipse rocket = new Ellipse();
 		rocket.setCenterX(x);
 		rocket.setCenterY(y);
-		rocket.setRadius(radius);
+		rocket.setRadiusX(radius);
+		rocket.setRadiusY(radius);
 		rocket.setFill(Color.HOTPINK);
 		return rocket;
 		

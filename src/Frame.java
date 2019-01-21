@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.util.*;
 /*
  * Klasa sluzaca do przelaczania miedzy oknami
@@ -26,12 +28,10 @@ public class Frame extends Application {
 		leaderboardScene = new Scene(new Region());
 		pickNickScene = new Scene(new Region());
 		scoreScene = ScoreScene.getScoreScene(stage, this);
-		gameScene = new GameScene(new Region(), stage, scoreScene);
+		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(stage, gameScene);
 		pickNickScene = PickNick.getPickNickScene(stage, setDifficultyScene);
 		mainMenuScene = MainMenu.getMainMenu(stage, leaderboardScene, pickNickScene);
-
-
 		//stylesheets setup
 		linkStylesheets();
 
