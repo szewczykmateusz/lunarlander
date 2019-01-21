@@ -243,7 +243,7 @@ public class GameScene extends Scene {
 	public void checkForCoinCollision() {
 
 			System.out.println("You've got a coin!");
-			score += 100;
+			eatCoin();
 	}
 
 
@@ -614,6 +614,6 @@ public class GameScene extends Scene {
 	}
 
 	private void eatCoin() {
-
+		score += 100;
 	}
 }
