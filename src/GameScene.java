@@ -65,8 +65,10 @@ public class GameScene extends Scene {
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 		coins = new Coin[coinsQuantity];
+		coinsCircle = new Ellipse[coinsQuantity];
 		for(Integer i = 1; i <= coinsQuantity; i++) {
 			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
+			coinsCircle[i - 1] = coins[i - 1].paint();
 		}
 		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"), Utils.intFromConfig(cfg,"fuelSize"));
 		fuelRectangle = fuel.paint();
@@ -96,16 +98,17 @@ public class GameScene extends Scene {
 		root = new Group(circle, line);
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
+		//adding all the coins to root
+		for(Integer i = 0; i < coinsQuantity; i++) {
+			root.getChildren().addAll(coinsCircle[i]);
+		}
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber,
 				fuelRectangle, fuelBarCountor, fuelBarRectangle,
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
-		//adding all the coins to root
-		for(Integer i = 0; i < coinsQuantity; i++) {
-			root.getChildren().addAll(coins[i].paint());
-		}
+
 //		startGame();
 		animate(centerX, centerY);
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -239,6 +242,17 @@ public class GameScene extends Scene {
 		}
 	}
 	/*
+	Method checks if rocket had a collision with coin, if so points value increases
+	 */
+	private void checkCoinCollision() {
+		for(int i = 0; i < coinsCircle.length; i++)
+			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())) {
+				root.getChildren().remove(coinsCircle[i]);
+			}
+
+
+	}
+	/*
 	Method calls methods responsible for checking for collisions
 	 */
 	private void checkForCollisions() {
@@ -246,6 +260,7 @@ public class GameScene extends Scene {
 		checkForMountainCollision();
 		checkForFuelCollision();
 		checkOutOfBoundsCollision();
+		checkCoinCollision();
 	}
 
 	/*
@@ -535,6 +550,10 @@ public class GameScene extends Scene {
 			repaintFuelRectangleWidth(factor);
 			repaintFuelBarWidth(factor);
 			repaintTimerWidth();
+			if((coins != null) && (coinsCircle != null))
+				for(int i = 0; i < coinsCircle.length; i++)
+					repaintCoinWidth(i, factor);
+
 
 
 	}
@@ -608,6 +627,13 @@ public class GameScene extends Scene {
 		root.getChildren().add(timeText);
 
 	}
+	private void repaintCoinWidth(int coinNumber, float factor) {
+		if(coinsCircle[coinNumber] == null) return;
+		root.getChildren().remove(coinsCircle[coinNumber]);
+		coinsCircle[coinNumber].setCenterX(coinsCircle[coinNumber].getCenterX() * factor);
+		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
+		root.getChildren().add(coinsCircle[coinNumber]);
+	}
 
 
 
@@ -617,6 +643,7 @@ public class GameScene extends Scene {
 	private float DEFAULT_WIDTH;
 	private float DEFAULT_HEIGHT;
 	private Coin[] coins;
+	private Ellipse[] coinsCircle;
 	private int numberOfMountains;
 	private int coinsQuantity;
 	private FuelBar fuelBar;

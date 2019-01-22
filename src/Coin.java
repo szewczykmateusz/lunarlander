@@ -26,10 +26,11 @@ public class Coin extends Shape {
 	public Ellipse remove() {
 		return null;
 	}
-	
-	
-	private int radius = 10;
-	private int value = 100;
+	public Double getX() {return x;}
+
+	private Config cfg = new Config(Player.getActualLevel());
+	private int radius = Utils.intFromConfig(cfg, "coinRadius");
+	private int value = Utils.intFromConfig(cfg, "coinValue");
 	private Double x;
 	private Double y;
 }
