@@ -69,6 +69,7 @@ public class GameScene extends Scene {
 	private DoubleProperty centerY;
 	private LevelTimer timer;
 	private double score;
+	private Text scoreIndicator;
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
@@ -105,7 +106,13 @@ public class GameScene extends Scene {
 		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"), Utils.intFromConfig(cfg,"fuelSize"));
 		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(530, 20);
+
+		//set level number
 		Text levelNumber = setLevelNumber();
+
+		//setup score indicator
+		setupScoreIndicator();
+
 		velXText = setStartVelXText();
 		velYText = setStartVelYText();
 		//timeText initialization, setting starting value and text properties
@@ -135,7 +142,7 @@ public class GameScene extends Scene {
 			root.getChildren().addAll(coinsCircle[i]);
 		}
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
-		root.getChildren().addAll(levelNumber,
+		root.getChildren().addAll(levelNumber, scoreIndicator,
 				fuelRectangle, fuelBarCountor, fuelBarRectangle,
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
@@ -159,7 +166,6 @@ public class GameScene extends Scene {
 		Text levelNumber = new Text();
 
 		levelNumber.setText(cfg.getProperty("levelText"));
-		//levelNumber.setText("LEVEL 1");
 		levelNumber.setX(10);
 		levelNumber.setY(390);
 		Font font = new Font(20);
@@ -378,6 +384,7 @@ public class GameScene extends Scene {
 					rocket.burnFuel();
 					//update fuel bar width
 					actualizeFuelBar(root, fuelBar, rocket);
+					updateScoreIndicator();
 					//controls
 					root.setOnKeyPressed(k -> {
 						actualizeVelTexts(k.getCode());
@@ -674,5 +681,30 @@ public class GameScene extends Scene {
 		coinsCircle[coinNumber].setCenterX(coinsCircle[coinNumber].getCenterX() * factor);
 		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
 		root.getChildren().add(coinsCircle[coinNumber]);
+	}
+
+	/*
+		Method configuring the score indicator on game start
+	 */
+	private void setupScoreIndicator() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Score: ");
+		builder.append(Double.toString(score));
+		scoreIndicator.setText(builder.toString());
+		scoreIndicator.setX(300);
+		scoreIndicator.setY(390);
+		Font font = new Font(20);
+		scoreIndicator.setFont(font);
+		root.getChildren().add(scoreIndicator);
+	}
+
+	/*
+	*	Method updating the score displayed on the screen
+	 */
+	private void updateScoreIndicator() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Score: ");
+		builder.append(Double.toString(score));
+		scoreIndicator.setText(builder.toString());
 	}
 }
