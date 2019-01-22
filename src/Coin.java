@@ -27,10 +27,13 @@ public class Coin extends Shape {
 		return null;
 	}
 	public Double getX() {return x;}
+	public void setWasUsed() {wasUsed = true;}
+	public boolean getWasUsed() {return wasUsed;}
 
 	private Config cfg = new Config(Player.getActualLevel());
 	private int radius = Utils.intFromConfig(cfg, "coinRadius");
 	private int value = Utils.intFromConfig(cfg, "coinValue");
 	private Double x;
 	private Double y;
+	private boolean wasUsed = false;
 }

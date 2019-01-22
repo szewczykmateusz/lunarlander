@@ -69,7 +69,7 @@ public class GameScene extends Scene {
 	private DoubleProperty centerY;
 	private LevelTimer timer;
 	private double score;
-	private Text scoreIndicator;
+	private Text scoreIndicator = new Text();
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
@@ -231,6 +231,7 @@ public class GameScene extends Scene {
                 System.out.println("Kolizja");
                 rocketAnimation.stop();
                 circle.setVisible(false);
+				countFinalScore(timer.getSeconds(), rocket);
 				stage.setScene(nextScene);
             }
 	}
@@ -240,11 +241,13 @@ public class GameScene extends Scene {
 	 */
 
 	public void checkForFuelCollision() {
-		if(fuelRectangle.contains(circle.getCenterX(), circle.getCenterY())) {
+		if(fuelRectangle.contains(circle.getCenterX(), circle.getCenterY())
+				&& !fuel.getWasUsed()) {
 			System.out.println("Paliwo");
 //			fuelRectangle.setVisible(false);
 			root.getChildren().remove(fuelRectangle);
 			rocket.addFuel();
+			fuel.setWasUsed();
 		}
 	}
 	/*
@@ -265,6 +268,7 @@ public class GameScene extends Scene {
 				circle.setVisible(false);
 				rocketAnimation.stop();
 			}
+			countFinalScore(timer.getSeconds(), rocket);
 			stage.setScene(nextScene);
 		}
 
@@ -276,6 +280,7 @@ public class GameScene extends Scene {
 		if((circle.getCenterX() < stage.getMinWidth()) || (circle.getCenterX() > (stage.getWidth()))
 		|| (circle.getCenterY() < stage.getMinHeight()) || (circle.getCenterY() > (stage.getHeight()))) {
 			rocketAnimation.stop();
+			countFinalScore(timer.getSeconds(), rocket);
 			stage.setScene(nextScene);
 		}
 	}
@@ -284,10 +289,12 @@ public class GameScene extends Scene {
 	 */
 	private void checkCoinCollision() {
 		for(int i = 0; i < coinsCircle.length; i++)
-			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())) {
+			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())
+			&& !coins[i].getWasUsed()) {
 				System.out.println("You've got a coin!");
 				eatCoin();
 				root.getChildren().remove(coinsCircle[i]);
+				coins[i].setWasUsed();
 			}
 
 
@@ -695,7 +702,7 @@ public class GameScene extends Scene {
 		scoreIndicator.setY(390);
 		Font font = new Font(20);
 		scoreIndicator.setFont(font);
-		root.getChildren().add(scoreIndicator);
+//		root.getChildren().add(scoreIndicator);
 	}
 
 	/*
