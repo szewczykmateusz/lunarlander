@@ -52,7 +52,8 @@ public class Rocket extends Shape  {
 	Method assuring that the rocket is going to burn 0.1 of it's fuel per 6 seconds
 	 */
 	public void burnFuel() {
-		fuel -= burningVelocity;
+		if(!isPaused)
+			fuel -= burningVelocity;
 		//System.out.println(fuel);
 	}
 	/*
@@ -97,6 +98,8 @@ public class Rocket extends Shape  {
 	public void resetUpVelocity() {insUpVelocity = upVelocity;}
 	public void resetLeftVelocity() {insLeftVelocity = leftVelocity;}
 	public void resetRightVelocity() {insRightVelocity = rightVelocity;}
+	public void runFuelBurn() {isPaused = false;}
+	public void pauseFuelBurn() {isPaused = true;}
 
 	private Config cfg = new Config(Player.getActualLevel());
 	//starting values of velocities
@@ -123,4 +126,5 @@ public class Rocket extends Shape  {
 	private float insFallVelocity = fallVelocity; //instant fall velocity
 //	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
 	private float fallAcceleration;
+	private boolean isPaused = false;
 }

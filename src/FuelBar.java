@@ -57,11 +57,17 @@ public class FuelBar extends Shape {
 	}
 	public double getX() {return x;}
 	public double getY() {return y;}
-	
-	
+	public void setX (double x) {this.x = x;}
+	public void setY (double y) {this.y = y;}
+	public void setWidth(double factor) {width *= factor;}
+	public void setHeight(double factor) {height *= factor;}
+	public int getEdgeDistance() {return edgeDistance;}
+
+	private Config cfg = new Config(Player.getActualLevel());
 	private double x;
 	private double y;
 	private double width = 50;
 	private double height = 20;
 	private double arcSize = 10;
+	private int edgeDistance = (int) Utils.floatFromConfig(cfg, "fuelBarEdgeDistance");
 }

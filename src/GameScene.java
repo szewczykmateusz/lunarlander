@@ -44,7 +44,7 @@ public class GameScene extends Scene {
 		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
 		this.stage = stage;
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			paintElementsAfterWidthChange(DEFAULT_WIDTH, (float)stage.getWidth());
+			WidthScalability(DEFAULT_WIDTH, (float)stage.getWidth());
 			DEFAULT_WIDTH = (float)stage.getWidth();
 
 		});
@@ -75,8 +75,8 @@ public class GameScene extends Scene {
 		velXText = setStartVelXText();
 		velYText = setStartVelYText();
 		//timeText initialization, setting starting value and text properties
-		LevelTimer timer = new LevelTimer();
-		timeText = setTimeText(timer);
+		timer = new LevelTimer();
+		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
 		
 //		line = new Line();
 //		line = setLineProperties();
@@ -92,13 +92,13 @@ public class GameScene extends Scene {
 
 		circle = new Ellipse(0, 0, 5, 5);
 		circle = rocket.paint();
-
+		fuelBarCountor = fuelBar.paint();
 		root = new Group(circle, line);
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber,
-				fuelRectangle, fuelBar.paint(), fuelBarRectangle,
+				fuelRectangle, fuelBarCountor, fuelBarRectangle,
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
@@ -107,7 +107,7 @@ public class GameScene extends Scene {
 			root.getChildren().addAll(coins[i].paint());
 		}
 //		startGame();
-		animate(timer, centerX, centerY);
+		animate(centerX, centerY);
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		circle.centerXProperty().bind(centerX);
 		circle.centerYProperty().bind(centerY);
@@ -165,7 +165,7 @@ public class GameScene extends Scene {
 				
 	}
 
-	private Text setTimeText(LevelTimer timer) {
+	private Text setTimeText(double x) {
 		Text timeText = new Text();
 		StringBuilder builder = new StringBuilder();
 		Date date = timer.getDate();
@@ -174,7 +174,7 @@ public class GameScene extends Scene {
 		builder.append(":");
 		builder.append(date.getSeconds());
 		timeText.setText(builder.toString());
-		timeText.setX(530);
+		timeText.setX(x);
 		timeText.setY(10);
 		Font font = new Font(14);
 		timeText.setFont(font);
@@ -232,8 +232,8 @@ public class GameScene extends Scene {
 	Method checks if rocket had move out of bounds
 	 */
 	public void checkOutOfBoundsCollision() {
-		if((circle.getCenterX() < 0) || (circle.getCenterX() > Constants.DEFAULT_WIDTH)
-		|| (circle.getCenterY() < 0) || (circle.getCenterY() > Constants.DEFAULT_HEIGHT)) {
+		if((circle.getCenterX() < stage.getMinWidth()) || (circle.getCenterX() > (stage.getWidth()))
+		|| (circle.getCenterY() < stage.getMinHeight()) || (circle.getCenterY() > (stage.getHeight()))) {
 			rocketAnimation.stop();
 			stage.setScene(nextScene);
 		}
@@ -304,23 +304,23 @@ public class GameScene extends Scene {
 	/*
 	Method actualizes timeText value every second
 	 */
-	private void setTimer(LevelTimer timer) {
+	private void setTimer() {
 		DateFormat timeFormat = new SimpleDateFormat("mm:ss");
 		timeText.setText(timeFormat.format(timer.getDate()));
 	}
 	/*
 	Method makes animation of game
 	 */
-	private void animate(LevelTimer timer, DoubleProperty centerX, DoubleProperty centerY) {
+	private void animate(DoubleProperty centerX, DoubleProperty centerY) {
 		rocketAnimation = new Timeline(
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
-					setTimer(timer);
+					setTimer();
 					//if collision happen animation stops
 					checkForCollisions();
 					// set velocity with which rocket falls down
 					rocket.increaseInsFallVelocity();
-					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
+	//				centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
 					root.getChildren().remove(velXText);
 					setVelX();
 					root.getChildren().add(velXText);
@@ -354,10 +354,12 @@ public class GameScene extends Scene {
 								if(rocketAnimation.getStatus() == Animation.Status.STOPPED) {
 									rocketAnimation.playFromStart();
 									timer.runTimer();
+									rocket.runFuelBurn();
 								}
 								else {
 									rocketAnimation.stop();
 									timer.pauseTimer();
+									rocket.pauseFuelBurn();
 								}
 							}
 							}
@@ -379,8 +381,6 @@ public class GameScene extends Scene {
 							rocket.resetRightVelocity();
 						}
 					});
-//					System.out.println("Vel X " + (rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
-					System.out.println(rocket.getInsFallVelocity());
 				})
 		);
 		rocketAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -524,7 +524,7 @@ public class GameScene extends Scene {
 	/*
 	Method paints all elements on screen every change of stage width
 	 */
-	private void paintElementsAfterWidthChange(float oldValue, float newValue) {
+	private void WidthScalability(float oldValue, float newValue) {
 		if(root == null) return;
 		float factor = newValue/oldValue;
 			if(mountains != null)
@@ -533,6 +533,8 @@ public class GameScene extends Scene {
 			repaintRocketWidth(factor);
 			repaintLandingZoneWidth(factor);
 			repaintFuelRectangleWidth(factor);
+			repaintFuelBarWidth(factor);
+			repaintTimerWidth();
 
 
 	}
@@ -590,6 +592,23 @@ public class GameScene extends Scene {
 		}
 	}
 
+	private void repaintFuelBarWidth(float factor) {
+		if(fuelBarRectangle == null || fuelBar == null || rocket == null) return;
+		root.getChildren().removeAll(fuelBarRectangle, fuelBarCountor);
+		fuelBar.setX(stage.getWidth() - fuelBar.getEdgeDistance());
+		fuelBar.setWidth(factor);
+		fuelBarRectangle = fuelBar.updateFuelLevel(rocket);
+		fuelBarCountor = fuelBar.paint();
+		root.getChildren().addAll(fuelBarRectangle, fuelBarCountor);
+	}
+	private void repaintTimerWidth() {
+		if(timer == null) return;
+		root.getChildren().remove(timeText);
+		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
+		root.getChildren().add(timeText);
+
+	}
+
 
 
 
@@ -602,6 +621,7 @@ public class GameScene extends Scene {
 	private int coinsQuantity;
 	private FuelBar fuelBar;
 	private Rectangle fuelBarRectangle  = new Rectangle();
+	private Rectangle fuelBarCountor = new Rectangle();
 	private Rocket rocket;
 	private Text timeText; 
 	private Config cfg = new Config(Player.getActualLevel());
@@ -622,4 +642,5 @@ public class GameScene extends Scene {
 	private Scene nextScene;
 	private DoubleProperty centerX;
 	private DoubleProperty centerY;
+	private LevelTimer timer;
 }
