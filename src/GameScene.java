@@ -601,9 +601,7 @@ public class GameScene extends Scene {
 			if((coins != null) && (coinsCircle != null))
 				for(int i = 0; i < coinsCircle.length; i++)
 					repaintCoinWidth(i, factor);
-
-
-
+			actualizeMovingPropertiesWidth(factor);
 	}
 	private void repaintRocketWidth(float factor) {
 		if(circle != null) {
@@ -688,6 +686,14 @@ public class GameScene extends Scene {
 		coinsCircle[coinNumber].setCenterX(coinsCircle[coinNumber].getCenterX() * factor);
 		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
 		root.getChildren().add(coinsCircle[coinNumber]);
+	}
+	/*
+	Method actualizes velocities and acceleration relative to OX axis
+	 */
+	private void actualizeMovingPropertiesWidth(float factor) {
+		rocket.setAcceleration(rocket.getAcceleration() * factor);
+		rocket.setRightVelocity(rocket.getRightVelocity() * factor);
+		rocket.setLeftVelocity(rocket.getLeftVelocity() * factor);
 	}
 
 	/*
