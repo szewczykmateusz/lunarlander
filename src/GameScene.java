@@ -38,6 +38,38 @@ Class responsbile for making scene wherein the game takes place
 
 public class GameScene extends Scene {
 
+	private float DEFAULT_WIDTH;
+	private float DEFAULT_HEIGHT;
+	private Coin[] coins;
+	private Ellipse[] coinsCircle;
+	private int numberOfMountains;
+	private int coinsQuantity;
+	private FuelBar fuelBar;
+	private Rectangle fuelBarRectangle  = new Rectangle();
+	private Rectangle fuelBarCountor = new Rectangle();
+	private Rocket rocket;
+	private Text timeText;
+	private Config cfg = new Config(Player.getActualLevel());
+	private Timeline rocketAnimation;
+	private Rectangle rect;
+	private Ellipse circle;
+	private Line line = setLineProperties();
+	private CubicCurve[] mountains;
+	private Group root;
+	private Fuel fuel;
+	private Rectangle fuelRectangle = new Rectangle();
+	private Text velXText;
+	private Text velYText;
+	// maximum values of velocity by which rocket can successfully land
+	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
+	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+	private Stage stage;
+	private Scene nextScene;
+	private DoubleProperty centerX;
+	private DoubleProperty centerY;
+	private LevelTimer timer;
+	private double score;
+
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
@@ -577,11 +609,11 @@ public class GameScene extends Scene {
 	private void repaintMountainWidth(int mountainNumber, float factor) {
 		if (mountains[mountainNumber] != null) {
 			float startX, endX;
-			if(mountainNumber == 0)
+			if (mountainNumber == 0)
 				startX = (float) stage.getMinWidth();
 			else
 				startX = (float) mountains[mountainNumber].getStartX() * factor;
-			if(mountainNumber == mountains.length)
+			if (mountainNumber == mountains.length)
 				endX = (float) stage.getMaxWidth();
 			else
 				endX = (float) mountains[mountainNumber].getEndX() * factor;
@@ -592,6 +624,7 @@ public class GameScene extends Scene {
 			mountains[mountainNumber].setControlX2((float) mountains[mountainNumber].getControlX2() * factor);
 			root.getChildren().add(mountains[mountainNumber]);
 		}
+	}
 	/*
 	*	Method counting the final score of the level
 	* @ int endTime, Rocket rocket
@@ -642,40 +675,4 @@ public class GameScene extends Scene {
 		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
 		root.getChildren().add(coinsCircle[coinNumber]);
 	}
-
-
-
-
-
-
-	private float DEFAULT_WIDTH;
-	private float DEFAULT_HEIGHT;
-	private Coin[] coins;
-	private Ellipse[] coinsCircle;
-	private int numberOfMountains;
-	private int coinsQuantity;
-	private FuelBar fuelBar;
-	private Rectangle fuelBarRectangle  = new Rectangle();
-	private Rectangle fuelBarCountor = new Rectangle();
-	private Rocket rocket;
-	private Text timeText; 
-	private Config cfg = new Config(Player.getActualLevel());
-	private Timeline rocketAnimation;
-	private Rectangle rect;
-	private Ellipse circle;
-	private Line line = setLineProperties();
-	private CubicCurve[] mountains;
-	private Group root;
-	private Fuel fuel;
-	private Rectangle fuelRectangle = new Rectangle();
-	private Text velXText;
-	private Text velYText;
-	// maximum values of velocity by which rocket can successfully land
-	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
-	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
-	private Stage stage;
-	private Scene nextScene;
-	private DoubleProperty centerX;
-	private DoubleProperty centerY;
-	private LevelTimer timer;
 }
