@@ -38,6 +38,35 @@ Class responsbile for making scene wherein the game takes place
 
 public class GameScene extends Scene {
 
+	private float DEFAULT_WIDTH;
+	private float DEFAULT_HEIGHT;
+	private Coin[] coins;
+	private int numberOfMountains;
+	private int coinsQuantity;
+	private FuelBar fuelBar;
+	private Rectangle fuelBarRectangle  = new Rectangle();
+	private Rocket rocket;
+	private Text timeText;
+	private Config cfg = new Config(Player.getActualLevel());
+	private Timeline rocketAnimation;
+	private Rectangle rect;
+	private Ellipse circle;
+	private Line line;
+	private CubicCurve[] mountains;
+	private Group root;
+	private Fuel fuel;
+	private Rectangle fuelRectangle = new Rectangle();
+	private Text velXText;
+	private Text velYText;
+	// maximum values of velocity by which rocket can successfully land
+	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
+	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+	private Stage stage;
+	private Scene nextScene;
+	private DoubleProperty centerX;
+	private DoubleProperty centerY;
+	private float score = Constants.START_SCORE;
+
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
 		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
@@ -209,6 +238,18 @@ public class GameScene extends Scene {
 			rocket.addFuel();
 		}
 	}
+
+	/*
+	*	Method checks for collision between rocket and a coin
+	* @ no arguments
+	 */
+	public void checkForCoinCollision() {
+
+			System.out.println("You've got a coin!");
+			eatCoin();
+	}
+
+
 	/*
 	Method checks if rocket has a collision with landingZone,
 	if velocities of rocket weren`t to fast rocket successfully lands,
@@ -247,8 +288,6 @@ public class GameScene extends Scene {
 	private void checkCoinCollision() {
 		for(int i = 0; i < coinsCircle.length; i++)
 			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())) {
-				System.out.println("You've got a coin!");
-				eatCoin();
 				root.getChildren().remove(coinsCircle[i]);
 			}
 
@@ -574,6 +613,20 @@ public class GameScene extends Scene {
 			root.getChildren().add(circle);
 		}
 	}
+<<<<<<< HEAD
+	/*
+	*	Method counting the final score of the level
+	* @ int endTime
+	 */
+	private void countFinalScore(int endTime, Rocket rocket) {
+		int resultTime = Constants.GAME_TIME - endTime;
+		score -= resultTime * 10 + rocket.getFuel() * 100;
+	}
+
+	private void eatCoin() {
+		score += 100;
+	}
+=======
 	private void repaintMountainWidth(int mountainNumber, float factor) {
 		if (mountains[mountainNumber] != null) {
 			float startX, endX;
@@ -592,12 +645,6 @@ public class GameScene extends Scene {
 			mountains[mountainNumber].setControlX2((float) mountains[mountainNumber].getControlX2() * factor);
 			root.getChildren().add(mountains[mountainNumber]);
 		}
-	/*
-	*	Method counting the final score of the level
-	* @ int endTime, Rocket rocket
-	 */
-	private void countFinalScore(int endTime, Rocket rocket) {
-		score = score - (endTime * 10) + rocket.getFuel() * 100;
 	}
 
 	private void repaintLandingZoneWidth(float factor) {
@@ -608,9 +655,7 @@ public class GameScene extends Scene {
 			root.getChildren().add(line);
 		}
 	}
-	private void eatCoin() {
-		score += 100;
-	}
+
 	private void repaintFuelRectangleWidth(float factor) {
 		if(fuelRectangle != null) {
 			root.getChildren().remove(fuelRectangle);
@@ -620,6 +665,7 @@ public class GameScene extends Scene {
 			root.getChildren().add(fuelRectangle);
 		}
 	}
+
 	private void repaintFuelBarWidth(float factor) {
 		if(fuelBarRectangle == null || fuelBar == null || rocket == null) return;
 		root.getChildren().removeAll(fuelBarRectangle, fuelBarCountor);
@@ -634,6 +680,7 @@ public class GameScene extends Scene {
 		root.getChildren().remove(timeText);
 		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
 		root.getChildren().add(timeText);
+
 	}
 	private void repaintCoinWidth(int coinNumber, float factor) {
 		if(coinsCircle[coinNumber] == null) return;
@@ -678,4 +725,5 @@ public class GameScene extends Scene {
 	private DoubleProperty centerX;
 	private DoubleProperty centerY;
 	private LevelTimer timer;
+>>>>>>> matidev
 }

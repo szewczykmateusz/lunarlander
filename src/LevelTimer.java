@@ -43,9 +43,12 @@ public class LevelTimer {
 	 */
 	public void pauseTimer() {ifPaused = true;}
 	public void runTimer() {ifPaused = false;}
+	public int getEdgeDistance() {return edgeDistance;}
 	
 	private Timer timer;
 	private int counter;
 	private Date date;
 	private boolean ifPaused = false; //if the game is paused timer is stopped
+	private Config cfg = new Config(Player.getActualLevel());
+	private int edgeDistance = (int) Utils.floatFromConfig(cfg, "timerEdgeDistance");
 }
