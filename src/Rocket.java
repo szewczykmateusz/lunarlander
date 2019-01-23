@@ -14,9 +14,9 @@ public class Rocket extends Shape  {
 
 	private Config cfg = new Config(Player.getActualLevel());
 	//starting values of velocities
-	private final float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
-	private final float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
-	private final float rightVelocity = -leftVelocity;
+	private float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
+	private float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
+	private float rightVelocity = -leftVelocity;
 	//instant values of velocities
 	private float insUpVelocity = upVelocity;
 	private float insLeftVelocity = leftVelocity;
@@ -107,7 +107,11 @@ public class Rocket extends Shape  {
 	public float getInsRightVelocity(){return insRightVelocity;}
 	public float getInsFallVelocity() {return insFallVelocity;}
 	public float getFallVelocity() {return fallVelocity;}
+	public float getAcceleration() {return  acceleration;}
 
+	public void setRightVelocity(float rightVelocity) {this.rightVelocity = rightVelocity;}
+	public void setLeftVelocity(float leftVelocity) {this.leftVelocity = leftVelocity;}
+	public void setAcceleration(float acceleration) {this.acceleration = acceleration;}
 	public void setInsUpVelocity(float insUpVelocity) {this.insUpVelocity = insUpVelocity;}
 	public void setInsLeftVelocity(float insLeftVelocity) {this.insLeftVelocity = insLeftVelocity;}
 	public void setInsRightVelocity(float insRightVelocity) {this.insRightVelocity = insRightVelocity;}

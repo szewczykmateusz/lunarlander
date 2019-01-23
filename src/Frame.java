@@ -21,13 +21,17 @@ public class Frame extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
+		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			Constants.setDefaultWidth((float)stage.getWidth() - 15);
+
+		});
 		this.stage = stage;
 		leaderboardScene = new Scene(new Region());
 		scoreScene = ScoreScene.getScoreScene(this);
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		pickNickScene = PickNick.getPickNickScene(this);
-		mainMenuScene = MainMenu.getMainMenu(this);
+		mainMenuScene = MainMenu.getMainMenu(this, stage);
 
 
 		//stylesheets setup
@@ -52,11 +56,28 @@ public class Frame extends Application {
 		launch(args);
 	}
 
-	public void setMainMenuScene() {stage.setScene(mainMenuScene);}
-	public void setPickNickScene() {stage.setScene(pickNickScene);}
-	public void setScoreScene() {stage.setScene(scoreScene);}
+	public void setMainMenuScene() {
+		mainMenuScene = MainMenu.getMainMenu(this, stage);
+		stage.setScene(mainMenuScene);
+		mainMenuScene.getStylesheets().add("css/style.css");
+	}
+	public void setPickNickScene() {
+		pickNickScene = PickNick.getPickNickScene(this);
+		stage.setScene(pickNickScene);
+		pickNickScene.getStylesheets().add("css/style.css");
+	}
+	public void setScoreScene() {
+		scoreScene = ScoreScene.getScoreScene(this);
+		stage.setScene(scoreScene);
+		scoreScene.getStylesheets().add("css/style.css");
+
+	}
 	public void setGameScene(Enum difficulty) {stage.setScene(gameScene.initiateGame(difficulty));}
-	public void setSetDifficultyScene() {stage.setScene(setDifficultyScene);}
+	public void setSetDifficultyScene() {
+		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
+		stage.setScene(setDifficultyScene);
+		setDifficultyScene.getStylesheets().add("css/style.css");
+	}
 	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
 
 	private GameScene gameScene;

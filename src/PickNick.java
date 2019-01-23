@@ -35,7 +35,7 @@ public class PickNick extends Scene {
         layout.getChildren().addAll(label, inputNick, nextButton);
 
 
-        return new Scene(layout, Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
+        return new Scene(layout, Constants.getDefaultWidth(), Constants.getDefaultHeight());
     }
 
     /*
