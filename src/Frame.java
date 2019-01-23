@@ -27,7 +27,7 @@ public class Frame extends Application {
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		pickNickScene = PickNick.getPickNickScene(this);
-		mainMenuScene = MainMenu.getMainMenu(this);
+		mainMenuScene = MainMenu.getMainMenu(this, stage);
 
 
 		//stylesheets setup
@@ -57,6 +57,14 @@ public class Frame extends Application {
 	public void setGameScene(Enum difficulty) {stage.setScene(gameScene.initiateGame(difficulty));}
 	public void setSetDifficultyScene() {stage.setScene(setDifficultyScene);}
 	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
+	/*
+	Methods creates new scenes after latest scene changes
+	 */
+	public void setPickNickSceneAfterChanges() {
+		pickNickScene = PickNick.getPickNickScene(this);
+		stage.setScene(pickNickScene);
+		pickNickScene.getStylesheets().add("css/style.css");
+	}
 
 	private GameScene gameScene;
 	private Scene mainMenuScene;

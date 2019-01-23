@@ -73,8 +73,8 @@ public class GameScene extends Scene {
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
-		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
-		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
+		DEFAULT_WIDTH = Constants.getDefaultWidth();
+		DEFAULT_HEIGHT = Constants.getDefaultHeight();
 		this.stage = stage;
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			WidthScalability(DEFAULT_WIDTH, (float)stage.getWidth());
