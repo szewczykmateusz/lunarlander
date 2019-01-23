@@ -149,10 +149,9 @@ public class GameScene extends Scene {
 				velXText, velYText, timeText);
 		root.setFocusTraversable(true);
 
-
 //		startGame();
 		animate(centerX, centerY);
-		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		Scene scene = new Scene(root, Constants.getDefaultWidth(), Constants.getDefaultHeight());
 		circle.centerXProperty().bind(centerX);
 		circle.centerYProperty().bind(centerY);
 		centerX.setValue(300);
@@ -387,7 +386,7 @@ public class GameScene extends Scene {
 					checkForCollisions();
 					// set velocity with which rocket falls down
 					rocket.increaseInsFallVelocity();
-	//				centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
+					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
 					root.getChildren().remove(velXText);
 					setVelX();
 					root.getChildren().add(velXText);

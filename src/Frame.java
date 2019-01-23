@@ -22,7 +22,7 @@ public class Frame extends Application {
 	@Override
 	public void start(Stage stage) {
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-			Constants.setDefaultWidth((float)stage.getWidth());
+			Constants.setDefaultWidth((float)stage.getWidth() - 15);
 
 		});
 		this.stage = stage;
