@@ -231,7 +231,7 @@ public class GameScene extends Scene {
                 System.out.println("Kolizja");
                 rocketAnimation.stop();
                 circle.setVisible(false);
-				countFinalScore(timer.getSeconds(), rocket);
+                Player.levelFailed();
 				stage.setScene(nextScene);
             }
 	}
@@ -280,7 +280,7 @@ public class GameScene extends Scene {
 		if((circle.getCenterX() < stage.getMinWidth()) || (circle.getCenterX() > (stage.getWidth()))
 		|| (circle.getCenterY() < stage.getMinHeight()) || (circle.getCenterY() > (stage.getHeight()))) {
 			rocketAnimation.stop();
-			countFinalScore(timer.getSeconds(), rocket);
+			Player.levelFailed();
 			stage.setScene(nextScene);
 		}
 	}
@@ -382,7 +382,7 @@ public class GameScene extends Scene {
 					checkForCollisions();
 					// set velocity with which rocket falls down
 					rocket.increaseInsFallVelocity();
-	//				centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
+					centerY.setValue(centerY.getValue() + rocket.getInsFallVelocity());
 					root.getChildren().remove(velXText);
 					setVelX();
 					root.getChildren().add(velXText);
@@ -645,6 +645,8 @@ public class GameScene extends Scene {
 	 */
 	private void countFinalScore(int endTime, Rocket rocket) {
 		score = score - (endTime * 10) + rocket.getFuel() * 100;
+		Player.incrementScore(score);
+		Player.levelCompleted();
 	}
 
 	private void repaintLandingZoneWidth(float factor) {
@@ -702,7 +704,6 @@ public class GameScene extends Scene {
 		scoreIndicator.setY(390);
 		Font font = new Font(20);
 		scoreIndicator.setFont(font);
-//		root.getChildren().add(scoreIndicator);
 	}
 
 	/*

@@ -44,8 +44,9 @@ public class Frame extends Application {
 		pickNickScene.getStylesheets().add("css/style.css");
 		scoreScene.getStylesheets().add("css/style.css");
 	}
+
 	/*
-	 * Sluzy do wywolania okna w mainie
+	 * Launches the window in Main Interface
 	 */
 	public void launchFrame(String[] args) {
 		launch(args);
