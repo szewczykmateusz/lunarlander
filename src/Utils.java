@@ -58,5 +58,20 @@ public class Utils {
         return number;
     }
 
+    /*
+        Method that sets timeout
+     */
+    public static void setTimeout(Runnable runnable, int delay){
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                runnable.run();
+            }
+            catch (Exception e){
+                System.err.println(e);
+            }
+        }).start();
+    }
+
     private final static int precision = 2;
 }
