@@ -12,11 +12,14 @@ import javafx.stage.Stage;
    Main Menu Class - creates Main Menu
 */
 public class MainMenu extends Scene{
+    private static Stage stage;
+
     public MainMenu(Region root) {super(root);}
     /*
         Method returns Main Menu Scene
     */
-    public static Scene getMainMenu(Frame frame) {
+    public static Scene getMainMenu(Frame frame, Stage aStage) {
+        stage = aStage;
         Label label  = new Label("Lunar Lander");
         Button newGame = new Button("New Game");
         Button leaderboard = new Button("Leaderboard");
@@ -35,12 +38,17 @@ public class MainMenu extends Scene{
         VBox layout = new VBox(20);
         layout.getChildren().addAll(label, newGame, leaderboard, quit);
 
-        return new Scene(layout, Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
+        return new Scene(layout, Constants.getDefaultWidth(), Constants.getDefaultHeight());
     }
 
     private static void configureNewGameButton(Button button, Frame frame) {
         button.setOnAction(e -> {
-            frame.setPickNickScene();
+    /*        if(stage.getWidth() != Constants.getDefaultWidth()) {
+                Constants.setDefaultWidth((float)stage.getWidth());
+                frame.setPickNickSceneAfterChanges();
+            }
+            else */
+                frame.setPickNickScene();
         });
     }
 

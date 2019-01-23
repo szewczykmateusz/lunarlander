@@ -70,11 +70,13 @@ public class GameScene extends Scene {
 	private LevelTimer timer;
 	private double score;
 	private Text scoreIndicator = new Text();
+	private Frame frame;
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
-		DEFAULT_WIDTH = Constants.DEFAULT_WIDTH;
-		DEFAULT_HEIGHT = Constants.DEFAULT_HEIGHT;
+		this.frame = frame;
+		DEFAULT_WIDTH = Constants.getDefaultWidth();
+		DEFAULT_HEIGHT = Constants.getDefaultHeight();
 		this.stage = stage;
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			WidthScalability(DEFAULT_WIDTH, (float)stage.getWidth());
@@ -232,7 +234,8 @@ public class GameScene extends Scene {
                 rocketAnimation.stop();
                 circle.setVisible(false);
 				countFinalScore(timer.getSeconds(), rocket);
-				stage.setScene(nextScene);
+//				stage.setScene(nextScene);
+				frame.setScoreScene();
             }
 	}
 	/*
@@ -269,7 +272,8 @@ public class GameScene extends Scene {
 				rocketAnimation.stop();
 			}
 			countFinalScore(timer.getSeconds(), rocket);
-			stage.setScene(nextScene);
+//			stage.setScene(nextScene);
+			frame.setScoreScene();
 		}
 
 	}
@@ -281,7 +285,8 @@ public class GameScene extends Scene {
 		|| (circle.getCenterY() < stage.getMinHeight()) || (circle.getCenterY() > (stage.getHeight()))) {
 			rocketAnimation.stop();
 			countFinalScore(timer.getSeconds(), rocket);
-			stage.setScene(nextScene);
+//			stage.setScene(nextScene);
+			frame.setScoreScene();
 		}
 	}
 	/*
@@ -601,9 +606,7 @@ public class GameScene extends Scene {
 			if((coins != null) && (coinsCircle != null))
 				for(int i = 0; i < coinsCircle.length; i++)
 					repaintCoinWidth(i, factor);
-
-
-
+			actualizeMovingPropertiesWidth(factor);
 	}
 	private void repaintRocketWidth(float factor) {
 		if(circle != null) {
@@ -688,6 +691,14 @@ public class GameScene extends Scene {
 		coinsCircle[coinNumber].setCenterX(coinsCircle[coinNumber].getCenterX() * factor);
 		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
 		root.getChildren().add(coinsCircle[coinNumber]);
+	}
+	/*
+	Method actualizes velocities and acceleration relative to OX axis
+	 */
+	private void actualizeMovingPropertiesWidth(float factor) {
+		rocket.setAcceleration(rocket.getAcceleration() * factor);
+		rocket.setRightVelocity(rocket.getRightVelocity() * factor);
+		rocket.setLeftVelocity(rocket.getLeftVelocity() * factor);
 	}
 
 	/*

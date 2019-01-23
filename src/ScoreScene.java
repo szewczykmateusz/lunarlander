@@ -19,7 +19,7 @@ public class ScoreScene extends Scene {
         HBox layout = new HBox(200);
         layout.getChildren().addAll(advanceButton, quitButton);
 
-        return new Scene(layout, Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
+        return new Scene(layout, Constants.getDefaultWidth(), Constants.getDefaultHeight());
     }
 
     private static void configureQuitButtonAction(Button button, Frame frame) {
