@@ -33,7 +33,7 @@ public class SetDifficulty extends Scene{
         VBox layout = new VBox(20);
         layout.getChildren().addAll(label, easy, medium, hard);
 
-        return new Scene(layout, 600, 400);
+        return new Scene(layout, Constants.getDefaultWidth(), Constants.getDefaultHeight());
     }
 
 }

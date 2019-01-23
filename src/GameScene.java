@@ -70,9 +70,11 @@ public class GameScene extends Scene {
 	private LevelTimer timer;
 	private double score;
 	private Text scoreIndicator = new Text();
+	private Frame frame;
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
+		this.frame = frame;
 		DEFAULT_WIDTH = Constants.getDefaultWidth();
 		DEFAULT_HEIGHT = Constants.getDefaultHeight();
 		this.stage = stage;
@@ -232,7 +234,8 @@ public class GameScene extends Scene {
                 rocketAnimation.stop();
                 circle.setVisible(false);
 				countFinalScore(timer.getSeconds(), rocket);
-				stage.setScene(nextScene);
+//				stage.setScene(nextScene);
+				frame.setScoreScene();
             }
 	}
 	/*
@@ -269,7 +272,8 @@ public class GameScene extends Scene {
 				rocketAnimation.stop();
 			}
 			countFinalScore(timer.getSeconds(), rocket);
-			stage.setScene(nextScene);
+//			stage.setScene(nextScene);
+			frame.setScoreScene();
 		}
 
 	}
@@ -281,7 +285,8 @@ public class GameScene extends Scene {
 		|| (circle.getCenterY() < stage.getMinHeight()) || (circle.getCenterY() > (stage.getHeight()))) {
 			rocketAnimation.stop();
 			countFinalScore(timer.getSeconds(), rocket);
-			stage.setScene(nextScene);
+//			stage.setScene(nextScene);
+			frame.setScoreScene();
 		}
 	}
 	/*

@@ -43,11 +43,11 @@ public class MainMenu extends Scene{
 
     private static void configureNewGameButton(Button button, Frame frame) {
         button.setOnAction(e -> {
-            if(stage.getWidth() != Constants.getDefaultWidth()) {
+    /*        if(stage.getWidth() != Constants.getDefaultWidth()) {
                 Constants.setDefaultWidth((float)stage.getWidth());
                 frame.setPickNickSceneAfterChanges();
             }
-            else
+            else */
                 frame.setPickNickScene();
         });
     }
