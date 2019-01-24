@@ -74,6 +74,7 @@ public class GameScene extends Scene {
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
+		System.out.println(Player.getActualLevel());
 		this.frame = frame;
 		DEFAULT_WIDTH = Constants.getDefaultWidth();
 		DEFAULT_HEIGHT = Constants.getDefaultHeight();
@@ -264,13 +265,15 @@ public class GameScene extends Scene {
 				System.out.println("Ladowanie");
 				circle.setVisible(true);
 				rocketAnimation.stop();
+				countFinalScore(timer.getSeconds(), rocket);
 			}
 			else {
 				System.out.println("Kolizja");
 				circle.setVisible(false);
 				rocketAnimation.stop();
+				Player.levelFailed();
 			}
-			countFinalScore(timer.getSeconds(), rocket);
+
 //			stage.setScene(nextScene);
 			frame.setScoreScene();
 		}

@@ -81,7 +81,10 @@ public class Frame extends Application {
 		scoreScene.getStylesheets().add("css/style.css");
 
 	}
-	public void setGameScene(Enum difficulty) {stage.setScene(gameScene.initiateGame(difficulty));}
+	public void setGameScene(Enum difficulty) {
+		gameScene = new GameScene(new Region(), stage, scoreScene, this);
+		stage.setScene(gameScene.initiateGame(difficulty));
+	}
 	public void setSetDifficultyScene() {
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		stage.setScene(setDifficultyScene);
