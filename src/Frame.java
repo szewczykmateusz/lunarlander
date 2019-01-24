@@ -14,6 +14,15 @@ import java.util.*;
  */
 
 public class Frame extends Application {
+
+	private GameScene gameScene;
+	private Scene mainMenuScene;
+	private Scene setDifficultyScene;
+	private Scene leaderboardScene;
+	private Scene pickNickScene;
+	private Scene scoreScene;
+	private Stage stage;
+
 	public Frame() {}
 
 	/*
@@ -79,12 +88,4 @@ public class Frame extends Application {
 		setDifficultyScene.getStylesheets().add("css/style.css");
 	}
 	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
-
-	private GameScene gameScene;
-	private Scene mainMenuScene;
-	private Scene setDifficultyScene;
-	private Scene leaderboardScene;
-	private Scene pickNickScene;
-	private Scene scoreScene;
-	private Stage stage;
 }

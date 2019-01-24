@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 Class creates scene which shows users result after every level
  */
 public class ScoreScene extends Scene {
+
     public ScoreScene(Region root) {super(root);}
 
     public static Scene getScoreScene(Frame frame) {
@@ -41,6 +42,7 @@ public class ScoreScene extends Scene {
         score.setY(300);
         score.setFont(font);
         configureQuitButtonAction(button2, frame);
+        configureNextLevelAndRetryButton(button1, frame);
         VBox layout = new VBox(10);
         layout.getChildren().addAll(mainText, score, button1, button2);
 
@@ -53,11 +55,14 @@ public class ScoreScene extends Scene {
         });
     }
 
-
     /*
         Method starts next level of the game
      */
-//    private static void configureNextLevelButton() {
-//
-//    }
+    private static void configureNextLevelAndRetryButton(Button button, Frame frame) {
+        if(Player.hasPlayed() && Player.getLastLevelStatus() == 1) {
+            button.setOnAction(e -> frame.setGameScene(Player.getChosenDifficulty()));
+        } else {
+            button.setOnAction(e -> frame.setGameScene(Player.getChosenDifficulty()));
+        }
+    }
 }

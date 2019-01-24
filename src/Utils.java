@@ -27,7 +27,10 @@ public class Utils {
     Method sets up action for button starting the game, accepts Stage, Next Scene, Button and difficulty level as arguments
      */
     public static void startGame(Button button, Frame frame, Enum difficulty) {
-        button.setOnAction(e -> frame.setGameScene(difficulty));
+        button.setOnAction(e -> {
+            Player.setDifficulty(difficulty);
+            frame.setGameScene(difficulty);
+        });
     }
 
     /*

@@ -8,12 +8,14 @@ public class Player {
     private static String name;
     private static double score = 0;
     private static int actualLevel = 1;
+    private static Enum chosenDifficulty;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
 
     public static void setName(String Name) {name = Name;}
     public static String getName() {return name;}
     public static int getActualLevel() {return actualLevel;}
     public static double getPlayerScore() {return score;}
+    public static Enum getChosenDifficulty() {return chosenDifficulty;}
 
     /*
         Method incrementing player's score by adding the passed value
@@ -23,10 +25,11 @@ public class Player {
     }
 
     /*
-        Method checks that level was completed successfuly
+        Method checks that level was completed successfuly and increments the level number
      */
     public static void levelCompleted() {
         completedLevels.add(1);
+        actualLevel++;
     }
 
     /*
@@ -58,5 +61,12 @@ public class Player {
         } else {
             return 0;
         }
+    }
+
+    /*
+        Method setting difficulty level chosen by player
+     */
+    public static void setDifficulty(Enum difficulty) {
+        chosenDifficulty = difficulty;
     }
 }
