@@ -71,6 +71,7 @@ public class GameScene extends Scene {
 	private double score;
 	private Text scoreIndicator = new Text();
 	private Frame frame;
+	private Text lifesText = new Text();
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
@@ -119,6 +120,7 @@ public class GameScene extends Scene {
 
 		velXText = setStartVelXText();
 		velYText = setStartVelYText();
+		setLifesText();
 		//timeText initialization, setting starting value and text properties
 		timer = new LevelTimer();
 		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
@@ -148,7 +150,7 @@ public class GameScene extends Scene {
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber, scoreIndicator,
 				fuelRectangle, fuelBarCountor, fuelBarRectangle,
-				velXText, velYText, timeText, circle, line);
+				velXText, velYText, timeText, circle, line, lifesText);
 		root.setFocusTraversable(true);
 
 //		startGame();
@@ -224,6 +226,19 @@ public class GameScene extends Scene {
 		timeText.setFont(font);
 
 		return timeText;
+	}
+	/*
+	Method sets lifesNumber text
+	 */
+	public void setLifesText() {
+		lifesText.setX(3);
+		lifesText.setY(40);
+		StringBuilder builder = new StringBuilder();
+		builder.append("Lifes: ");
+		builder.append(Player.getLifesNumber());
+		Font font = new Font(14);
+		lifesText.setFont(font);
+		lifesText.setText(builder.toString());
 	}
 	/*
 	Method checks if rocket has a collision with mountain, if so animation stops

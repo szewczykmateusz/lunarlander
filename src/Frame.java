@@ -77,6 +77,7 @@ public class Frame extends Application {
 	}
 	public void setScoreScene() {
 		stage.setWidth(stage.getWidth() + 1);
+		stage.setHeight(stage.getHeight() + 1);
 		scoreScene = ScoreScene.getScoreScene(this);
 		stage.setScene(scoreScene);
 		scoreScene.getStylesheets().add("css/style.css");

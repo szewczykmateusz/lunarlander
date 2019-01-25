@@ -10,12 +10,15 @@ public class Player {
     private static int actualLevel = 1;
     private static Enum chosenDifficulty;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
+    private static int lifesNumber = 3;
+    private static boolean isLose = false; // when player lost all lifes, isLose = true, and game ends
 
     public static void setName(String Name) {name = Name;}
     public static String getName() {return name;}
     public static int getActualLevel() {return actualLevel;}
     public static double getPlayerScore() {return score;}
     public static Enum getChosenDifficulty() {return chosenDifficulty;}
+    public static int getLifesNumber() {return lifesNumber;}
 
     /*
         Method incrementing player's score by adding the passed value
@@ -38,7 +41,11 @@ public class Player {
     public static void levelFailed() {
 
         completedLevels.add(0);
-        actualLevel = 1;
+        lifesNumber--;
+        if(lifesNumber == 0) {
+            actualLevel = 1;
+            isLose = true;
+        }
     }
 
 
