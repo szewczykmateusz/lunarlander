@@ -76,13 +76,15 @@ public class Frame extends Application {
 		pickNickScene.getStylesheets().add("css/style.css");
 	}
 	public void setScoreScene() {
+		stage.setWidth(stage.getWidth() + 1);
 		scoreScene = ScoreScene.getScoreScene(this);
 		stage.setScene(scoreScene);
 		scoreScene.getStylesheets().add("css/style.css");
 
 	}
 	public void setGameScene(Enum difficulty) {
-		gameScene = new GameScene(new Region(), stage, scoreScene, this);
+		stage.setWidth(Constants.GAME_SCENE_DEFAULT_WIDTH);
+		stage.setHeight(Constants.GAME_SCENE_DEFAULT_HEIGHT);
 		stage.setScene(gameScene.initiateGame(difficulty));
 	}
 	public void setSetDifficultyScene() {
@@ -91,4 +93,6 @@ public class Frame extends Application {
 		setDifficultyScene.getStylesheets().add("css/style.css");
 	}
 	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
+
+	public Stage getStage() {return stage;}
 }

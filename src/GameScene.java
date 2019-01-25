@@ -97,7 +97,8 @@ public class GameScene extends Scene {
 		 */
 		rocket = new Rocket(difficulty);
 	//	rocket.setFallVelocity(getFallVelocity(difficulty));
-
+		root = new Group();
+		Scene scene = new Scene(root, Constants.GAME_SCENE_DEFAULT_WIDTH, Constants.GAME_SCENE_DEFAULT_HEIGHT);
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 		coins = new Coin[coinsQuantity];
@@ -137,7 +138,7 @@ public class GameScene extends Scene {
 		circle = new Ellipse(0, 0, 5, 5);
 		circle = rocket.paint();
 		fuelBarCountor = fuelBar.paint();
-		root = new Group(circle, line);
+
 		for(int i = 0; i <mountains.length; i++)
 	    	root.getChildren().add(mountains[i]);
 		//adding all the coins to root
@@ -147,12 +148,12 @@ public class GameScene extends Scene {
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
 		root.getChildren().addAll(levelNumber, scoreIndicator,
 				fuelRectangle, fuelBarCountor, fuelBarRectangle,
-				velXText, velYText, timeText);
+				velXText, velYText, timeText, circle, line);
 		root.setFocusTraversable(true);
 
 //		startGame();
 		animate(centerX, centerY);
-		Scene scene = new Scene(root, Constants.getDefaultWidth(), Constants.getDefaultHeight());
+
 		circle.centerXProperty().bind(centerX);
 		circle.centerYProperty().bind(centerY);
 		centerX.setValue(300);
@@ -343,11 +344,11 @@ public class GameScene extends Scene {
 	 */
 	private Line setLineProperties() {
 		Line line = new Line();
-		line.setStartX(Utils.intFromConfig(cfg, "landingZoneStartX"));
-		line.setStartY(Utils.intFromConfig(cfg, "landingZoneY"));
-		line.setEndX(Utils.intFromConfig(cfg, "landingZoneEndX"));
-		line.setEndY(Utils.intFromConfig(cfg, "landingZoneY"));
-		line.setStrokeWidth(Utils.intFromConfig(cfg, "landingZoneWidth"));
+		line.setStartX(Utils.floatFromConfig(cfg, "landingZoneStartX"));
+		line.setStartY(Utils.floatFromConfig(cfg, "landingZoneY"));
+		line.setEndX(Utils.floatFromConfig(cfg, "landingZoneEndX"));
+		line.setEndY(Utils.floatFromConfig(cfg, "landingZoneY"));
+		line.setStrokeWidth(Utils.floatFromConfig(cfg, "landingZoneWidth"));
 		return line;
 	}
 	/*

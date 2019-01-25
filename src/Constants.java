@@ -1,6 +1,9 @@
 public class Constants {
-    private static float DEFAULT_WIDTH = 600;
-    private static float DEFAULT_HEIGHT = 400;
+    private static Config cfg = new Config(0);
+    private static float DEFAULT_WIDTH = Float.parseFloat(cfg.getProperty("defaultWidth"));
+    private static float DEFAULT_HEIGHT = Float.parseFloat(cfg.getProperty("defaultHeight"));
+    public final static float GAME_SCENE_DEFAULT_WIDTH = DEFAULT_WIDTH;
+    public final static float GAME_SCENE_DEFAULT_HEIGHT = DEFAULT_HEIGHT;
     public final static int GAME_TIME = 30;
     public final static float START_SCORE = 1000;
 

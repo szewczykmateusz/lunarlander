@@ -36,7 +36,9 @@ public class Player {
     Method checks that level was failed
      */
     public static void levelFailed() {
+
         completedLevels.add(0);
+        actualLevel = 1;
     }
 
 
