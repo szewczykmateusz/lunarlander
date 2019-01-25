@@ -40,7 +40,7 @@ public class Frame extends Application {
 
 		});
 		this.stage = stage;
-		leaderboardScene = new Scene(new Region());
+		leaderboardScene = LeaderboardScene.getLeaderboardScene(this);
 		scoreScene = ScoreScene.getScoreScene(this);
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
@@ -71,6 +71,8 @@ public class Frame extends Application {
 	}
 
 	public void setMainMenuScene() {
+		Player.resetPlayerScore();
+		Player.resetPlayerLevel();
 		stage.setWidth(stage.getWidth() + 0.1);
 		stage.setHeight(stage.getHeight() + 0.1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
@@ -105,7 +107,14 @@ public class Frame extends Application {
 		stage.setScene(setDifficultyScene);
 		setDifficultyScene.getStylesheets().add("css/style.css");
 	}
-	public void setLeaderboardScene() {stage.setScene(leaderboardScene);}
+	public void setLeaderboardScene() {
+		stage.setWidth(stage.getWidth() - 1);
+		stage.setHeight(stage.getHeight() - 1);
+		stage.setScene(leaderboardScene);
+		leaderboardScene = LeaderboardScene.getLeaderboardScene(this);
+		stage.setScene(leaderboardScene);
+		setDifficultyScene.getStylesheets().add("css/style.css");
+	}
 
 	public Stage getStage() {return stage;}
 }

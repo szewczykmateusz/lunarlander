@@ -68,7 +68,7 @@ public class GameScene extends Scene {
 	private DoubleProperty centerX;
 	private DoubleProperty centerY;
 	private LevelTimer timer;
-	private double score;
+	private double score = Player.getPlayerScore();
 	private Text scoreIndicator = new Text();
 	private Frame frame;
 	private Text lifesText = new Text();

@@ -19,6 +19,8 @@ public class Player {
     public static double getPlayerScore() {return score;}
     public static Enum getChosenDifficulty() {return chosenDifficulty;}
     public static int getLifesNumber() {return lifesNumber;}
+    public static void resetPlayerScore() {score = 0;}
+    public static void resetPlayerLevel() {actualLevel = 1;}
 
     /*
         Method incrementing player's score by adding the passed value
