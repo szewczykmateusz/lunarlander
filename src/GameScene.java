@@ -85,6 +85,11 @@ public class GameScene extends Scene {
 			DEFAULT_WIDTH = (float)stage.getWidth();
 
 		});
+		stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+
+			DEFAULT_HEIGHT = (float)stage.getWidth();
+
+		});
 	/*	stage.heightProperty().addListener((obs, oldVal, newVal) -> {
 //			paintElements((float)oldVal, (float)newVal);
 		}); */

@@ -34,6 +34,11 @@ public class Frame extends Application {
 			Constants.setDefaultWidth((float)stage.getWidth() - 15);
 
 		});
+		stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+			System.out.println(stage.getHeight());
+			Constants.setDefaultHeight((float)stage.getHeight() - 38);
+
+		});
 		this.stage = stage;
 		leaderboardScene = new Scene(new Region());
 		scoreScene = ScoreScene.getScoreScene(this);
@@ -66,11 +71,15 @@ public class Frame extends Application {
 	}
 
 	public void setMainMenuScene() {
+		stage.setWidth(stage.getWidth() + 1);
+		stage.setHeight(stage.getHeight() + 1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
 		stage.setScene(mainMenuScene);
 		mainMenuScene.getStylesheets().add("css/style.css");
 	}
 	public void setPickNickScene() {
+		stage.setWidth(stage.getWidth() - 1);
+		stage.setHeight(stage.getHeight() - 1);
 		pickNickScene = PickNick.getPickNickScene(this);
 		stage.setScene(pickNickScene);
 		pickNickScene.getStylesheets().add("css/style.css");
@@ -89,6 +98,8 @@ public class Frame extends Application {
 		stage.setScene(gameScene.initiateGame(difficulty));
 	}
 	public void setSetDifficultyScene() {
+		stage.setWidth(stage.getWidth() - 1);
+		stage.setHeight(stage.getHeight() - 1);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		stage.setScene(setDifficultyScene);
 		setDifficultyScene.getStylesheets().add("css/style.css");
