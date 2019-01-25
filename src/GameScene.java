@@ -72,6 +72,7 @@ public class GameScene extends Scene {
 	private Text scoreIndicator = new Text();
 	private Frame frame;
 	private Text lifesText = new Text();
+	private Text levelNumber = new Text();
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
@@ -83,11 +84,10 @@ public class GameScene extends Scene {
 		stage.widthProperty().addListener((obs, oldVal, newVal) -> {
 			WidthScalability(DEFAULT_WIDTH, (float)stage.getWidth());
 			DEFAULT_WIDTH = (float)stage.getWidth();
-
 		});
 		stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-
-			DEFAULT_HEIGHT = (float)stage.getWidth();
+			HeightScalability(DEFAULT_HEIGHT, (float)stage.getHeight());
+			DEFAULT_HEIGHT = (float)stage.getHeight();
 
 		});
 	/*	stage.heightProperty().addListener((obs, oldVal, newVal) -> {
@@ -173,11 +173,9 @@ public class GameScene extends Scene {
 	 * Method returning number of actual level (Text)
 	 */
 	private Text setLevelNumber() {
-		Text levelNumber = new Text();
-
 		levelNumber.setText(cfg.getProperty("levelText"));
 		levelNumber.setX(10);
-		levelNumber.setY(390);
+		levelNumber.setY(330);
 		Font font = new Font(20);
 		levelNumber.setFont(font);
 		
@@ -406,6 +404,7 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer();
+					System.out.println(Player.getActualLevel());
 					//if collision happen animation stops
 					checkForCollisions();
 					// set velocity with which rocket falls down
@@ -487,27 +486,6 @@ public class GameScene extends Scene {
 		fuelBarRectangle = fuelBar.updateFuelLevel(rocket);
 		root.getChildren().add(fuelBarRectangle);
 	}
-	/*
-	Method starts game when user press SPACE and show information about it
-	 */
-/*	private void startGame() {
-		Text information = new Text("Press SPACE to start");
-		information.setX(200);
-		information.setY(200);
-		information.setFill(Color.RED);
-		Font font = new Font(30);
-		information.setFont(font);
-		root.getChildren().add(information);
-		while(true) {
-			root.setOnKeyPressed(k -> {
-				if (k.getCode() == KeyCode.SPACE) {
-					root.getChildren().remove(information);
-					return;
-				}
-			});
-		}
-
-	} */
 	/*
 	Method sets display of velocity by x axis
 	if rocket can land display is green, else is red
@@ -630,6 +608,26 @@ public class GameScene extends Scene {
 				for(int i = 0; i < coinsCircle.length; i++)
 					repaintCoinWidth(i, factor);
 			actualizeMovingPropertiesWidth(factor);
+			actualizeScoreIndicatorWidth(factor);
+	}
+	/*
+	Method paints all elements on screen every change of stage height
+	 */
+	private void HeightScalability(float oldValue, float newValue) {
+		if(root == null) return;
+		float factor = newValue/oldValue;
+		if(mountains != null)
+			for(int i = 0; i < mountains.length; i++)
+				repaintMountainHeight(i, factor);
+		repaintRocketHeight(factor);
+		repaintLandingZoneHeight(factor);
+		repaintFuelRectangleHeight(factor);
+		if((coins != null) && (coinsCircle != null))
+			for(int i = 0; i < coinsCircle.length; i++)
+				repaintCoinHeight(i, factor);
+		actualizeMovingPropertiesHeight(factor);
+		actualizeScoreIndicatorHeight(factor);
+		actualizeLevelTextHeight(factor);
 	}
 	private void repaintRocketWidth(float factor) {
 		if(circle != null) {
@@ -637,6 +635,21 @@ public class GameScene extends Scene {
 			double y = circle.getCenterY();
 			double radiusX = circle.getRadiusX() * factor;
 			double radiusY = circle.getRadiusY();
+			root.getChildren().remove(circle);
+			circle = new Ellipse(x, y, radiusX, radiusY);
+			centerX.setValue(x);
+			centerY.setValue(y);
+			circle.centerXProperty().bind(centerX);
+			circle.centerYProperty().bind(centerY);
+			root.getChildren().add(circle);
+		}
+	}
+	private void repaintRocketHeight(float factor) {
+		if(circle != null) {
+			double x = circle.getCenterX();
+			double y = circle.getCenterY()* factor;
+			double radiusX = circle.getRadiusX();
+			double radiusY = circle.getRadiusY()* factor;
 			root.getChildren().remove(circle);
 			circle = new Ellipse(x, y, radiusX, radiusY);
 			centerX.setValue(x);
@@ -665,12 +678,23 @@ public class GameScene extends Scene {
 			root.getChildren().add(mountains[mountainNumber]);
 		}
 	}
+	private void repaintMountainHeight(int mountainNumber, float factor) {
+		if (mountains[mountainNumber] != null) {
+			root.getChildren().remove(mountains[mountainNumber]);
+			mountains[mountainNumber].setStartY((float) mountains[mountainNumber].getStartY() * factor);
+			mountains[mountainNumber].setEndY((float) mountains[mountainNumber].getEndY() * factor);
+			mountains[mountainNumber].setControlY1((float) mountains[mountainNumber].getControlY1() * factor);
+			mountains[mountainNumber].setControlY2((float) mountains[mountainNumber].getControlY2() * factor);
+			root.getChildren().add(mountains[mountainNumber]);
+		}
+	}
 	/*
 	*	Method counting the final score of the level
 	* @ int endTime, Rocket rocket
 	 */
 	private void countFinalScore(int endTime, Rocket rocket) {
 		score = score - (endTime * 10) + rocket.getFuel() * 100;
+		score = Math.round(score);
 		Player.incrementScore(score);
 		Player.levelCompleted();
 	}
@@ -683,6 +707,15 @@ public class GameScene extends Scene {
 			root.getChildren().add(line);
 		}
 	}
+	private void repaintLandingZoneHeight(float factor) {
+		if(line != null) {
+			root.getChildren().remove(line);
+			line.setStartY((float) line.getStartY() * factor);
+			line.setEndY((float) line.getEndY() * factor);
+			line.setStrokeWidth((float) line.getStrokeWidth() * factor);
+			root.getChildren().add(line);
+		}
+	}
 	private void eatCoin() {
 		score += 100;
 	}
@@ -691,6 +724,15 @@ public class GameScene extends Scene {
 			root.getChildren().remove(fuelRectangle);
 			fuel.setX((float)fuelRectangle.getX() * factor);
 			fuel.setWidth((float)fuelRectangle.getWidth() * factor);
+			fuelRectangle = fuel.paint();
+			root.getChildren().add(fuelRectangle);
+		}
+	}
+	private void repaintFuelRectangleHeight(float factor) {
+		if(fuelRectangle != null) {
+			root.getChildren().remove(fuelRectangle);
+			fuel.setY((float)fuelRectangle.getY() * factor);
+			fuel.setHeight((float)fuelRectangle.getHeight() * factor);
 			fuelRectangle = fuel.paint();
 			root.getChildren().add(fuelRectangle);
 		}
@@ -717,6 +759,13 @@ public class GameScene extends Scene {
 		coinsCircle[coinNumber].setRadiusX(coinsCircle[coinNumber].getRadiusX() * factor);
 		root.getChildren().add(coinsCircle[coinNumber]);
 	}
+	private void repaintCoinHeight(int coinNumber, float factor) {
+		if(coinsCircle[coinNumber] == null) return;
+		root.getChildren().remove(coinsCircle[coinNumber]);
+		coinsCircle[coinNumber].setCenterY(coinsCircle[coinNumber].getCenterY() * factor);
+		coinsCircle[coinNumber].setRadiusY(coinsCircle[coinNumber].getRadiusY() * factor);
+		root.getChildren().add(coinsCircle[coinNumber]);
+	}
 	/*
 	Method actualizes velocities and acceleration relative to OX axis
 	 */
@@ -724,6 +773,25 @@ public class GameScene extends Scene {
 		rocket.setAcceleration(rocket.getAcceleration() * factor);
 		rocket.setRightVelocity(rocket.getRightVelocity() * factor);
 		rocket.setLeftVelocity(rocket.getLeftVelocity() * factor);
+		maxVelX *= factor;
+	}
+	/*
+	Method actualizes velocities and acceleration relative to OY axis
+	 */
+	private void actualizeMovingPropertiesHeight(float factor) {
+		rocket.setFallVelocity(rocket.getFallVelocity() * factor);
+		rocket.setInsFallVelocity(rocket.getInsFallVelocity() * factor);
+		rocket.setFallAcceleration(rocket.getFallAcceleration() * factor);
+		maxVelY *= factor;
+	}
+	private void actualizeScoreIndicatorHeight(float factor) {
+		scoreIndicator.setY(scoreIndicator.getY() * factor);
+	}
+	private void actualizeScoreIndicatorWidth(float factor) {
+		scoreIndicator.setX(scoreIndicator.getX() * factor);
+	}
+	private void actualizeLevelTextHeight(float factor) {
+		levelNumber.setY(scoreIndicator.getY() * factor);
 	}
 
 	/*
@@ -735,7 +803,7 @@ public class GameScene extends Scene {
 		builder.append(Double.toString(score));
 		scoreIndicator.setText(builder.toString());
 		scoreIndicator.setX(300);
-		scoreIndicator.setY(390);
+		scoreIndicator.setY(330);
 		Font font = new Font(20);
 		scoreIndicator.setFont(font);
 	}

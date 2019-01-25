@@ -108,10 +108,13 @@ public class Rocket extends Shape  {
 	public float getInsFallVelocity() {return insFallVelocity;}
 	public float getFallVelocity() {return fallVelocity;}
 	public float getAcceleration() {return  acceleration;}
+	public float getFallAcceleration() {return  fallAcceleration;}
 
 	public void setRightVelocity(float rightVelocity) {this.rightVelocity = rightVelocity;}
 	public void setLeftVelocity(float leftVelocity) {this.leftVelocity = leftVelocity;}
 	public void setAcceleration(float acceleration) {this.acceleration = acceleration;}
+	public void setInsFallVelocity(float insFallVelocity) {this.fallVelocity = fallVelocity;}
+	public void setFallAcceleration(float acceleration) {this.fallAcceleration = fallAcceleration;}
 	public void setInsUpVelocity(float insUpVelocity) {this.insUpVelocity = insUpVelocity;}
 	public void setInsLeftVelocity(float insLeftVelocity) {this.insLeftVelocity = insLeftVelocity;}
 	public void setInsRightVelocity(float insRightVelocity) {this.insRightVelocity = insRightVelocity;}

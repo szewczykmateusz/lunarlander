@@ -71,8 +71,8 @@ public class Frame extends Application {
 	}
 
 	public void setMainMenuScene() {
-		stage.setWidth(stage.getWidth() + 1);
-		stage.setHeight(stage.getHeight() + 1);
+		stage.setWidth(stage.getWidth() + 0.1);
+		stage.setHeight(stage.getHeight() + 0.1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
 		stage.setScene(mainMenuScene);
 		mainMenuScene.getStylesheets().add("css/style.css");
@@ -93,6 +93,7 @@ public class Frame extends Application {
 
 	}
 	public void setGameScene(Enum difficulty) {
+		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		stage.setWidth(Constants.GAME_SCENE_DEFAULT_WIDTH);
 		stage.setHeight(Constants.GAME_SCENE_DEFAULT_HEIGHT);
 		stage.setScene(gameScene.initiateGame(difficulty));

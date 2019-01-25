@@ -45,6 +45,7 @@ public class Player {
         if(lifesNumber == 0) {
             actualLevel = 1;
             isLose = true;
+            lifesNumber = 3;
         }
     }
 
