@@ -785,7 +785,9 @@ public class GameScene extends Scene {
 	* @ int endTime, Rocket rocket
 	 */
 	private void countFinalScore(int endTime, Rocket rocket) {
-		score = score - (endTime * 5) + rocket.getFuel() * 200;
+		//higher difficulties has bonus
+		score = (Player.getChosenDifficulty().ordinal()) * 100 +
+				score - (endTime * 5) + rocket.getFuel() * 200;
 		if(score < 0) score = 0;
 		score = Math.round(score);
 		Player.incrementScore(score);
