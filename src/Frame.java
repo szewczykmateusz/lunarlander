@@ -93,13 +93,13 @@ public class Frame extends Application {
 
 	}
 	public void setGameScene(Enum difficulty) {
-		try {
-			Client client = new Client();
-			client.getLevel(Player.getActualLevel());
-			Thread.sleep(1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Client client = new Client();
+//			client.getLevel(Player.getActualLevel());
+//			Thread.sleep(1000);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		stage.setWidth(Constants.GAME_SCENE_DEFAULT_WIDTH);
 		stage.setHeight(Constants.GAME_SCENE_DEFAULT_HEIGHT);
