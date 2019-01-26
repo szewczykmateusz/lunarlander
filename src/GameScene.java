@@ -89,11 +89,7 @@ public class GameScene extends Scene {
 			DEFAULT_HEIGHT = (float)stage.getHeight();
 
 		});
-	/*	stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-//			paintElements((float)oldVal, (float)newVal);
-		}); */
 		this.nextScene = nextScene;
-//		cfg = new Config();
 	}
 	
 	public Scene initiateGame(Enum difficulty) {
@@ -114,7 +110,8 @@ public class GameScene extends Scene {
 		}
 		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"), Utils.intFromConfig(cfg,"fuelSize"));
 		fuelRectangle = fuel.paint();
-		fuelBar = new FuelBar(530, 20);
+		fuelBar = new FuelBar(Utils.doubleFromConfig(cfg, "fuelBarX"),
+				Utils.doubleFromConfig(cfg, "fuelBarY"));
 
 		//set level number
 		Text levelNumber = setLevelNumber();
@@ -128,20 +125,14 @@ public class GameScene extends Scene {
 		//timeText initialization, setting starting value and text properties
 		timer = new LevelTimer();
 		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
-		
-//		line = new Line();
-//		line = setLineProperties();
 		mountains = new CubicCurve[numberOfMountains];
 		for(int i = 0; i < numberOfMountains; i++) {
 			mountains[i] = new CubicCurve();
 			mountains[i] = setMountainProperties(i+1);
 		}
-
- //       DoubleProperty mountainsProp = new SimpleDoubleProperty();
 		centerX = new SimpleDoubleProperty();
 		centerY = new SimpleDoubleProperty();
-
-		circle = new Ellipse(0, 0, 5, 5);
+		circle = new Ellipse(rocket.getX(), rocket.getY(), rocket.getRadius(), rocket.getRadius());
 		circle = rocket.paint();
 		fuelBarCountor = fuelBar.paint();
 
@@ -157,14 +148,13 @@ public class GameScene extends Scene {
 				velXText, velYText, timeText, circle, line, lifesText);
 		root.setFocusTraversable(true);
 
-//		startGame();
+
 		animate(centerX, centerY);
 
 		circle.centerXProperty().bind(centerX);
 		circle.centerYProperty().bind(centerY);
-		centerX.setValue(300);
-		centerY.setValue(100);
-//		mountainsProp.setValue(250);
+		centerX.setValue(rocket.getX());
+		centerY.setValue(rocket.getY());
 		root.requestFocus();
 		return scene;
 	}
@@ -275,6 +265,42 @@ public class GameScene extends Scene {
 			rocket.addFuel();
 			fuel.setWasUsed();
 		}
+		else if(fuelRectangle.contains((circle.getCenterX() + rocket.getRadius()),
+				(circle.getCenterY() + rocket.getRadius()))
+				&& !fuel.getWasUsed()) {
+//			System.out.println("Paliwo");
+//			fuelRectangle.setVisible(false);
+			root.getChildren().remove(fuelRectangle);
+			rocket.addFuel();
+			fuel.setWasUsed();
+		}
+		else if(fuelRectangle.contains((circle.getCenterX() - rocket.getRadius()),
+				(circle.getCenterY() - rocket.getRadius()))
+				&& !fuel.getWasUsed()) {
+//			System.out.println("Paliwo");
+//			fuelRectangle.setVisible(false);
+			root.getChildren().remove(fuelRectangle);
+			rocket.addFuel();
+			fuel.setWasUsed();
+		}
+		else if(fuelRectangle.contains((circle.getCenterX() - rocket.getRadius()),
+				(circle.getCenterY() + rocket.getRadius()))
+				&& !fuel.getWasUsed()) {
+//			System.out.println("Paliwo");
+//			fuelRectangle.setVisible(false);
+			root.getChildren().remove(fuelRectangle);
+			rocket.addFuel();
+			fuel.setWasUsed();
+		}
+		else if(fuelRectangle.contains((circle.getCenterX() + rocket.getRadius()),
+				(circle.getCenterY() - rocket.getRadius()))
+				&& !fuel.getWasUsed()) {
+//			System.out.println("Paliwo");
+//			fuelRectangle.setVisible(false);
+			root.getChildren().remove(fuelRectangle);
+			rocket.addFuel();
+			fuel.setWasUsed();
+		}
 	}
 	/*
 	Method checks if rocket has a collision with landingZone,
@@ -330,14 +356,47 @@ public class GameScene extends Scene {
 	Method checks if rocket had a collision with coin, if so points value increases
 	 */
 	private void checkCoinCollision() {
-		for(int i = 0; i < coinsCircle.length; i++)
-			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())
-			&& !coins[i].getWasUsed()) {
+		for(int i = 0; i < coinsCircle.length; i++) {
+			if ((coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())
+					&& !coins[i].getWasUsed())) {
 //				System.out.println("You've got a coin!");
 				eatCoin();
 				root.getChildren().remove(coinsCircle[i]);
 				coins[i].setWasUsed();
 			}
+			else if ((coinsCircle[i].contains((circle.getCenterX() + rocket.getRadius())
+					, (circle.getCenterY() + rocket.getRadius()))
+					&& !coins[i].getWasUsed())) {
+//				System.out.println("You've got a coin!");
+				eatCoin();
+				root.getChildren().remove(coinsCircle[i]);
+				coins[i].setWasUsed();
+			}
+			else if ((coinsCircle[i].contains((circle.getCenterX() - rocket.getRadius())
+					, (circle.getCenterY() - rocket.getRadius()))
+					&& !coins[i].getWasUsed())) {
+//				System.out.println("You've got a coin!");
+				eatCoin();
+				root.getChildren().remove(coinsCircle[i]);
+				coins[i].setWasUsed();
+			}
+			else if ((coinsCircle[i].contains((circle.getCenterX() + rocket.getRadius())
+					, (circle.getCenterY() - rocket.getRadius()))
+					&& !coins[i].getWasUsed())) {
+//				System.out.println("You've got a coin!");
+				eatCoin();
+				root.getChildren().remove(coinsCircle[i]);
+				coins[i].setWasUsed();
+			}
+			else if ((coinsCircle[i].contains((circle.getCenterX() - rocket.getRadius())
+					, (circle.getCenterY() + rocket.getRadius()))
+					&& !coins[i].getWasUsed())) {
+//				System.out.println("You've got a coin!");
+				eatCoin();
+				root.getChildren().remove(coinsCircle[i]);
+				coins[i].setWasUsed();
+			}
+		}
 
 
 	}
