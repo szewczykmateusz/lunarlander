@@ -174,7 +174,7 @@ public class GameScene extends Scene {
 	private Text setStartVelXText() {
 		Text velX = new Text();
 		StringBuilder builder = new StringBuilder();
-		builder.append("PredkoscX:");
+		builder.append("VelocityX:");
 		builder.append(Double.toString(rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()));
 		velX.setText(builder.toString());
 		velX.setX(3);
@@ -190,7 +190,7 @@ public class GameScene extends Scene {
 	private Text setStartVelYText() {
 		Text velY = new Text();
 		StringBuilder builder = new StringBuilder();
-		builder.append("PredkoscY:");
+		builder.append("VelocityY:");
 		builder.append(Double.toString(rocket.getFallVelocity()));
 		velY.setText(builder.toString());
 		velY.setX(3);
@@ -587,7 +587,7 @@ public class GameScene extends Scene {
 		float xValue = rocket.getInsRightVelocity() + rocket.getInsLeftVelocity();
 		velXText = new Text();
 		StringBuilder builder = new StringBuilder();
-		builder.append("PredkoscX:");
+		builder.append("VelocityX:");
 		builder.append(Float.toString(xValue));
 		velXText.setText(builder.toString());
 		velXText.setX(3);
@@ -630,10 +630,10 @@ public class GameScene extends Scene {
 		float yValue = 0;
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
-		builder.append("PredkoscY:");
+		builder.append("VelocityY:");
 		if(k == KeyCode.UP) {
 			yValue = rocket.getInsFallVelocity() + rocket.getInsUpVelocity();
-			builder.append(Double.toString(yValue));
+			builder.append(Double.toString(Utils.round(yValue)));
 		}
 		else {
 			yValue = rocket.getInsFallVelocity();
@@ -659,8 +659,8 @@ public class GameScene extends Scene {
 		root.getChildren().remove(velYText);
 		velYText = new Text();
 		StringBuilder builder = new StringBuilder();
-		builder.append("PredkoscY:");
-		builder.append(Double.toString(Utils.round(yValue)));
+		builder.append("VelocityY:");
+		builder.append(Utils.round(yValue));
 		velYText.setText(builder.toString());
 		velYText.setX(3);
 		velYText.setY(25);

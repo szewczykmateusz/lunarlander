@@ -56,8 +56,10 @@ public class Utils {
      */
     public static float round(float number) {
         double x = Math.pow(10, precision);
-        number *= (float)x;
-        number /= (float)x;
+        int roundedNumber = Math.round((int)x);
+ //       System.out.println(number);
+ //      number = Math.round(number);
+        number /= roundedNumber / (float)x;
         return number;
     }
 
@@ -76,5 +78,5 @@ public class Utils {
         }).start();
     }
 
-    private final static int precision = 2;
+    private final static int precision = 1;
 }
