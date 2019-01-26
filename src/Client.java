@@ -10,8 +10,7 @@ public class Client {
     //private Socket socket;
 //
 //    public static void main(String[] args) throws Exception {
-//
-//
+////
 //        Socket socket = new Socket("localhost", 8000);
 //        Scanner scanner = new Scanner(socket.getInputStream());
 //        String line, data = "";

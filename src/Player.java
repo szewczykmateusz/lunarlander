@@ -7,7 +7,7 @@ public class Player {
 
     private static String name;
     private static double score = 0;
-    private static int actualLevel = 1;
+    private static int actualLevel = 3;
     private static Enum chosenDifficulty;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
     private static int lifesNumber = 3;
