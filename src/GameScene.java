@@ -315,7 +315,12 @@ public class GameScene extends Scene {
 				circle.setVisible(true);
 				rocketAnimation.stop();
 				countFinalScore(timer.getSeconds(), rocket);
-				frame.setScoreScene();
+				if(Player.getActualLevel() == Constants.LEVEL_NUMBERS+1) {
+					Player.getBestScores().addResult((float) Player.getPlayerScore(), Player.getName());
+					frame.setLeaderboardScene();
+				}
+				else
+					frame.setScoreScene();
 			}
 			else {
 //				System.out.println("Kolizja");

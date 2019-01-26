@@ -6,6 +6,7 @@ public class Constants {
     public final static float GAME_SCENE_DEFAULT_HEIGHT = DEFAULT_HEIGHT;
     public final static int GAME_TIME = 30;
     public final static float START_SCORE = 1000;
+    public final static int LEVEL_NUMBERS = Utils.intFromConfig(cfg, "levelNumbers");
 
     public static void setDefaultWidth(float defaultWidth) {DEFAULT_WIDTH = defaultWidth;}
     public static void setDefaultHeight(float defaultHeight) {DEFAULT_HEIGHT = defaultHeight;}
