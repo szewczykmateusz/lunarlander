@@ -16,6 +16,7 @@ public class Player {
 
     public static void setName(String Name) {name = Name;}
     public static String getName() {return name;}
+    public static double getScore() {return score;}
     public static int getActualLevel() {return actualLevel;}
     public static double getPlayerScore() {return score;}
     public static Enum getChosenDifficulty() {return chosenDifficulty;}

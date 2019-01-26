@@ -721,7 +721,7 @@ public class GameScene extends Scene {
 	* @ int endTime, Rocket rocket
 	 */
 	private void countFinalScore(int endTime, Rocket rocket) {
-		score = 3 * score - (endTime * 10) + rocket.getFuel() * 100;
+		score = score - (endTime * 5) + rocket.getFuel() * 200;
 		if(score < 0) score = 0;
 		score = Math.round(score);
 		Player.incrementScore(score);

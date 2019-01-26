@@ -7,7 +7,7 @@ import javafx.util.Pair;
 public class BestScoresConfig {
     private Properties configFile;
     private List<Pair<Float, String>> bestResults = new ArrayList<Pair<Float, String>>();   //list of pairs of users name and his score
-
+    private int bestResultNumber = 10;
   /*  public BestScoresConfig() {
         configFile = new java.util.Properties();
         try {
@@ -30,6 +30,16 @@ public class BestScoresConfig {
             System.out.println(bestResults.get(i).getKey() + " " + bestResults.get(i).getValue());
         }
     }
+    public Pair<Float, String> getResult(int number) {
+        return bestResults.get(number);
+    }
+    public int getResultsNumber() {
+        if (bestResults.size() < bestResultNumber)
+            return bestResults.size();
+        else
+            return bestResultNumber;
+    }
+
     public String getProperty(String key) {
         String value = this.configFile.getProperty(key);
         return value;

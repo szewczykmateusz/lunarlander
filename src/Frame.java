@@ -70,8 +70,7 @@ public class Frame extends Application {
 	}
 
 	public void setMainMenuScene() {
-//		Player.resetPlayerScore();
-//		Player.resetPlayerLevel();
+		Player.reset();
 		stage.setWidth(stage.getWidth() + 0.1);
 		stage.setHeight(stage.getHeight() + 0.1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
