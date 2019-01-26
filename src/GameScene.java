@@ -49,20 +49,19 @@ public class GameScene extends Scene {
 	private Rectangle fuelBarCountor = new Rectangle();
 	private Rocket rocket;
 	private Text timeText;
-	private Config cfg = new Config(Player.getActualLevel());
+	private Config cfg;
 	private Timeline rocketAnimation;
 	private Rectangle rect;
 	private Ellipse circle;
-	private Line line = setLineProperties();
+	private Line line;
 	private CubicCurve[] mountains;
 	private Group root;
 	private Fuel fuel;
 	private Rectangle fuelRectangle = new Rectangle();
 	private Text velXText;
 	private Text velYText;
-	// maximum values of velocity by which rocket can successfully land
-	private float maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
-	private float maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+	private float maxVelX;
+	private float maxVelY;
 	private Stage stage;
 	private Scene nextScene;
 	private DoubleProperty centerX;
@@ -92,21 +91,37 @@ public class GameScene extends Scene {
 	}
 	
 	public Scene initiateGame(Enum difficulty) {
-		/*
-		Depending on difficulty argument we set fallVelocity
-		 */
-		rocket = new Rocket(difficulty);
-	//	rocket.setFallVelocity(getFallVelocity(difficulty));
+//		try {
+//			//setup the client
+//			Client client = new Client();
+//			//get level from the server
+//			client.getLevel(Player.getActualLevel());
+//			Thread.sleep(60000);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		//read the config that is already retrieved from the server
+		cfg = new Config(Player.getActualLevel());
 
+		//setting line properties
+		line = setLineProperties();
+
+		// maximum values of velocity by which rocket can successfully land
+		maxVelX = Utils.floatFromConfig(cfg, "maxVelX");
+		maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
+
+		//Depending on difficulty argument we set fallVelocity
+		rocket = new Rocket(difficulty);
+		//	rocket.setFallVelocity(getFallVelocity(difficulty));
 		numberOfMountains = Utils.intFromConfig(cfg, "mountainsCount");
 		coinsQuantity = Utils.intFromConfig(cfg, "coinsQuantity");
 		coins = new Coin[coinsQuantity];
 		coinsCircle = new Ellipse[coinsQuantity];
-		for(Integer i = 1; i <= coinsQuantity; i++) {
-			coins[i - 1] = new Coin(Utils.intFromConfig(cfg,"coin" + i + "X"), Utils.intFromConfig(cfg,"coin" + i + "Y"));
+		for (Integer i = 1; i <= coinsQuantity; i++) {
+			coins[i - 1] = new Coin(Utils.intFromConfig(cfg, "coin" + i + "X"), Utils.intFromConfig(cfg, "coin" + i + "Y"));
 			coinsCircle[i - 1] = coins[i - 1].paint();
 		}
-		fuel = new Fuel(Utils.intFromConfig(cfg,"fuelX"), Utils.intFromConfig(cfg,"fuelY"), Utils.intFromConfig(cfg,"fuelSize"));
+		fuel = new Fuel(Utils.intFromConfig(cfg, "fuelX"), Utils.intFromConfig(cfg, "fuelY"), Utils.intFromConfig(cfg, "fuelSize"));
 		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(530, 20);
 
@@ -121,16 +136,16 @@ public class GameScene extends Scene {
 		//timeText initialization, setting starting value and text properties
 		timer = new LevelTimer();
 		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
-		
+
 //		line = new Line();
 //		line = setLineProperties();
 		mountains = new CubicCurve[numberOfMountains];
-		for(int i = 0; i < numberOfMountains; i++) {
+		for (int i = 0; i < numberOfMountains; i++) {
 			mountains[i] = new CubicCurve();
-			mountains[i] = setMountainProperties(i+1);
+			mountains[i] = setMountainProperties(i + 1);
 		}
 
- //       DoubleProperty mountainsProp = new SimpleDoubleProperty();
+		//       DoubleProperty mountainsProp = new SimpleDoubleProperty();
 		centerX = new SimpleDoubleProperty();
 		centerY = new SimpleDoubleProperty();
 
@@ -138,10 +153,10 @@ public class GameScene extends Scene {
 		circle = rocket.paint();
 		fuelBarCountor = fuelBar.paint();
 		root = new Group(circle, line);
-		for(int i = 0; i <mountains.length; i++)
-	    	root.getChildren().add(mountains[i]);
+		for (int i = 0; i < mountains.length; i++)
+			root.getChildren().add(mountains[i]);
 		//adding all the coins to root
-		for(Integer i = 0; i < coinsQuantity; i++) {
+		for (Integer i = 0; i < coinsQuantity; i++) {
 			root.getChildren().addAll(coinsCircle[i]);
 		}
 		fuelBarRectangle = fuelBar.fillFuel(rocket.getFuel());
