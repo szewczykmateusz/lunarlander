@@ -76,7 +76,6 @@ public class GameScene extends Scene {
 
 	public GameScene(Region root, Stage stage, Scene nextScene, Frame frame) {
 		super(root);
-		System.out.println(Player.getActualLevel());
 		this.frame = frame;
 		DEFAULT_WIDTH = Constants.getDefaultWidth();
 		DEFAULT_HEIGHT = Constants.getDefaultHeight();
@@ -249,12 +248,17 @@ public class GameScene extends Scene {
 	public void checkForMountainCollision() {
 	    for(int i = 0; i < mountains.length; i++)
             if (mountains[i].contains(circle.getCenterX(), circle.getCenterY())) {
-                System.out.println("Kolizja");
+//                System.out.println("Kolizja");
                 rocketAnimation.stop();
                 circle.setVisible(false);
                 Player.levelFailed();
 //				stage.setScene(nextScene);
-				frame.setScoreScene();
+				if(checkPlayersLifes()) {
+					frame.setScoreScene();
+				}
+				else {
+					frame.setLeaderboardScene();
+				}
             }
 	}
 	/*
@@ -265,7 +269,7 @@ public class GameScene extends Scene {
 	public void checkForFuelCollision() {
 		if(fuelRectangle.contains(circle.getCenterX(), circle.getCenterY())
 				&& !fuel.getWasUsed()) {
-			System.out.println("Paliwo");
+//			System.out.println("Paliwo");
 //			fuelRectangle.setVisible(false);
 			root.getChildren().remove(fuelRectangle);
 			rocket.addFuel();
@@ -281,20 +285,27 @@ public class GameScene extends Scene {
 		if (line.contains(circle.getCenterX(), circle.getCenterY())) {
 			if((rocket.getInsRightVelocity() + rocket.getInsLeftVelocity()) < maxVelX
 			&& (rocket.getInsFallVelocity() < maxVelY)) {
-				System.out.println("Ladowanie");
+//				System.out.println("Ladowanie");
 				circle.setVisible(true);
 				rocketAnimation.stop();
 				countFinalScore(timer.getSeconds(), rocket);
+				frame.setScoreScene();
 			}
 			else {
-				System.out.println("Kolizja");
+//				System.out.println("Kolizja");
 				circle.setVisible(false);
 				rocketAnimation.stop();
 				Player.levelFailed();
+				if(checkPlayersLifes()) {
+					frame.setScoreScene();
+				}
+				else {
+					frame.setLeaderboardScene();
+				}
 			}
 
 //			stage.setScene(nextScene);
-			frame.setScoreScene();
+
 		}
 
 	}
@@ -307,7 +318,12 @@ public class GameScene extends Scene {
 			rocketAnimation.stop();
 			Player.levelFailed();
 //			stage.setScene(nextScene);
-			frame.setScoreScene();
+			if(checkPlayersLifes()) {
+				frame.setScoreScene();
+			}
+			else {
+				frame.setLeaderboardScene();
+			}
 		}
 	}
 	/*
@@ -317,7 +333,7 @@ public class GameScene extends Scene {
 		for(int i = 0; i < coinsCircle.length; i++)
 			if(coinsCircle[i].contains(circle.getCenterX(), circle.getCenterY())
 			&& !coins[i].getWasUsed()) {
-				System.out.println("You've got a coin!");
+//				System.out.println("You've got a coin!");
 				eatCoin();
 				root.getChildren().remove(coinsCircle[i]);
 				coins[i].setWasUsed();
@@ -334,6 +350,19 @@ public class GameScene extends Scene {
 		checkForFuelCollision();
 		checkOutOfBoundsCollision();
 		checkCoinCollision();
+	}
+	/*
+	Method checks if player lost all lifes, if so next scene is leaderboard scene
+	if game is over returns false, else true
+	 */
+	private boolean checkPlayersLifes() {
+		if(Player.getGameStatus()) {
+			//adding players result to best results
+			Player.getBestScores().addResult((float) Player.getPlayerScore(), Player.getName());
+			Player.reset();
+			return false;
+		}
+		return true;
 	}
 
 	/*
@@ -404,7 +433,6 @@ public class GameScene extends Scene {
 				new KeyFrame(new Duration(10.0), t ->  {
 					//every second timeText is actualized
 					setTimer();
-					System.out.println(Player.getActualLevel());
 					//if collision happen animation stops
 					checkForCollisions();
 					// set velocity with which rocket falls down
@@ -693,7 +721,8 @@ public class GameScene extends Scene {
 	* @ int endTime, Rocket rocket
 	 */
 	private void countFinalScore(int endTime, Rocket rocket) {
-		score = 2 * score - (endTime * 10) + rocket.getFuel() * 100;
+		score = 3 * score - (endTime * 10) + rocket.getFuel() * 100;
+		if(score < 0) score = 0;
 		score = Math.round(score);
 		Player.incrementScore(score);
 		Player.levelCompleted();

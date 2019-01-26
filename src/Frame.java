@@ -35,7 +35,6 @@ public class Frame extends Application {
 
 		});
 		stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-			System.out.println(stage.getHeight());
 			Constants.setDefaultHeight((float)stage.getHeight() - 38);
 
 		});
@@ -71,8 +70,8 @@ public class Frame extends Application {
 	}
 
 	public void setMainMenuScene() {
-		Player.resetPlayerScore();
-		Player.resetPlayerLevel();
+//		Player.resetPlayerScore();
+//		Player.resetPlayerLevel();
 		stage.setWidth(stage.getWidth() + 0.1);
 		stage.setHeight(stage.getHeight() + 0.1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
@@ -110,10 +109,9 @@ public class Frame extends Application {
 	public void setLeaderboardScene() {
 		stage.setWidth(stage.getWidth() - 1);
 		stage.setHeight(stage.getHeight() - 1);
-		stage.setScene(leaderboardScene);
 		leaderboardScene = LeaderboardScene.getLeaderboardScene(this);
 		stage.setScene(leaderboardScene);
-		setDifficultyScene.getStylesheets().add("css/style.css");
+		leaderboardScene.getStylesheets().add("css/style.css");
 	}
 
 	public Stage getStage() {return stage;}

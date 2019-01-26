@@ -26,6 +26,9 @@ public class BestScoresConfig {
                 else return 1;
             }
         });
+        for(int i = 0; i < bestResults.size(); i++) {
+            System.out.println(bestResults.get(i).getKey() + " " + bestResults.get(i).getValue());
+        }
     }
     public String getProperty(String key) {
         String value = this.configFile.getProperty(key);

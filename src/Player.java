@@ -12,6 +12,7 @@ public class Player {
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
     private static int lifesNumber = 3;
     private static boolean isLose = false; // when player lost all lifes, isLose = true, and game ends
+    private static BestScoresConfig bestScores = new BestScoresConfig();
 
     public static void setName(String Name) {name = Name;}
     public static String getName() {return name;}
@@ -21,6 +22,8 @@ public class Player {
     public static int getLifesNumber() {return lifesNumber;}
     public static void resetPlayerScore() {score = 0;}
     public static void resetPlayerLevel() {actualLevel = 1;}
+    public static boolean getGameStatus() {return isLose;}
+    public static BestScoresConfig getBestScores() {return bestScores;}
 
     /*
         Method incrementing player's score by adding the passed value
@@ -41,14 +44,21 @@ public class Player {
     Method checks that level was failed
      */
     public static void levelFailed() {
-
         completedLevels.add(0);
         lifesNumber--;
         if(lifesNumber == 0) {
-            actualLevel = 1;
             isLose = true;
-            lifesNumber = 3;
         }
+    }
+    /*
+    Method resets player properties after lose
+     */
+    public static void reset() {
+        actualLevel = 1;
+        isLose = false;
+        lifesNumber = 3;
+        score = 0;
+        completedLevels = new ArrayList<>();
     }
 
 
