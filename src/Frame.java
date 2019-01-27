@@ -47,6 +47,14 @@ public class Frame extends Application {
 		pickNickScene = PickNick.getPickNickScene(this);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
 		startScene = StartScene.getStartScene(this);
+		if(Constants.ifServerConnection) {
+				try {
+					Client client = new Client();
+					client.getLevel(0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		}
 
 		//stylesheets setup
 		linkStylesheets();

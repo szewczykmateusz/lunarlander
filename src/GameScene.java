@@ -32,8 +32,8 @@ import org.w3c.dom.css.Rect;
 import javafx.scene.transform.Rotate;
 
 import javax.swing.Timer;
-/*
-Class responsbile for making scene wherein the game takes place
+/**
+ *Class responsbile for making scene wherein the game takes place
  */
 
 public class GameScene extends Scene {

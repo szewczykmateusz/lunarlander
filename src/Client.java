@@ -85,6 +85,7 @@ public class Client {
                 }
             }
             configFile.close();
+ //           socket.close();
             System.out.println("File saved.");
         } catch(Exception e) {
             System.out.println("Could not process the response.");
