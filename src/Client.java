@@ -20,8 +20,7 @@ public class Client {
         }
     }
 //    public static void main(String[] args) throws Exception {
-//
-//
+////
 //        Socket socket = new Socket("localhost", 8000);
 //        Scanner scanner = new Scanner(socket.getInputStream());
 //        PrintWriter configFile = new PrintWriter("config.cfg");

@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 
 /*
- * Klasa rysujaca rakiete oraz animujaca jej przemieszczenie
+ * Class draws rocket and keeps all properties of rocket
  */
 public class Rocket extends Shape  {
 
@@ -22,14 +22,12 @@ public class Rocket extends Shape  {
 	private float insLeftVelocity = leftVelocity;
 	private float insRightVelocity = rightVelocity;
 	private float acceleration = Utils.floatFromConfig(cfg, "acceleration");
-	private int height; //wymiary rakiety
+	private int height; //sizes of rocket
 	private int width;
-	private double fuel = 1; //ilosc paliwa, przyjmuje wartosci z przedzialu <0,1>
-	//	private DoubleProperty centerX = new SimpleDoubleProperty(); //centralny punkty pilki
-//	private DoubleProperty centerY = new SimpleDoubleProperty();
+	private double radius = Utils.doubleFromConfig(cfg, "rocketRadius");
+	private double fuel; //fuel quantity, keeps values from <0,1>
 	private double x;
 	private double y;
-	private double radius = 5;
 	private double burningVelocity;
 	private double extendFuelValue;
 	// instant velocity with which rocket is falling down, when any key isn`s pressed
@@ -71,10 +69,11 @@ public class Rocket extends Shape  {
 		rocket.setCenterY(y);
 		rocket.setRadiusX(radius);
 		rocket.setRadiusY(radius);
-		rocket.setFill(Color.HOTPINK);
+		rocket.setFill(Color.BLACK);
 		return rocket;
 		
 	}
+	public double getRadius() {return radius;}
 
 	/*
 	Method assuring that the rocket is going to burn 0.1 of it's fuel per 6 seconds
@@ -109,6 +108,8 @@ public class Rocket extends Shape  {
 	public float getFallVelocity() {return fallVelocity;}
 	public float getAcceleration() {return  acceleration;}
 	public float getFallAcceleration() {return  fallAcceleration;}
+	public double getX() {return x;}
+	public double getY() {return y;}
 
 	public void setRightVelocity(float rightVelocity) {this.rightVelocity = rightVelocity;}
 	public void setLeftVelocity(float leftVelocity) {this.leftVelocity = leftVelocity;}

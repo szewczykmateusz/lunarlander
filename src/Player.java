@@ -1,3 +1,5 @@
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+
 import java.util.ArrayList;
 
 /*
@@ -7,10 +9,10 @@ public class Player {
 
     private static String name;
     private static double score = 0;
-    private static int actualLevel = 1;
+    private static int actualLevel = Constants.STARTING_LEVEL;
     private static Enum chosenDifficulty;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
-    private static int lifesNumber = 3;
+    private static int lifesNumber = Constants.LIFES_NUMBERS;
     private static boolean isLose = false; // when player lost all lifes, isLose = true, and game ends
     private static BestScoresConfig bestScores = new BestScoresConfig();
 
@@ -22,7 +24,7 @@ public class Player {
     public static Enum getChosenDifficulty() {return chosenDifficulty;}
     public static int getLifesNumber() {return lifesNumber;}
     public static void resetPlayerScore() {score = 0;}
-    public static void resetPlayerLevel() {actualLevel = 1;}
+    public static void resetPlayerLevel() {actualLevel = Constants.STARTING_LEVEL;}
     public static boolean getGameStatus() {return isLose;}
     public static BestScoresConfig getBestScores() {return bestScores;}
 
