@@ -4,9 +4,11 @@ import javafx.scene.shape.Rectangle;
 
 public class FuelBar extends Shape {
 	
-	public FuelBar(double x, double y) {
+	public FuelBar(double x, double y, Config cfg) {
 		this.x = x;
 		this.y = y;
+		this.cfg = cfg;
+		edgeDistance = (int) Utils.floatFromConfig(cfg, "fuelBarEdgeDistance");
 	}
 
 	@Override
@@ -63,11 +65,11 @@ public class FuelBar extends Shape {
 	public void setHeight(double factor) {height *= factor;}
 	public int getEdgeDistance() {return edgeDistance;}
 
-	private Config cfg = new Config(Player.getActualLevel());
+	private Config cfg;
 	private double x;
 	private double y;
 	private double width = 50;
 	private double height = 20;
 	private double arcSize = 10;
-	private int edgeDistance = (int) Utils.floatFromConfig(cfg, "fuelBarEdgeDistance");
+	private int edgeDistance;
 }

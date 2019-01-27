@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -24,6 +25,11 @@ public class PickNick extends Scene {
 
         //Adding Next button
         Button nextButton = new Button("Next");
+        Text controls = new Text("CONTROLS:");
+        Text moveLeft = new Text("MOVE LEFT - LEFT ARROW");
+        Text moveRight = new Text("MOVE RIGHT - RIGHT ARROW");
+        Text moveUp = new Text("MOVE UP - UP ARROW");
+        Text pause = new Text("PAUSE - SPACE");
 
         //Layout:
         VBox layout = new VBox(20);
@@ -32,7 +38,8 @@ public class PickNick extends Scene {
         configureButtonAction(nextButton, frame, inputNick, layout);
 
 
-        layout.getChildren().addAll(label, inputNick, nextButton);
+        layout.getChildren().addAll(label, inputNick,
+                controls, moveLeft, moveRight, moveUp, pause, nextButton);
 
 
         return new Scene(layout, Constants.getDefaultWidth(), Constants.getDefaultHeight());

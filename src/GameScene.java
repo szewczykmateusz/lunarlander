@@ -89,6 +89,7 @@ public class GameScene extends Scene {
 
 		});
 		this.nextScene = nextScene;
+		this.cfg = cfg;
 	}
 	
 	public Scene initiateGame(Enum difficulty) {
@@ -101,7 +102,7 @@ public class GameScene extends Scene {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-		//read the config that is already retrieved from the server
+
 		cfg = new Config(Player.getActualLevel());
 
 		//setting line properties
@@ -112,7 +113,7 @@ public class GameScene extends Scene {
 		maxVelY = Utils.floatFromConfig(cfg, "maxVelY");
 
 		//Depending on difficulty argument we set fallVelocity
-		rocket = new Rocket(difficulty);
+		rocket = new Rocket(difficulty, cfg);
 	//	rocket.setFallVelocity(getFallVelocity(difficulty));
 		root = new Group();
 		Scene scene = new Scene(root, Constants.GAME_SCENE_DEFAULT_WIDTH, Constants.GAME_SCENE_DEFAULT_HEIGHT);
@@ -121,13 +122,13 @@ public class GameScene extends Scene {
 		coins = new Coin[coinsQuantity];
 		coinsCircle = new Ellipse[coinsQuantity];
 		for (Integer i = 1; i <= coinsQuantity; i++) {
-			coins[i - 1] = new Coin(Utils.intFromConfig(cfg, "coin" + i + "X"), Utils.intFromConfig(cfg, "coin" + i + "Y"));
+			coins[i - 1] = new Coin(Utils.intFromConfig(cfg, "coin" + i + "X"), Utils.intFromConfig(cfg, "coin" + i + "Y"), cfg);
 			coinsCircle[i - 1] = coins[i - 1].paint();
 		}
 		fuel = new Fuel(Utils.intFromConfig(cfg, "fuelX"), Utils.intFromConfig(cfg, "fuelY"), Utils.intFromConfig(cfg, "fuelSize"));
 		fuelRectangle = fuel.paint();
 		fuelBar = new FuelBar(Utils.doubleFromConfig(cfg, "fuelBarX"),
-				Utils.doubleFromConfig(cfg, "fuelBarY"));
+				Utils.doubleFromConfig(cfg, "fuelBarY"), cfg);
 
 		//set level number
 		Text levelNumber = setLevelNumber();
@@ -139,7 +140,7 @@ public class GameScene extends Scene {
 		velYText = setStartVelYText();
 		setLifesText();
 		//timeText initialization, setting starting value and text properties
-		timer = new LevelTimer();
+		timer = new LevelTimer(cfg);
 		timeText = setTimeText((stage.getWidth() - timer.getEdgeDistance()));
 
 //		line = new Line();

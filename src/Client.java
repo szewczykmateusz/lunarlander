@@ -85,7 +85,6 @@ public class Client {
                 }
             }
             configFile.close();
-
             System.out.println("File saved.");
         } catch(Exception e) {
             System.out.println("Could not process the response.");

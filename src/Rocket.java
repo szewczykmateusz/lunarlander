@@ -12,42 +12,34 @@ import javafx.scene.shape.Ellipse;
  */
 public class Rocket extends Shape  {
 
-	private Config cfg = new Config(Player.getActualLevel());
+	private Config cfg;
 	//starting values of velocities
-	private float upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
-	private float leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
-	private float rightVelocity = -leftVelocity;
+	private float upVelocity;
+	private float leftVelocity;
+	private float rightVelocity;
 	//instant values of velocities
-	private float insUpVelocity = upVelocity;
-	private float insLeftVelocity = leftVelocity;
-	private float insRightVelocity = rightVelocity;
-	private float acceleration = Utils.floatFromConfig(cfg, "acceleration");
+	private float insUpVelocity;
+	private float insLeftVelocity;
+	private float insRightVelocity;
+	private float acceleration;
 	private int height; //sizes of rocket
 	private int width;
-	private double radius = Utils.doubleFromConfig(cfg, "rocketRadius");
+	private double radius;
 	private double fuel; //fuel quantity, keeps values from <0,1>
 	private double x;
 	private double y;
 	private double burningVelocity;
 	private double extendFuelValue;
 	// instant velocity with which rocket is falling down, when any key isn`s pressed
-	private float fallVelocity = Utils.floatFromConfig(cfg, "startingFallVelocity");//starting fall velocity
-	private float insFallVelocity = fallVelocity; //instant fall velocity
+	private float fallVelocity;//starting fall velocity
+	private float insFallVelocity; //instant fall velocity
 	//	private float fallAcceleration = Utils.floatFromConfig(cfg, "weightAcceleration");
 	private float fallAcceleration;
 	private boolean isPaused = false;
 
-	public Rocket(Enum difficulty) {
-		// x = 300;
-		// y = 50;
-		// velocityX = 0;
-		// velocityY = 0;
-		// height = 20;
-		// width = 40;
-		// fuel = 1.0;
-//		centerX.setValue(x);
-//		centerY.setValue(y);
+	public Rocket(Enum difficulty, Config cfg) {
 		// READING ALL ATTRIBUTES FROM THE CONFIG FILE
+		this.cfg = cfg;
 		x = Double.parseDouble(cfg.getProperty("startX"));
 		y = Double.parseDouble(cfg.getProperty("startY"));
 		height = Integer.parseInt(cfg.getProperty("rocketHeight"));
@@ -56,6 +48,17 @@ public class Rocket extends Shape  {
 		burningVelocity = Double.parseDouble(cfg.getProperty("burningVelocity"));
 		extendFuelValue = Double.parseDouble(cfg.getProperty("fuelTankValue"));
 		fallAcceleration = Utils.floatFromConfig(cfg, (difficulty + "weightAcceleration"));
+		upVelocity = Utils.floatFromConfig(cfg,"yVelocity");
+		leftVelocity = Utils.floatFromConfig(cfg,"xVelocity");
+		rightVelocity = -leftVelocity;
+		//instant values of velocities
+		insUpVelocity = upVelocity;
+		insLeftVelocity = leftVelocity;
+		insRightVelocity = rightVelocity;
+		acceleration = Utils.floatFromConfig(cfg, "acceleration");
+		radius = Utils.doubleFromConfig(cfg, "rocketRadius");
+		fallVelocity = Utils.floatFromConfig(cfg, "startingFallVelocity");
+		insFallVelocity = fallVelocity;
 	}
 
 	@Override

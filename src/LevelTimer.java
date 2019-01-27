@@ -4,7 +4,9 @@ import java.util.*;
 import javax.swing.Timer;
 
 public class LevelTimer {
-	public LevelTimer() {
+	public LevelTimer(Config cfg) {
+		this.cfg = cfg;
+		edgeDistance = (int) Utils.floatFromConfig(cfg, "timerEdgeDistance");
 		counter = 0;
 		date = new Date(1,1,10,0,0);
 		TimeCounter timeCounter = new TimeCounter();
@@ -49,6 +51,6 @@ public class LevelTimer {
 	private int counter;
 	private Date date;
 	private boolean ifPaused = false; //if the game is paused timer is stopped
-	private Config cfg = new Config(Player.getActualLevel());
-	private int edgeDistance = (int) Utils.floatFromConfig(cfg, "timerEdgeDistance");
+	private Config cfg;
+	private int edgeDistance;
 }

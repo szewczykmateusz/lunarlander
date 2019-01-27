@@ -41,7 +41,7 @@ public class Frame extends Application {
 		this.stage = stage;
 		leaderboardScene = LeaderboardScene.getLeaderboardScene(this);
 		scoreScene = ScoreScene.getScoreScene(this);
-		gameScene = new GameScene(new Region(), stage, scoreScene, this);
+//		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		pickNickScene = PickNick.getPickNickScene(this);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
@@ -93,15 +93,16 @@ public class Frame extends Application {
 
 	}
 	public void setGameScene(Enum difficulty) {
-		if(Player.getLastLevelStatus() == 1) {
+		//if(Player.getLastLevelStatus() == 1) {
 			try {
 				Client client = new Client();
 				client.getLevel(Player.getActualLevel());
-				Thread.sleep(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		//}
+		//read the config that is already retrieved from the server
+		//Config cfg = new Config(Player.getActualLevel());
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);
 		stage.setWidth(Constants.GAME_SCENE_DEFAULT_WIDTH);
 		stage.setHeight(Constants.GAME_SCENE_DEFAULT_HEIGHT);

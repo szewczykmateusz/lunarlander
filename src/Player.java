@@ -10,7 +10,7 @@ public class Player {
     private static String name;
     private static double score = 0;
     private static int actualLevel = Constants.STARTING_LEVEL;
-    private static Enum chosenDifficulty;
+    private static Enum chosenDifficulty = Difficulty.EASY;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
     private static int lifesNumber = Constants.LIFES_NUMBERS;
     private static boolean isLose = false; // when player lost all lifes, isLose = true, and game ends
