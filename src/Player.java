@@ -10,15 +10,13 @@ public class Player {
     private static String name;
     private static double score = 0;
     private static int actualLevel = Constants.STARTING_LEVEL;
-    private static Enum chosenDifficulty = Difficulty.EASY;
+    private static Enum chosenDifficulty;
     private static ArrayList<Integer> completedLevels = new ArrayList<Integer>();
     private static int lifesNumber = Constants.LIFES_NUMBERS;
     private static boolean isLose = false; // when player lost all lifes, isLose = true, and game ends
     private static BestScoresConfig bestScores = new BestScoresConfig();
-
     public static void setName(String Name) {name = Name;}
     public static String getName() {return name;}
-    public static double getScore() {return score;}
     public static int getActualLevel() {return actualLevel;}
     public static double getPlayerScore() {return score;}
     public static Enum getChosenDifficulty() {return chosenDifficulty;}
@@ -60,7 +58,7 @@ public class Player {
         actualLevel = 1;
         isLose = false;
         lifesNumber = 3;
-        score = 0;
+ //       score = 0;
         completedLevels = new ArrayList<>();
     }
 

@@ -537,19 +537,22 @@ public class GameScene extends Scene {
 					root.setOnKeyPressed(k -> {
 						actualizeVelTexts(k.getCode());
 						if(rocket.getFuel() > 0) {
-							if (k.getCode() == KeyCode.UP) {
+							if (rocketAnimation.getStatus() != Animation.Status.STOPPED
+								&&	k.getCode() == KeyCode.UP) {
 								rocket.accUpVelocity();
 								centerY.setValue(centerY.getValue() + rocket.getInsUpVelocity());
 								rocket.restartInsFallVelocity();
 							}
-							else if (k.getCode() == KeyCode.DOWN)
-								centerY.setValue(centerY.getValue() + 6);
-							else if (k.getCode() == KeyCode.LEFT) {
+						/*	else if (k.getCode() == KeyCode.DOWN)
+								centerY.setValue(centerY.getValue() + 6); */
+							else if (rocketAnimation.getStatus() != Animation.Status.STOPPED
+									&& k.getCode() == KeyCode.LEFT) {
 								rocket.accLeftVelocity();
 								centerX.setValue(centerX.getValue() + rocket.getInsLeftVelocity());
 								rocket.restartInsFallVelocity();
 							}
-							else if (k.getCode() == KeyCode.RIGHT) {
+							else if (rocketAnimation.getStatus() != Animation.Status.STOPPED
+									&& k.getCode() == KeyCode.RIGHT) {
 								rocket.accRightVelocity();
 								centerX.setValue(centerX.getValue() + rocket.getInsRightVelocity());
 								rocket.restartInsFallVelocity();

@@ -22,6 +22,7 @@ public class Frame extends Application {
 	private Scene pickNickScene;
 	private Scene scoreScene;
 	private Stage stage;
+	private Scene startScene;
 
 	public Frame() {}
 
@@ -45,13 +46,13 @@ public class Frame extends Application {
 		setDifficultyScene = SetDifficulty.getSetDifficultyScene(this);
 		pickNickScene = PickNick.getPickNickScene(this);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
-
+		startScene = StartScene.getStartScene(this);
 
 		//stylesheets setup
 		linkStylesheets();
 
 		stage.setTitle("Lunar Lander");
-		stage.setScene(mainMenuScene);
+		stage.setScene(startScene);
 		stage.show();
 	}
 
@@ -60,6 +61,7 @@ public class Frame extends Application {
 		setDifficultyScene.getStylesheets().add("css/style.css");
 		pickNickScene.getStylesheets().add("css/style.css");
 		scoreScene.getStylesheets().add("css/style.css");
+		startScene.getStylesheets().add("css/style.css");
 	}
 
 	/*
@@ -71,6 +73,7 @@ public class Frame extends Application {
 
 	public void setMainMenuScene() {
 		Player.reset();
+		Player.resetPlayerScore();
 		stage.setWidth(stage.getWidth() + 0.1);
 		stage.setHeight(stage.getHeight() + 0.1);
 		mainMenuScene = MainMenu.getMainMenu(this, stage);
@@ -93,14 +96,16 @@ public class Frame extends Application {
 
 	}
 	public void setGameScene(Enum difficulty) {
-		//if(Player.getLastLevelStatus() == 1) {
-			try {
-				Client client = new Client();
-				client.getLevel(Player.getActualLevel());
-			} catch (Exception e) {
-				e.printStackTrace();
+		if(Constants.ifServerConnection) {
+			if (Player.getLastLevelStatus() == 1 || !Player.hasPlayed()) {
+				try {
+					Client client = new Client();
+					client.getLevel(Player.getActualLevel());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		//}
+		}
 		//read the config that is already retrieved from the server
 		//Config cfg = new Config(Player.getActualLevel());
 		gameScene = new GameScene(new Region(), stage, scoreScene, this);

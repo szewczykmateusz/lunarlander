@@ -9,7 +9,7 @@ public class Constants {
     public final static int LEVEL_NUMBERS = Utils.intFromConfig(cfg, "levelNumbers");
     public final static int LIFES_NUMBERS = Utils.intFromConfig(cfg, "lifesNumber");
     public final static int STARTING_LEVEL = Utils.intFromConfig(cfg, "startingLevel");
-
+    public static boolean ifServerConnection;
 
     public static void setDefaultWidth(float defaultWidth) {DEFAULT_WIDTH = defaultWidth;}
     public static void setDefaultHeight(float defaultHeight) {DEFAULT_HEIGHT = defaultHeight;}

@@ -17,7 +17,7 @@ public class LeaderboardScene extends Scene {
     public static Scene getLeaderboardScene(Frame frame) {
         configureBackButtonAction(backButton, frame);
         Font font = new Font(12);
-        Text latestResult = new Text("Your score: " + Player.getScore());
+        Text latestResult = new Text("Your score: " + Player.getPlayerScore());
         latestResult.setFont(font);
         latestResult.setFill(Color.DARKRED);
         latestResult.setUnderline(true);
