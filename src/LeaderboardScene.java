@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-/*
+/**
 Class creates scene which shows users final score and 10 best results
  */
 public class LeaderboardScene extends Scene {

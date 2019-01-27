@@ -4,7 +4,7 @@ import javafx.stage.Stage;
 import java.util.*;
 import java.lang.Math;
 
-/*
+/**
 Utils Class containing common public methods used throughout the project
  */
 

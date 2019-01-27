@@ -7,7 +7,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/*
+/**
 Class creates scene which shows users result after every level
  */
 public class ScoreScene extends Scene {

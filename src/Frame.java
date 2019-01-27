@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.*;
-/*
+/**
  * Klasa sluzaca do przelaczania miedzy oknami
  * 
  */

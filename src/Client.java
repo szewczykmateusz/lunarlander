@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-/*
+/**
     Client class implements all necessary methods to send requests and process responses from the server
  */
 public class Client {

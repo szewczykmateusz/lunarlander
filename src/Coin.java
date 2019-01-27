@@ -2,6 +2,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
 
+/**
+ * Coin gives user extra points
+ */
 public class Coin extends Shape {
 	public Coin(double x, double y, Config cfg) {
 		this.x = x;

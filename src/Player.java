@@ -2,7 +2,7 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import java.util.ArrayList;
 
-/*
+/**
 Class keeps informations about player
  */
 public class Player {

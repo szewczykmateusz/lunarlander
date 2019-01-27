@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
-/*
+/**
 Method asks user if wants server connection
  */
 public class StartScene extends  Scene {

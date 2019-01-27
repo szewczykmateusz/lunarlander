@@ -1,7 +1,10 @@
 import java.util.*;
 import java.util.Properties;
 
-//CLASS reading the config file
+/**
+ * CLASS reading the config file
+ */
+
 
 public class Config {
    Properties configFile;

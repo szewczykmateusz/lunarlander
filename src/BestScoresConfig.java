@@ -2,7 +2,10 @@ import java.util.*;
 import java.util.Properties;
 import javafx.util.Pair;
 
-//CLASS reading and creating files with best scores and keeps actual best scores in list
+/**
+ * CLASS reading and creating files with best scores and keeps actual best scores in list
+ */
+
 
 public class BestScoresConfig {
     private Properties configFile;

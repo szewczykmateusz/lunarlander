@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/*
+/**
    Main Menu Class - creates Main Menu
 */
 public class MainMenu extends Scene{

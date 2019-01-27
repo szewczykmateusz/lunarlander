@@ -7,7 +7,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 
-/*
+/**
  * Class draws rocket and keeps all properties of rocket
  */
 public class Rocket extends Shape  {
