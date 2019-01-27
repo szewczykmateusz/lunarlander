@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Server implements Runnable{
@@ -7,9 +9,17 @@ public class Server implements Runnable{
     ServerSocket serverSocket;
     Scanner scanner;
     Socket socket;
+    PrintStream stream;
+    String data;
 
     public Server(Socket socket) {
+        try {
             this.socket = socket;
+            this.stream = new PrintStream(socket.getOutputStream());
+        } catch (Exception e) {
+            System.out.println("Can't initialize web socket.");
+            e.printStackTrace();
+        }
     }
 
 //    public static void main(String[] args) throws Exception {
@@ -77,13 +87,15 @@ public class Server implements Runnable{
 //    }
 
     public void sendLevelConfig(int parameter) throws Exception {
-        FileInputStream fileStream = new FileInputStream("config/level" + parameter + ".cfg");
+        //FileInputStream fileStream = new FileInputStream("config/level" + parameter + ".cfg");
 
-        byte[] b = new byte[2002];
+        //byte[] b = new byte[1800];
+        String data = new String(Files.readAllBytes(Paths.get("config/level" + parameter + ".cfg")), "UTF-8");
 
-        fileStream.read(b, 0, b.length);
-
-        OutputStream outputStream = socket.getOutputStream();
-        outputStream.write(b, 0, b.length);
+        //fileStream.read(b, 0, b.length);
+        stream.println(data);
+        socket.close();
+        //OutputStream outputStream = socket.getOutputStream();
+        //outputStream.write(bytes, 0, bytes.length);
     }
 }
